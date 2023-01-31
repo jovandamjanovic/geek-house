@@ -29,7 +29,7 @@ const LigaPage = ({ players }) => {
       display='flex'
       justifyContent='center'
       alignItems='center'
-      minHeight='100vh'
+      minHeight='82vh'
     >
       <Container maxWidth='md'>
         <TableContainer component={Paper}>
