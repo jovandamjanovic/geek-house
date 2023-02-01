@@ -41,7 +41,7 @@ const PlayerPointDetails = ({ pointDetails }) => {
               </TableRow>
               <TableRow>
                 <TableCell>Poeni</TableCell>
-                {pointDetails.slice(half, length).map((points, index) => (
+                {pointDetails.slice(half, pointDetails.length).map((points, index) => (
                   <TableCell key={`kolo-poeni-${index}`}>
                     {points !== "" ? points : " - "}
                   </TableCell>
