@@ -11,17 +11,16 @@ const FooterStyled = styled('footer')(({theme})=>({
   justifyContent: 'space-around',
   fontSize: 'smaller',
   textAlign: 'center',
-  position: 'fixed',
-  bottom: 0,
   width: '100%',
-  padding: '2em'
+  padding: '2em',
+  marginTop: '2em'
 }));
 
 const Footer = () => {
   return (
     <FooterStyled>
       <Typography variant="span">Copyright © {new Date().getFullYear()} Geek House</Typography>
-      <Typography variant="span">Contact: <Link href="mailto:admin@geekhouse.com">admin@geekhouse.com</Link></Typography>
+      <Typography variant="span">Contact: <Link href="mailto:admin@geekhouse.rs">admin@geekhouse.rs</Link></Typography>
     </FooterStyled>
   );
 };
