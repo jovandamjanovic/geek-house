@@ -1,17 +1,17 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Container } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React from "react";
+import { styled } from "@mui/material/styles";
+import { Box, Container } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
-import PlayerRow from '../components/PlayerRow';
+import PlayerRow from "../components/PlayerRow";
 
-import { getPoints } from '../lib/sheets';
+import { getPoints } from "../lib/sheets";
 
 const StyledTableHeaderCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -26,18 +26,20 @@ const LigaPage = ({ players }) => {
   ));
   return (
     <Box
-      display='flex'
-      justifyContent='center'
-      alignItems='center'
-      minHeight='82vh'
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      marginTop={"2em"}
     >
-      <Container maxWidth='md'>
+      <Container>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} size='small' aria-label='simple table'>
+          <Table size="small" aria-label="simple table">
             <TableHead>
               <TableRow>
                 <StyledTableHeaderCell>Igrac</StyledTableHeaderCell>
-                <StyledTableHeaderCell align='right'>Ukupno Poena</StyledTableHeaderCell>
+                <StyledTableHeaderCell align="right">
+                  Ukupno Poena
+                </StyledTableHeaderCell>
               </TableRow>
             </TableHead>
             <TableBody>{rows}</TableBody>
