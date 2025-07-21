@@ -13,7 +13,9 @@ export default function Home() {
           height={180}
           priority
         />
-        <h1>Welcome to Geek House!</h1>
+        <h1>Welcome to Zoki House!</h1>
+        <h1>Welcome to Zoki House!</h1>
+        <h1>Welcome to Zoki House!</h1>
         <ol>
           <li>
             Get started by editing <code>src/app/page.tsx</code>.
