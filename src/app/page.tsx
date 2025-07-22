@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import { IME_SAJTA } from "./constants";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
           height={180}
           priority
         />
-        <h1>Welcome to Zoki House!</h1>
+        <h1>Welcome to { IME_SAJTA }</h1>
         <h1>Welcome to Zoki House!</h1>
         <h1>Welcome to Zoki House!</h1>
         <ol>
