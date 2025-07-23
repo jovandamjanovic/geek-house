@@ -2,11 +2,16 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { IME_SAJTA } from "./constants";
 
+/**
+ * Renders the home page with a logo, welcome headings, and instructions for editing the source file.
+ *
+ * Displays the site name dynamically and provides guidance for getting started with development.
+ */
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
+          <Image
           className={styles.logo}
           src="/gh_large.png"
           alt="Geek House logo"
@@ -23,7 +28,6 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
-
       </main>
     </div>
   );
