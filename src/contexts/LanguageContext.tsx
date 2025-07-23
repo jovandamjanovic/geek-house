@@ -8,7 +8,7 @@ type Locale = typeof locales[number];
 interface LanguageContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  messages: Record<string, any>;
+  messages: Record<string, Record<string, string>>;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -30,7 +30,7 @@ function setCookie(name: string, value: string): void {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-  const [messages, setMessages] = useState<Record<string, any>>({});
+  const [messages, setMessages] = useState<Record<string, Record<string, string>>>({});
 
   // Load messages for current locale
   const loadMessages = async (locale: Locale) => {

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import {useTranslations} from '../../../hooks/useTranslations';
 import {useLanguage} from '../../../contexts/LanguageContext';
 import {locales} from '../../../lib/i18n';
 
@@ -14,7 +13,6 @@ const languageNames: Record<typeof locales[number], string> = {
 };
 
 const LanguageSwitcher: React.FC = () => {
-  const t = useTranslations('LanguageSwitcher');
   const { locale: currentLocale, setLocale } = useLanguage();
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

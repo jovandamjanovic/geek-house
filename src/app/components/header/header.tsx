@@ -1,6 +1,8 @@
 'use client'
 
 import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import {useTranslations} from '../../../hooks/useTranslations';
 import LanguageSwitcher from '../language-switcher/LanguageSwitcher';
 import styles from './header.module.css';
@@ -10,15 +12,17 @@ const Header: React.FC = () => {
   
   return (
     <header className={styles.header}>
-      <img
+      <Image
         src="/gh_large.png"
         alt="Logo"
+        width={180}
+        height={180}
         className={styles.logo}
       />
       <nav className={styles.nav}>
-        <a href="/">{t('home')}</a>
-        <a href="/about">{t('about')}</a>
-        <a href="/contact">{t('contact')}</a>
+        <Link href="/">{t('home')}</Link>
+        <Link href="/about">{t('about')}</Link>
+        <Link href="/contact">{t('contact')}</Link>
         <LanguageSwitcher />
       </nav>
     </header>
