@@ -1,12 +1,14 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { IME_SAJTA } from "./constants";
+import HeaderFooterLayout from "../components/layouts/header_footer";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
+        <HeaderFooterLayout>
+          <Image
           className={styles.logo}
           src="/gh_large.png"
           alt="Geek House logo"
@@ -23,7 +25,7 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
-
+        </HeaderFooterLayout>
       </main>
     </div>
   );
