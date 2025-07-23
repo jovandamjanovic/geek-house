@@ -6,8 +6,10 @@ import {useTranslations} from '../../../hooks/useTranslations';
 const Footer: React.FC = () => {
   const t = useTranslations('Footer');
   
-  return React.createElement('footer', null,
-    React.createElement('p', null, t('copyright'))
+  return (
+    <footer>
+      <p>{t('copyright')}</p>
+    </footer>
   );
 };
 

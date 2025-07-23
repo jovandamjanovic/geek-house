@@ -22,30 +22,26 @@ const LanguageSwitcher: React.FC = () => {
     setLocale(newLocale);
   };
 
-  return React.createElement(
-    'div',
-    { style: { display: 'inline-block' } },
-    React.createElement(
-      'select',
-      {
-        value: currentLocale,
-        onChange: handleLanguageChange,
-        style: {
+  return (
+    <div style={{ display: 'inline-block' }}>
+      <select
+        value={currentLocale}
+        onChange={handleLanguageChange}
+        style={{
           padding: '8px',
           borderRadius: '4px',
           border: '1px solid #ccc',
           backgroundColor: 'white',
           cursor: 'pointer'
-        }
-      },
-      ...locales.map((locale: typeof locales[number]) =>
-        React.createElement(
-          'option',
-          { key: locale, value: locale },
-          languageNames[locale]
-        )
-      )
-    )
+        }}
+      >
+        {locales.map((locale: typeof locales[number]) => (
+          <option key={locale} value={locale}>
+            {languageNames[locale]}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 
