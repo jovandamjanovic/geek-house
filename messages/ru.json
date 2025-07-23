@@ -2,8 +2,7 @@
   "HomePage": {
     "title": "Добро пожаловать в Geek House!",
     "getStarted": "Начните с редактирования",
-    "saveChanges": "Сохраните и мгновенно увидите изменения.",
-    "editFile": "src/app/page.tsx"
+    "saveChanges": "Сохраните и мгновенно увидите изменения."
   },
   "Header": {
     "navigation": "Навигация",

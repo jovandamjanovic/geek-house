@@ -26,7 +26,7 @@ export default function Home() {
         <h1>{t('title')}</h1>
         <ol>
           <li>
-            {t('getStarted')} <code>{t('editFile')}</code>.
+            {t('getStarted')} <code>src/app/page.tsx</code>.
           </li>
           <li>{t('saveChanges')}</li>
         </ol>

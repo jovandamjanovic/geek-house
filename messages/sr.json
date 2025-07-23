@@ -2,8 +2,7 @@
   "HomePage": {
     "title": "Dobrodošli u Geek House!",
     "getStarted": "Započnite tako što ćete urediti",
-    "saveChanges": "Sačuvajte i vidite svoje promene trenutno.",
-    "editFile": "src/app/page.tsx"
+    "saveChanges": "Sačuvajte i vidite svoje promene trenutno."
   },
   "Header": {
     "navigation": "Navigacija",
