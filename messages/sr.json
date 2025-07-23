@@ -1,0 +1,24 @@
+{
+  "HomePage": {
+    "title": "Dobrodošli u Geek House!",
+    "getStarted": "Započnite tako što ćete urediti",
+    "saveChanges": "Sačuvajte i vidite svoje promene trenutno.",
+    "editFile": "src/app/page.tsx"
+  },
+  "Header": {
+    "navigation": "Navigacija",
+    "home": "Početna",
+    "about": "O Nama",
+    "contact": "Kontakt"
+  },
+  "Footer": {
+    "copyright": "© 2025 Geek House. Sva prava zadržana."
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Izaberite jezik"
+  },
+  "Common": {
+    "loading": "Učitavanje...",
+    "error": "Došlo je do greške"
+  }
+}

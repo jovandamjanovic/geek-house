@@ -1,0 +1,24 @@
+{
+  "HomePage": {
+    "title": "Welcome to Geek House!",
+    "getStarted": "Get started by editing",
+    "saveChanges": "Save and see your changes instantly.",
+    "editFile": "src/app/page.tsx"
+  },
+  "Header": {
+    "navigation": "Navigation",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "copyright": "© 2025 Geek House. All rights reserved."
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Select Language"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "An error occurred"
+  }
+}

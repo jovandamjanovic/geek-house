@@ -1,0 +1,24 @@
+{
+  "HomePage": {
+    "title": "Добро пожаловать в Geek House!",
+    "getStarted": "Начните с редактирования",
+    "saveChanges": "Сохраните и мгновенно увидите изменения.",
+    "editFile": "src/app/page.tsx"
+  },
+  "Header": {
+    "navigation": "Навигация",
+    "home": "Главная",
+    "about": "О нас",
+    "contact": "Контакты"
+  },
+  "Footer": {
+    "copyright": "© 2025 Geek House. Все права защищены."
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Выберите язык"
+  },
+  "Common": {
+    "loading": "Загрузка...",
+    "error": "Произошла ошибка"
+  }
+}

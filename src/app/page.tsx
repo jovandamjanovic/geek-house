@@ -1,6 +1,8 @@
+'use client';
+
 import Image from "next/image";
+import {useTranslations} from '../hooks/useTranslations';
 import styles from "./page.module.css";
-import { IME_SAJTA } from "./constants";
 
 /**
  * Renders the home page with a logo, welcome headings, and instructions for editing the source file.
@@ -8,6 +10,8 @@ import { IME_SAJTA } from "./constants";
  * Displays the site name dynamically and provides guidance for getting started with development.
  */
 export default function Home() {
+  const t = useTranslations('HomePage');
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -19,14 +23,12 @@ export default function Home() {
           height={180}
           priority
         />
-        <h1>Welcome to { IME_SAJTA }</h1>
-        <h1>Welcome to Zoki House!</h1>
-        <h1>Welcome to Zoki House!</h1>
+        <h1>{t('title')}</h1>
         <ol>
           <li>
-            Get started by editing <code>src/app/page.tsx</code>.
+            {t('getStarted')} <code>{t('editFile')}</code>.
           </li>
-          <li>Save and see your changes instantly.</li>
+          <li>{t('saveChanges')}</li>
         </ol>
       </main>
     </div>
