@@ -13,10 +13,10 @@ interface LanguageWrapperProps {
 }
 
 const LanguageWrapper = ({ children, geistSans, geistMono }: LanguageWrapperProps) => {
-  const { language } = useLanguage();
+  const { locale } = useLanguage();
 
   return (
-    <html lang={language}>
+    <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>
