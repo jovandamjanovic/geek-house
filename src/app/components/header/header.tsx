@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {useTranslations} from '../../../hooks/useTranslations';
+import {useTranslations} from '@/hooks/useTranslations';
 import LanguageSwitcher from '../language-switcher/LanguageSwitcher';
 import styles from './header.module.css';
 
