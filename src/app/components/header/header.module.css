@@ -1,16 +1,20 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  transition: transform 0.6s ease-in-out;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  transform: translateY(0);
+  opacity: 1;
   position: fixed;
   top: 0;
-  width: 100vw;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  z-index: 1000;
+  width: 100%;
+  z-index: 100;
+  background-color: white;
 }
 
+.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
 
 .logo {
   height: 60px;
