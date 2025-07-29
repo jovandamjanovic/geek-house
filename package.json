@@ -10,10 +10,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "joi": "^17.13.3",
     "next": "15.4.1",
     "next-intl": "^4.3.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.60.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

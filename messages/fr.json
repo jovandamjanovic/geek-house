@@ -19,5 +19,21 @@
   "Common": {
     "loading": "Chargement...",
     "error": "Une erreur est survenue"
+  },
+  "ContactForm": {
+    "title": "Nous Contacter",
+    "name": "Nom",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Envoyer le Message",
+    "success": "Message envoyé avec succès !",
+    "errors": {
+      "nameRequired": "Le nom est requis",
+      "nameMin": "Le nom doit contenir au moins 2 caractères",
+      "emailRequired": "L'email est requis",
+      "emailInvalid": "Veuillez saisir une adresse email valide",
+      "messageRequired": "Le message est requis",
+      "messageMin": "Le message doit contenir au moins 10 caractères"
+    }
   }
 }

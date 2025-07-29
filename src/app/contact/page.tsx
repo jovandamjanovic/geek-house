@@ -1,10 +1,11 @@
 import React from 'react';
+import ContactForm from '../components/contact-form/ContactForm';
 import style from "./page.module.css"
+
 const ContactPage: React.FC = () => {
   return (
     <div className={ style.div }>
-      <h2>Test strana za kontakte.</h2>
-      <p>Čeka se Jovan da odradi stranu.</p>
+      <ContactForm />
     </div>
   );
 };
