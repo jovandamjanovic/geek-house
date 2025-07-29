@@ -3,10 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from '../../../hooks/useTranslations';
+import { useTranslations } from '@/hooks/useTranslations';
 import LanguageSwitcher from '../language-switcher/LanguageSwitcher';
 import styles from './header.module.css';
-import { useThrottle } from '../../../hooks/useThrottle';
+import { useThrottle } from '@/hooks/useThrottle';
 
 const Header: React.FC = () => {
   const t = useTranslations('Header');
