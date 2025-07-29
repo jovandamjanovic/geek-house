@@ -11,7 +11,7 @@ import { useThrottle } from '@/hooks/useThrottle';
 const Header: React.FC = () => {
   const t = useTranslations('Header');
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const prevScrollY = useRef(0); // ✅ store previous scroll position persistently
+  const prevScrollY = useRef(0);
 
   const throttledScroll = useThrottle(() => {
     const currentScrollY = window.scrollY;
