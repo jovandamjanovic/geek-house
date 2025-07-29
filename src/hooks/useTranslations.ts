@@ -1,6 +1,6 @@
 'use client';
 
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function getNestedValue(obj: Record<string, unknown>, path: string): string | undefined {
   return path.split('.').reduce((current, key) => {

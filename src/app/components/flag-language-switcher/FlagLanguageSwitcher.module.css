@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.flagButton {
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.flagButton:hover {
+  border-color: var(--primary-color, #00ff00);
+  background-color: rgba(0, 255, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.flagButton:focus {
+  outline: none;
+  border-color: var(--primary-color, #00ff00);
+  box-shadow: 0 0 0 2px rgba(0, 255, 0, 0.3);
+}
+
+.flagButton.active {
+  border-color: var(--primary-color, #00ff00);
+  background-color: rgba(0, 255, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.flagButton.active:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .container {
+    gap: 0.25rem;
+  }
+  
+  .flagButton {
+    font-size: 1rem;
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
