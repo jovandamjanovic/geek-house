@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from '../contexts/LanguageContext';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
+import LanguageWrapper from './components/LanguageWrapper';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,14 +34,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sr">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <LanguageProvider>
-          <Header />
-          {children}
-          <Footer />
-        </LanguageProvider>
-      </body>
-    </html>
+    <LanguageProvider>
+      <LanguageWrapper geistSans={geistSans} geistMono={geistMono}>
+        <Header />
+        {children}
+        <Footer />
+      </LanguageWrapper>
+    </LanguageProvider>
   );
 }

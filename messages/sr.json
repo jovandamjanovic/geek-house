@@ -19,5 +19,21 @@
   "Common": {
     "loading": "Učitavanje...",
     "error": "Došlo je do greške"
+  },
+  "ContactForm": {
+    "title": "Kontaktirajte nas",
+    "name": "Ime",
+    "email": "Email",
+    "message": "Poruka",
+    "submit": "Pošalji poruku",
+    "success": "Poruka je uspešno poslata!",
+    "errors": {
+      "nameRequired": "Ime je obavezno",
+      "nameMin": "Ime mora imati najmanje 2 karaktera",
+      "emailRequired": "Email je obavezan",
+      "emailInvalid": "Molimo unesite validnu email adresu",
+      "messageRequired": "Poruka je obavezna",
+      "messageMin": "Poruka mora imati najmanje 10 karaktera"
+    }
   }
 }
