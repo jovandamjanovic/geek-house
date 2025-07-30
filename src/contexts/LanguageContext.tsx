@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { locales, defaultLocale } from '../lib/i18n';
+import { locales, defaultLocale } from '@/lib/i18n';
 
 type Locale = typeof locales[number];
 
