@@ -23,7 +23,7 @@ export default function Home() {
           height={180}
           priority
         />
-        <h1>{t('title')}</h1>
+        <h1>Title</h1>
         <h1>{t('title')}</h1>
         <h1>{t('title')}</h1>
         <h1>{t('title')}</h1>
