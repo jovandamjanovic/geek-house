@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import {useLanguage} from '../../../contexts/LanguageContext';
-import {locales} from '../../../lib/i18n';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { locales } from '@/lib/i18n';
 
 const languageNames: Record<typeof locales[number], string> = {
   sr: 'Srpski',
