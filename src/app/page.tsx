@@ -1,36 +1,46 @@
 'use client';
 
-import Image from "next/image";
-import {useTranslations} from '../hooks/useTranslations';
-import styles from "./page.module.css";
+import React from 'react';
+import WelcomeSection from './components/home/WelcomeSection';
+import FeaturedGamesSection from './components/home/FeaturedGamesSection';
+import LatestArticlesSection from './components/home/LatestArticlesSection';
+import CommunityAnnouncementsSection, { AnnouncementData } from './components/home/CommunityAnnouncementsSection';
+// import QuickActionsSection from './components/home/QuickActionsSection';
+import styles from './page.module.css';
 
-/**
- * Renders the home page with a logo, welcome headings, and instructions for editing the source file.
- *
- * Displays the site name dynamically and provides guidance for getting started with development.
- */
-export default function Home() {
-  const t = useTranslations('HomePage');
+const Home: React.FC = () => {
+  const handleViewAllArticles = () => {
+    // Navigate to articles page or show all articles
+    console.log('View all articles clicked');
+  };
+
+  const handleAnnouncementClick = (announcement: AnnouncementData) => {
+    // Handle announcement click
+    console.log('Announcement clicked:', announcement);
+  };
+
+  // const handleActionClick = (action: any) => {
+  //   // Handle quick action click
+  //   console.log('Quick action clicked:', action);
+  // };
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-          <Image
-          className={styles.logo}
-          src="/gh_large.png"
-          alt="Geek House logo"
-          width={180}
-          height={180}
-          priority
+        <WelcomeSection />
+        <FeaturedGamesSection />
+        <LatestArticlesSection 
+          onViewAllClick={handleViewAllArticles}
         />
-        <h1>{t('title')}</h1>
-        <ol>
-          <li>
-            {t('getStarted')} <code>src/app/page.tsx</code>.
-          </li>
-          <li>{t('saveChanges')}</li>
-        </ol>
+        <CommunityAnnouncementsSection 
+          onAnnouncementClick={handleAnnouncementClick}
+        />
+        {/* <QuickActionsSection 
+          onActionClick={handleActionClick}
+        /> */}
       </main>
     </div>
   );
-}
+};
+
+export default Home;

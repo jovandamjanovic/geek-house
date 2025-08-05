@@ -37,8 +37,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     try {
       const messages = await import(`../../messages/${locale}.json`);
       setMessages(messages.default);
-    } catch (error) {
-      console.error('Failed to load messages for locale:', locale);
+    } catch(error) {
+      console.error('Failed to load messages for locale:', locale, error);
       // Fallback to default locale
       const fallbackMessages = await import(`../../messages/${defaultLocale}.json`);
       setMessages(fallbackMessages.default);

@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
+    "@types/react-slick": "^0.23.13",
     "joi": "^17.13.3",
     "next": "15.4.1",
     "next-intl": "^4.3.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-hook-form": "^7.60.0"
+    "react-hook-form": "^7.60.0",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

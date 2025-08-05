@@ -1,17 +1,40 @@
 {
   "HomePage": {
-    "title": "¡Bienvenido a Geek House!",
-    "getStarted": "Comienza editando",
-    "saveChanges": "Guarda y ve tus cambios al instante."
+    "title": "¡Bienvenido a K®itic!",
+    "welcomeTitle": "Bienvenido a ",
+    "welcomeSubtitle": "Únete a nuestra apasionada comunidad de entusiastas de los juegos de mesa. Descubre nuevos juegos, conecta con otros jugadores y comparte tus experiencias de gaming.",
+    "joinNow": "Únete Ahora",
+    "featuredGames": "Juegos Destacados",
+    "fantasyDescription": "Una aventura épica de fantasía con arte impresionante y jugabilidad inmersiva.",
+    "latestArticles": "Últimos Artículos", 
+    "viewAll": "Ver Todos",
+    "articleTitle1": "Los 10 Mejores Juegos de Estrategia de 2024",
+    "articleMeta1": "Publicado hace 2 días • 5 min de lectura",
+    "articleTitle2": "Resumen de la Noche de Juegos Comunitaria",
+    "articleMeta2": "Publicado hace 1 semana • 3 min de lectura", 
+    "articleTitle3": "Guía para Principiantes de Juegos Europeos",
+    "articleMeta3": "Publicado hace 2 semanas • 8 min de lectura",
+    "communityAnnouncements": "Anuncios de la Comunidad",
+    "announcementTitle1": "Evento de Lanzamiento de Nuevo Juego",
+    "announcementText1": "Únete a nosotros para el lanzamiento de nuestro nuevo juego destacado este fin de semana.",
+    "announcementTitle2": "Registro de Torneo Abierto",
+    "announcementText2": "Regístrate ahora para nuestro torneo mensual de juegos de mesa.",
+    "quickActions": "Acciones Rápidas",
+    "search": "Buscar",
+    "members": "Miembros", 
+    "favorites": "Favoritos",
+    "stats": "Estadísticas"
   },
   "Header": {
     "navigation": "Navegación",
+    "boardGames": "Juegos de Mesa",
+    "clubName": "K®itic",
     "home": "Inicio",
     "about": "Acerca de",
     "contact": "Contacto"
   },
   "Footer": {
-    "copyright": "© 2025 Geek House. Todos los derechos reservados."
+    "copyright": "© 2025 K®itic. Todos los derechos reservados."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Seleccionar idioma"

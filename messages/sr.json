@@ -1,17 +1,40 @@
 {
   "HomePage": {
-    "title": "Dobrodošli u Geek House!",
-    "getStarted": "Započnite tako što ćete urediti",
-    "saveChanges": "Sačuvajte i vidite svoje promene trenutno."
+    "title": "Dobrodošli u K®itic!",
+    "welcomeTitle": "Dobrodošli u ",
+    "welcomeSubtitle": "Pridružite se našoj strastveno zajednici ljubitelja društvenih igara. Otkrijte nove igre, povežite se sa drugim igračima i podelite svoja iskustva.",
+    "joinNow": "Pridružite se Sada",
+    "featuredGames": "Istaknute Igre",
+    "fantasyDescription": "Epska fantazijska avantura sa neverovatnim ilustracijama i zadivljujućim gameplay-om.",
+    "latestArticles": "Najnoviji Članci", 
+    "viewAll": "Pogledaj Sve",
+    "articleTitle1": "10 Najboljih Strategijskih Igara 2024. Godine",
+    "articleMeta1": "Objavljeno pre 2 dana • 5 min čitanja",
+    "articleTitle2": "Rezime Večeri Društvenih Igara",
+    "articleMeta2": "Objavljeno pre 1 nedelje • 3 min čitanja", 
+    "articleTitle3": "Vodič za Početnike kroz Euro Igre",
+    "articleMeta3": "Objavljeno pre 2 nedelje • 8 min čitanja",
+    "communityAnnouncements": "Obaveštenja Zajednice",
+    "announcementTitle1": "Događaj Lansiranja Nove Igre",
+    "announcementText1": "Pridružite nam se za lansiranje naše najnovije istaknute igre ovog vikenda.",
+    "announcementTitle2": "Prijave za Turnir su Otvorene",
+    "announcementText2": "Prijavite se sada za naš mesečni turnir društvenih igara.",
+    "quickActions": "Brze Akcije",
+    "search": "Pretraži",
+    "members": "Članovi", 
+    "favorites": "Omiljene",
+    "stats": "Statistike"
   },
   "Header": {
     "navigation": "Navigacija",
+    "boardGames": "Društvene Igre",
+    "clubName": "K®itic",
     "home": "Početna",
     "about": "O Nama",
     "contact": "Kontakt"
   },
   "Footer": {
-    "copyright": "© 2025 Geek House. Sva prava zadržana."
+    "copyright": "© 2025 K®itic. Sva prava zadržana."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Izaberite jezik"
