@@ -1,0 +1,73 @@
+/* Quick Actions */
+.quickActions {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+  color: #2C1810;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.actionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: #F8F8F8;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionButton:hover {
+  background: #8B4513;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.actionIcon {
+  font-size: 24px;
+}
+
+.actionText {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Desktop Responsive */
+@media (min-width: 768px) {
+  .sectionTitle {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .actionGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .actionButton {
+    padding: 20px 16px;
+  }
+
+  .actionIcon {
+    font-size: 28px;
+  }
+
+  .actionText {
+    font-size: 14px;
+  }
+}

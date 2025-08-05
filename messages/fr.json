@@ -1,17 +1,40 @@
 {
   "HomePage": {
-    "title": "Bienvenue chez Geek House !",
-    "getStarted": "Commencez par éditer",
-    "saveChanges": "Enregistrez et voyez vos changements instantanément."
+    "title": "Bienvenue chez K®itic !",
+    "welcomeTitle": "Bienvenue chez ",
+    "welcomeSubtitle": "Rejoignez notre communauté passionnée d'amateurs de jeux de plateau. Découvrez de nouveaux jeux, connectez-vous avec d'autres joueurs et partagez vos expériences de jeu.",
+    "joinNow": "Rejoindre Maintenant",
+    "featuredGames": "Jeux en Vedette",
+    "fantasyDescription": "Une aventure épique de fantasy avec des illustrations magnifiques et un gameplay immersif.",
+    "latestArticles": "Derniers Articles", 
+    "viewAll": "Voir Tout",
+    "articleTitle1": "Les 10 Meilleurs Jeux de Stratégie de 2024",
+    "articleMeta1": "Publié il y a 2 jours • 5 min de lecture",
+    "articleTitle2": "Récapitulatif de la Soirée Jeux Communautaire",
+    "articleMeta2": "Publié il y a 1 semaine • 3 min de lecture", 
+    "articleTitle3": "Guide du Débutant aux Jeux Européens",
+    "articleMeta3": "Publié il y a 2 semaines • 8 min de lecture",
+    "communityAnnouncements": "Annonces de la Communauté",
+    "announcementTitle1": "Événement de Lancement d'un Nouveau Jeu",
+    "announcementText1": "Rejoignez-nous pour le lancement de notre nouveau jeu vedette ce week-end.",
+    "announcementTitle2": "Inscriptions au Tournoi Ouvertes",
+    "announcementText2": "Inscrivez-vous maintenant pour notre tournoi mensuel de jeux de plateau.",
+    "quickActions": "Actions Rapides",
+    "search": "Rechercher",
+    "members": "Membres", 
+    "favorites": "Favoris",
+    "stats": "Statistiques"
   },
   "Header": {
     "navigation": "Navigation",
+    "boardGames": "Jeux de Plateau",
+    "clubName": "K®itic",
     "home": "Accueil",
     "about": "À propos",
     "contact": "Contact"
   },
   "Footer": {
-    "copyright": "© 2025 Geek House. Tous droits réservés."
+    "copyright": "© 2025 K®itic. Tous droits réservés."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Choisir la langue"

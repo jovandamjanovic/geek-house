@@ -1,0 +1,213 @@
+/* Featured Games */
+.featured {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+  color: #2C1810;
+}
+
+.carouselContainer {
+  position: relative;
+  padding: 0 40px 50px 40px;
+}
+
+.slideWrapper {
+  padding: 0 8px;
+  outline: none;
+}
+
+.gameCard {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: #F8F8F8;
+  border-radius: 12px;
+  padding: 16px;
+  height: 180px;
+  margin: 0 4px;
+}
+
+.gameImage {
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.gameInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.gameTitle {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 6px 0;
+  color: #2C1810;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gameDescription {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gameStats {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #888;
+  flex-wrap: wrap;
+}
+
+.gameStats span {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Slick Carousel Custom Styling */
+.carouselContainer :global(.slick-dots) {
+  bottom: 10px;
+  position: absolute;
+}
+
+.carouselContainer :global(.slick-dots li button:before) {
+  color: #8B4513;
+  opacity: 0.5;
+  font-size: 12px;
+}
+
+.carouselContainer :global(.slick-dots li.slick-active button:before) {
+  color: #8B4513;
+  opacity: 1;
+}
+
+.carouselContainer :global(.slick-arrow) {
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  background: rgba(139, 69, 19, 0.8);
+  border-radius: 50%;
+}
+
+.carouselContainer :global(.slick-arrow:hover) {
+  background: rgba(139, 69, 19, 1);
+}
+
+.carouselContainer :global(.slick-prev) {
+  left: 10px;
+}
+
+.carouselContainer :global(.slick-next) {
+  right: 10px;
+}
+
+.carouselContainer :global(.slick-prev:before),
+.carouselContainer :global(.slick-next:before) {
+  color: white;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Desktop Responsive */
+@media (min-width: 768px) {
+  .sectionTitle {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .carouselContainer {
+    padding: 0 50px 60px 50px;
+  }
+
+  .gameCard {
+    padding: 20px;
+    gap: 20px;
+    height: 200px;
+  }
+
+  .gameTitle {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .gameDescription {
+    font-size: 14px;
+    margin-bottom: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .gameStats {
+    font-size: 12px;
+    gap: 16px;
+  }
+
+  .gameStats span {
+    gap: 4px;
+  }
+
+  .carouselContainer :global(.slick-arrow) {
+    width: 35px;
+    height: 35px;
+  }
+
+  .carouselContainer :global(.slick-prev) {
+    left: 15px;
+  }
+
+  .carouselContainer :global(.slick-next) {
+    right: 15px;
+  }
+
+  .carouselContainer :global(.slick-prev:before),
+  .carouselContainer :global(.slick-next:before) {
+    font-size: 18px;
+  }
+
+  .carouselContainer :global(.slick-dots) {
+    bottom: 15px;
+  }
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 767px) {
+  .carouselContainer {
+    padding: 0 20px 40px 20px;
+  }
+
+  .slideWrapper {
+    padding: 0 4px;
+  }
+  
+  .gameCard {
+    margin: 0 2px;
+    height: 160px;
+  }
+  
+  .gameImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .carouselContainer :global(.slick-arrow) {
+    display: none !important;
+  }
+
+  .carouselContainer :global(.slick-dots) {
+    bottom: 5px;
+  }
+}

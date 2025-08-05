@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Geek House",
-  description: "Welcome to Geek House",
+  title: "K®itic",
+  description: "Welcome to K®itic - Board Game Community",
 };
 
 /**

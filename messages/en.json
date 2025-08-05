@@ -1,17 +1,40 @@
 {
   "HomePage": {
-    "title": "Welcome to Geek House!",
-    "getStarted": "Get started by editing",
-    "saveChanges": "Save and see your changes instantly."
+    "title": "Welcome to K®itic!",
+    "welcomeTitle": "Welcome to ",
+    "welcomeSubtitle": "Join our passionate community of board game enthusiasts. Discover new games, connect with fellow players, and share your gaming experiences.",
+    "joinNow": "Join Now",
+    "featuredGames": "Featured Games",
+    "fantasyDescription": "An epic fantasy adventure with stunning artwork and immersive gameplay.",
+    "latestArticles": "Latest Articles", 
+    "viewAll": "View All",
+    "articleTitle1": "Best 10 Strategy Games of 2024",
+    "articleMeta1": "Published 2 days ago • 5 min read",
+    "articleTitle2": "Community Game Night Recap",
+    "articleMeta2": "Published 1 week ago • 3 min read", 
+    "articleTitle3": "Beginner's Guide to Euro Games",
+    "articleMeta3": "Published 2 weeks ago • 8 min read",
+    "communityAnnouncements": "Community Announcements",
+    "announcementTitle1": "New Game Release Event",
+    "announcementText1": "Join us for the launch of our newest featured game this weekend.",
+    "announcementTitle2": "Tournament Registration Open",
+    "announcementText2": "Sign up now for our monthly board game tournament.",
+    "quickActions": "Quick Actions",
+    "search": "Search",
+    "members": "Members", 
+    "favorites": "Favorites",
+    "stats": "Stats"
   },
   "Header": {
     "navigation": "Navigation",
+    "boardGames": "Board Games",
+    "clubName": "K®itic",
     "home": "Home",
     "about": "About",
     "contact": "Contact"
   },
   "Footer": {
-    "copyright": "© 2025 Geek House. All rights reserved."
+    "copyright": "© 2025 K®itic. All rights reserved."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Select Language"

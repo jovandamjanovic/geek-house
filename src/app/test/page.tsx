@@ -18,7 +18,7 @@ export default function Home() {
           <Image
           className={styles.logo}
           src="/gh_large.png"
-          alt="Geek House logo"
+          alt="K®itic logo"
           width={180}
           height={180}
           priority

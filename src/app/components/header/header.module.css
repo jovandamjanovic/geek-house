@@ -1,6 +1,4 @@
 .header {
-  display: flex;
-  justify-content: space-between;
   transition: transform 0.4s ease, opacity 0.4s ease;
   transform: translateY(0);
   opacity: 1;
@@ -8,7 +6,10 @@
   top: 0;
   width: 100%;
   z-index: 100;
-  background-color: white;
+  background: #8B4513;
+  color: white;
+  padding: 12px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .hidden {
@@ -16,21 +17,54 @@
   opacity: 0;
 }
 
-.logo {
-  height: 60px;
-  width: auto;
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  color: white;
 }
 
 .nav {
   display: flex;
-  gap: 1rem;
+  gap: 24px;
+  align-items: center;
 }
 
 .nav a {
   text-decoration: none;
-  color: #333;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s;
 }
 
 .nav a:hover {
-  text-decoration: underline;
+  opacity: 0.8;
+}
+
+@media (min-width: 768px) {
+  .headerContent {
+    padding: 0 40px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .nav {
+    gap: 32px;
+  }
+  
+  .nav a {
+    font-size: 16px;
+  }
 }

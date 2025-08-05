@@ -10,8 +10,10 @@ const Footer: React.FC = () => {
   
   return (
     <footer className={styles.footer}>
-      <p className={styles.copyright}>{t('copyright')}</p>
-      <FlagLanguageSwitcher />
+      <div className={styles.footerContent}>
+        <p className={styles.copyright}>{t('copyright')}</p>
+        <FlagLanguageSwitcher />
+      </div>
     </footer>
   );
 };
