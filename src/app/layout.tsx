@@ -37,7 +37,9 @@ export default function RootLayout({
     <LanguageProvider>
       <LanguageWrapper geistSans={geistSans} geistMono={geistMono}>
         <Header />
-        {children}
+        <main className="pt-12">
+          {children}
+        </main>
         <Footer />
       </LanguageWrapper>
     </LanguageProvider>
