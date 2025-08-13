@@ -1,20 +1,37 @@
 import { GoogleAuth } from 'google-auth-library';
 import { sheets_v4, google } from 'googleapis';
-import { Clan, Clanarina, ClanStatus } from '@/types';
+import { Clan, Clanarina, ClanStatus, ClanForCreation, ClanarinaForCreation } from '@/types';
 
 class GoogleSheetsService {
   private auth: GoogleAuth;
   private sheets: sheets_v4.Sheets;
+  private sheetIds: Map<string, number> = new Map();
 
   constructor() {
+    // Validate required environment variables
+    const requiredEnvVars = [
+      'GOOGLE_PROJECT_ID',
+      'GOOGLE_PRIVATE_KEY_ID', 
+      'GOOGLE_PRIVATE_KEY',
+      'GOOGLE_CLIENT_EMAIL',
+      'GOOGLE_CLIENT_ID',
+      'GOOGLE_SPREADSHEET_ID'
+    ];
+
+    const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+    
+    if (missingVars.length > 0) {
+      throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+    }
+
     this.auth = new GoogleAuth({
       credentials: {
         type: 'service_account',
-        project_id: process.env.GOOGLE_PROJECT_ID,
-        private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-        private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-        client_email: process.env.GOOGLE_CLIENT_EMAIL,
-        client_id: process.env.GOOGLE_CLIENT_ID,
+        project_id: process.env.GOOGLE_PROJECT_ID!,
+        private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID!,
+        private_key: process.env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+        client_email: process.env.GOOGLE_CLIENT_EMAIL!,
+        client_id: process.env.GOOGLE_CLIENT_ID!,
       },
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
@@ -22,20 +39,74 @@ class GoogleSheetsService {
     this.sheets = google.sheets({ version: 'v4', auth: this.auth });
   }
 
+  // Get sheet ID dynamically by sheet name
+  private async getSheetId(sheetName: string): Promise<number> {
+    if (this.sheetIds.has(sheetName)) {
+      return this.sheetIds.get(sheetName)!;
+    }
+
+    try {
+      const response = await this.sheets.spreadsheets.get({
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+        fields: 'sheets.properties'
+      });
+
+      const sheets = response.data.sheets || [];
+      for (const sheet of sheets) {
+        const properties = sheet.properties;
+        if (properties?.title && properties?.sheetId !== undefined) {
+          this.sheetIds.set(properties.title, properties.sheetId);
+        }
+      }
+
+      if (this.sheetIds.has(sheetName)) {
+        return this.sheetIds.get(sheetName)!;
+      }
+
+      throw new Error(`Sheet '${sheetName}' not found`);
+    } catch (error) {
+      console.error(`Error getting sheet ID for ${sheetName}:`, error);
+      throw new Error(`Failed to get sheet ID for ${sheetName}`);
+    }
+  }
+
+  // Retry helper with exponential backoff
+  private async retryOperation<T>(
+    operation: () => Promise<T>,
+    maxRetries: number = 3,
+    baseDelay: number = 100
+  ): Promise<T> {
+    let attempt = 0;
+    
+    while (attempt < maxRetries) {
+      try {
+        return await operation();
+      } catch (error) {
+        attempt++;
+        if (attempt >= maxRetries) {
+          throw error;
+        }
+        
+        // Exponential backoff with jitter
+        const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 100;
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+    
+    throw new Error('Max retries exceeded');
+  }
+
   // Clanovi methods
   async getClanovi(): Promise<Clan[]> {
-    try {
+    return this.retryOperation(async () => {
       const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         range: 'Clanovi!A2:G',
       });
 
       const rows = response.data.values || [];
       return rows.map(this.rowToClan);
-    } catch (error) {
-      console.error('Error fetching clanovi:', error);
-      throw new Error('Failed to fetch clanovi');
-    }
+    });
   }
 
   async getClanByNumber(clanskiBroj: string): Promise<Clan | null> {
@@ -43,41 +114,75 @@ class GoogleSheetsService {
     return clanovi.find(clan => clan['Clanski Broj'] === clanskiBroj) || null;
   }
 
-  async createClan(clan: Omit<Clan, 'Clanski Broj'>): Promise<Clan> {
-    try {
-      // Generate new Clanski Broj
-      const existingClanovi = await this.getClanovi();
-      const maxNumber = existingClanovi.reduce((max, c) => {
-        const num = parseInt(c['Clanski Broj'], 10);
-        return num > max ? num : max;
-      }, 0);
-      
-      const newClan: Clan = {
-        ...clan,
-        'Clanski Broj': (maxNumber + 1).toString().padStart(6, '0'),
-      };
+  async createClan(clan: ClanForCreation): Promise<Clan> {
+    const maxRetries = 3;
+    let attempt = 0;
+    
+    while (attempt < maxRetries) {
+      try {
+        // Generate new Clanski Broj with race condition protection
+        const existingClanovi = await this.getClanovi();
+        const maxNumber = existingClanovi.reduce((max, c) => {
+          const num = parseInt(c['Clanski Broj'], 10);
+          return num > max ? num : max;
+        }, 0);
+        
+        const newClan: Clan = {
+          ...clan,
+          'Clanski Broj': (maxNumber + 1).toString().padStart(6, '0'),
+        };
 
-      const values = this.clanToRow(newClan);
-      await this.sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
-        range: 'Clanovi!A:G',
-        valueInputOption: 'RAW',
-        requestBody: {
-          values: [values],
-        },
-      });
+        const values = this.clanToRow(newClan);
+        
+        // Use batchUpdate for atomic operation
+        const clanoviSheetId = await this.getSheetId('Clanovi');
+        await this.sheets.spreadsheets.batchUpdate({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          requestBody: {
+            requests: [{
+              insertDimension: {
+                range: {
+                  sheetId: clanoviSheetId,
+                  dimension: 'ROWS',
+                  startIndex: 1,
+                  endIndex: 2,
+                },
+                inheritFromBefore: false,
+              },
+            }],
+            includeSpreadsheetInResponse: false,
+          },
+        });
 
-      return newClan;
-    } catch (error) {
-      console.error('Error creating clan:', error);
-      throw new Error('Failed to create clan');
+        // Update the newly inserted row
+        await this.sheets.spreadsheets.values.update({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          range: 'Clanovi!A2:G2',
+          valueInputOption: 'RAW',
+          requestBody: {
+            values: [values],
+          },
+        });
+
+        return newClan;
+      } catch (error) {
+        attempt++;
+        if (attempt >= maxRetries) {
+          console.error('Error creating clan after retries:', error);
+          throw new Error('Failed to create clan after multiple attempts');
+        }
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
+      }
     }
+    
+    throw new Error('Failed to create clan');
   }
 
   async updateClan(clanskiBroj: string, updatedClan: Partial<Clan>): Promise<Clan | null> {
-    try {
+    return this.retryOperation(async () => {
       const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         range: 'Clanovi!A2:G',
       });
 
@@ -91,7 +196,7 @@ class GoogleSheetsService {
       const values = this.clanToRow(updated);
 
       await this.sheets.spreadsheets.values.update({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         range: `Clanovi!A${rowIndex + 2}:G${rowIndex + 2}`,
         valueInputOption: 'RAW',
         requestBody: {
@@ -100,10 +205,7 @@ class GoogleSheetsService {
       });
 
       return updated;
-    } catch (error) {
-      console.error('Error updating clan:', error);
-      throw new Error('Failed to update clan');
-    }
+    });
   }
 
   async deleteClan(clanskiBroj: string): Promise<boolean> {
@@ -118,13 +220,14 @@ class GoogleSheetsService {
       
       if (rowIndex === -1) return false;
 
+      const clanoviSheetId = await this.getSheetId('Clanovi');
       await this.sheets.spreadsheets.batchUpdate({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         requestBody: {
           requests: [{
             deleteDimension: {
               range: {
-                sheetId: 0,
+                sheetId: clanoviSheetId,
                 dimension: 'ROWS',
                 startIndex: rowIndex + 1,
                 endIndex: rowIndex + 2,
@@ -143,18 +246,15 @@ class GoogleSheetsService {
 
   // Clanarine methods
   async getClanarine(): Promise<Clanarina[]> {
-    try {
+    return this.retryOperation(async () => {
       const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         range: 'Clanarine!A2:C',
       });
 
       const rows = response.data.values || [];
       return rows.map(this.rowToClanarina);
-    } catch (error) {
-      console.error('Error fetching clanarine:', error);
-      throw new Error('Failed to fetch clanarine');
-    }
+    });
   }
 
   async getClanarinaById(id: string): Promise<Clanarina | null> {
@@ -162,41 +262,75 @@ class GoogleSheetsService {
     return clanarine.find(c => c.id === id) || null;
   }
 
-  async createClanarina(clanarina: Omit<Clanarina, 'id'>): Promise<Clanarina> {
-    try {
-      // Get existing clanarine to determine next ID
-      const existingClanarine = await this.getClanarine();
-      const maxId = existingClanarine.reduce((max, c) => {
-        const num = parseInt(c.id, 10);
-        return num > max ? num : max;
-      }, 0);
-      
-      const newClanarina: Clanarina = {
-        ...clanarina,
-        id: (maxId + 1).toString(),
-      };
+  async createClanarina(clanarina: ClanarinaForCreation): Promise<Clanarina> {
+    const maxRetries = 3;
+    let attempt = 0;
+    
+    while (attempt < maxRetries) {
+      try {
+        // Get existing clanarine to determine next ID with race condition protection
+        const existingClanarine = await this.getClanarine();
+        const maxId = existingClanarine.reduce((max, c) => {
+          const num = parseInt(c.id, 10);
+          return num > max ? num : max;
+        }, 0);
+        
+        const newClanarina: Clanarina = {
+          ...clanarina,
+          id: (maxId + 1).toString(),
+        };
 
-      const values = this.clanarinaToRow(newClanarina);
-      await this.sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
-        range: 'Clanarine!A:C',
-        valueInputOption: 'RAW',
-        requestBody: {
-          values: [values],
-        },
-      });
+        const values = this.clanarinaToRow(newClanarina);
+        
+        // Use batchUpdate for atomic operation
+        const clanarineSheetId = await this.getSheetId('Clanarine');
+        await this.sheets.spreadsheets.batchUpdate({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          requestBody: {
+            requests: [{
+              insertDimension: {
+                range: {
+                  sheetId: clanarineSheetId,
+                  dimension: 'ROWS',
+                  startIndex: 1,
+                  endIndex: 2,
+                },
+                inheritFromBefore: false,
+              },
+            }],
+            includeSpreadsheetInResponse: false,
+          },
+        });
 
-      return newClanarina;
-    } catch (error) {
-      console.error('Error creating clanarina:', error);
-      throw new Error('Failed to create clanarina');
+        // Update the newly inserted row
+        await this.sheets.spreadsheets.values.update({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          range: 'Clanarine!A2:C2',
+          valueInputOption: 'RAW',
+          requestBody: {
+            values: [values],
+          },
+        });
+
+        return newClanarina;
+      } catch (error) {
+        attempt++;
+        if (attempt >= maxRetries) {
+          console.error('Error creating clanarina after retries:', error);
+          throw new Error('Failed to create clanarina after multiple attempts');
+        }
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
+      }
     }
+    
+    throw new Error('Failed to create clanarina');
   }
 
   async updateClanarina(id: string, updatedClanarina: Partial<Clanarina>): Promise<Clanarina | null> {
-    try {
+    return this.retryOperation(async () => {
       const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         range: 'Clanarine!A2:C',
       });
 
@@ -210,7 +344,7 @@ class GoogleSheetsService {
       const values = this.clanarinaToRow(updated);
 
       await this.sheets.spreadsheets.values.update({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         range: `Clanarine!A${rowIndex + 2}:C${rowIndex + 2}`,
         valueInputOption: 'RAW',
         requestBody: {
@@ -219,10 +353,7 @@ class GoogleSheetsService {
       });
 
       return updated;
-    } catch (error) {
-      console.error('Error updating clanarina:', error);
-      throw new Error('Failed to update clanarina');
-    }
+    });
   }
 
   async deleteClanarina(id: string): Promise<boolean> {
@@ -237,13 +368,14 @@ class GoogleSheetsService {
       
       if (rowIndex === -1) return false;
 
+      const clanarineSheetId = await this.getSheetId('Clanarine');
       await this.sheets.spreadsheets.batchUpdate({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
         requestBody: {
           requests: [{
             deleteDimension: {
               range: {
-                sheetId: 1,
+                sheetId: clanarineSheetId,
                 dimension: 'ROWS',
                 startIndex: rowIndex + 1,
                 endIndex: rowIndex + 2,

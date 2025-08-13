@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Clan, ClanStatus } from '@/types';
+import ProtectedPage from '@/app/components/auth/ProtectedPage';
 
 interface MemberListProps {
   members: Clan[];
@@ -732,67 +733,69 @@ export default function ClanarinePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Članarine</h1>
-              <p className="text-gray-600">Pregled članova organizacije</p>
+    <ProtectedPage>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Članarine</h1>
+                <p className="text-gray-600">Pregled članova organizacije</p>
+              </div>
+              <button
+                onClick={handleAddNewMember}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Dodaj Novog Člana
+              </button>
             </div>
-            <button
-              onClick={handleAddNewMember}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Dodaj Novog Člana
-            </button>
           </div>
+
+          <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+          
+          <StatusFilter 
+            selectedStatus={statusFilter} 
+            onStatusChange={setStatusFilter} 
+          />
+
+          <MemberList 
+            members={members}
+            searchTerm={searchTerm}
+            statusFilter={statusFilter}
+            currentPage={currentPage}
+            membersPerPage={membersPerPage}
+            onRowClick={handleEditMember}
+          />
+
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
         </div>
 
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        
-        <StatusFilter 
-          selectedStatus={statusFilter} 
-          onStatusChange={setStatusFilter} 
+        <MemberModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedMember(null);
+          }}
+          member={selectedMember}
+          onSave={handleSaveMember}
+          onPayMembership={handlePayMembership}
         />
 
-        <MemberList 
-          members={members}
-          searchTerm={searchTerm}
-          statusFilter={statusFilter}
-          currentPage={currentPage}
-          membersPerPage={membersPerPage}
-          onRowClick={handleEditMember}
+        <ConfirmationDialog
+          isOpen={confirmDialog.isOpen}
+          onClose={() => setConfirmDialog({ isOpen: false, title: '', message: '', onConfirm: () => {}, isLoading: false })}
+          onConfirm={confirmDialog.onConfirm}
+          title={confirmDialog.title}
+          message={confirmDialog.message}
+          isLoading={confirmDialog.isLoading}
         />
-
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        )}
       </div>
-
-      <MemberModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedMember(null);
-        }}
-        member={selectedMember}
-        onSave={handleSaveMember}
-        onPayMembership={handlePayMembership}
-      />
-
-      <ConfirmationDialog
-        isOpen={confirmDialog.isOpen}
-        onClose={() => setConfirmDialog({ isOpen: false, title: '', message: '', onConfirm: () => {}, isLoading: false })}
-        onConfirm={confirmDialog.onConfirm}
-        title={confirmDialog.title}
-        message={confirmDialog.message}
-        isLoading={confirmDialog.isLoading}
-      />
-    </div>
+    </ProtectedPage>
   );
 }
