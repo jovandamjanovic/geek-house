@@ -54,7 +54,7 @@ class GoogleSheetsService {
       const sheets = response.data.sheets || [];
       for (const sheet of sheets) {
         const properties = sheet.properties;
-        if (properties?.title && properties?.sheetId !== undefined) {
+        if (properties?.title && properties?.sheetId !== undefined && properties?.sheetId !== null) {
           this.sheetIds.set(properties.title, properties.sheetId);
         }
       }
