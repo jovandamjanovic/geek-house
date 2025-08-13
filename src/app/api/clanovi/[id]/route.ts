@@ -38,6 +38,15 @@ export async function PUT(
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<Clan>>> {
   const { id } = await params;
+  
+  // Protect P/01 member from updates
+  if (id === 'P/01') {
+    return NextResponse.json(
+      { success: false, error: 'Cannot update protected member P/01' },
+      { status: 403 }
+    );
+  }
+  
   try {
     const body = await request.json();
     
@@ -85,6 +94,15 @@ export async function DELETE(
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<null>>> {
   const { id } = await params;
+  
+  // Protect P/01 member from deletion
+  if (id === 'P/01') {
+    return NextResponse.json(
+      { success: false, error: 'Cannot delete protected member P/01' },
+      { status: 403 }
+    );
+  }
+  
   try {
     const deleted = await googleSheetsService.deleteClan(id);
     

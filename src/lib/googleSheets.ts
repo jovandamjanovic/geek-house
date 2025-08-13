@@ -164,9 +164,16 @@ class GoogleSheetsService {
 
   async createClanarina(clanarina: Omit<Clanarina, 'id'>): Promise<Clanarina> {
     try {
+      // Get existing clanarine to determine next ID
+      const existingClanarine = await this.getClanarine();
+      const maxId = existingClanarine.reduce((max, c) => {
+        const num = parseInt(c.id, 10);
+        return num > max ? num : max;
+      }, 0);
+      
       const newClanarina: Clanarina = {
         ...clanarina,
-        id: Date.now().toString(),
+        id: (maxId + 1).toString(),
       };
 
       const values = this.clanarinaToRow(newClanarina);
@@ -318,18 +325,40 @@ class GoogleSheetsService {
   }
 
   private rowToClanarina(row: string[]): Clanarina {
+    // Parse dd/mm/yyyy date format
+    const parseDateFromString = (dateStr: string): Date => {
+      if (!dateStr) return new Date();
+      const parts = dateStr.split('/');
+      if (parts.length === 3) {
+        // Convert dd/mm/yyyy to yyyy-mm-dd
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+      return new Date(dateStr); // Fallback to default parsing
+    };
+
     return {
       id: row[0] || '',
       'Clanski Broj': row[1] || '',
-      'Datum Uplate': new Date(row[2] || ''),
+      'Datum Uplate': parseDateFromString(row[2] || ''),
     };
   }
 
   private clanarinaToRow(clanarina: Clanarina): string[] {
+    // Format date as dd/mm/yyyy
+    const formatDate = (date: Date): string => {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
+
     return [
       clanarina.id,
       clanarina['Clanski Broj'],
-      clanarina['Datum Uplate'].toISOString().split('T')[0],
+      formatDate(clanarina['Datum Uplate']),
     ];
   }
 }
