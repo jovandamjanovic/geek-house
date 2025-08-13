@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@types/react-slick": "^0.23.13",
+    "googleapis": "^155.0.1",
     "joi": "^17.13.3",
     "next": "15.4.1",
     "next-intl": "^4.3.4",
