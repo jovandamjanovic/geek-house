@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Welcome to K®itic!",
+    "title": "Welcome to Eliksir!",
     "welcomeTitle": "Welcome to ",
     "welcomeSubtitle": "Join our passionate community of board game enthusiasts. Discover new games, connect with fellow players, and share your gaming experiences.",
     "joinNow": "Join Now",
@@ -28,13 +28,13 @@
   "Header": {
     "navigation": "Navigation",
     "boardGames": "Board Games",
-    "clubName": "K®itic",
+    "clubName": "Eliksir",
     "home": "Home",
     "about": "About",
     "contact": "Contact"
   },
   "Footer": {
-    "copyright": "© 2025 K®itic. All rights reserved."
+    "copyright": "© 2025 Eliksir. All rights reserved."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Select Language"

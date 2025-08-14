@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Dobrodošli u K®itic!",
+    "title": "Dobrodošli u Eliksir!",
     "welcomeTitle": "Dobrodošli u ",
     "welcomeSubtitle": "Pridružite se našoj strastveno zajednici ljubitelja društvenih igara. Otkrijte nove igre, povežite se sa drugim igračima i podelite svoja iskustva.",
     "joinNow": "Pridružite se Sada",
@@ -28,13 +28,13 @@
   "Header": {
     "navigation": "Navigacija",
     "boardGames": "Društvene Igre",
-    "clubName": "K®itic",
+    "clubName": "Eliksir",
     "home": "Početna",
     "about": "O Nama",
     "contact": "Kontakt"
   },
   "Footer": {
-    "copyright": "© 2025 K®itic. Sva prava zadržana."
+    "copyright": "© 2025 Eliksir. Sva prava zadržana."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Izaberite jezik"
