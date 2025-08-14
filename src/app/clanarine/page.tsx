@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Clan, ClanStatus } from '@/types';
 import ProtectedPage from '@/app/components/auth/ProtectedPage';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface MemberListProps {
   members: Clan[];
@@ -533,8 +534,9 @@ function MemberModal({
 }
 
 export default function ClanarinePage() {
+  const { isAuthenticated } = useAuth();
   const [members, setMembers] = useState<Clan[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -575,9 +577,11 @@ export default function ClanarinePage() {
         setLoading(false);
       }
     }
-
-    fetchMembers();
-  }, []);
+    if (isAuthenticated) {
+      setLoading(true);
+      fetchMembers();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setCurrentPage(1);

@@ -28,7 +28,8 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         setError('Neispravna lozinka. Pokušajte ponovo.');
       }
     } catch (err) {
-      setError(`Greška pri prijavi. Pokušajte ponovo. ${err}`);
+      console.error('Login error:', err);
+      setError('Greška pri prijavi. Pokušajte ponovo.');
     } finally {
       setIsLoading(false);
     }
