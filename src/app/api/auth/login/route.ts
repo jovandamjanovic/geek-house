@@ -1,15 +1,79 @@
 import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+
+// In-memory rate limiting store
+const rateLimitStore = new Map<string, { attempts: number; lastAttempt: Date }>();
+
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes in milliseconds
+const MAX_ATTEMPTS = 5;
+
+function getRateLimitKey(request: NextRequest): string {
+  // Get IP from x-forwarded-for header or fallback to connection IP
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : 
+    request.headers.get('x-real-ip') || 
+    request.ip || 
+    'unknown';
+  return `login_attempts:${ip}`;
+}
+
+function cleanupOldEntries() {
+  const now = new Date();
+  for (const [key, data] of rateLimitStore.entries()) {
+    if (now.getTime() - data.lastAttempt.getTime() > RATE_LIMIT_WINDOW) {
+      rateLimitStore.delete(key);
+    }
+  }
+}
+
+function checkRateLimit(key: string): boolean {
+  cleanupOldEntries();
+  
+  const now = new Date();
+  const existing = rateLimitStore.get(key);
+  
+  if (!existing) {
+    rateLimitStore.set(key, { attempts: 1, lastAttempt: now });
+    return true; // Allow
+  }
+  
+  // Check if the window has expired
+  if (now.getTime() - existing.lastAttempt.getTime() > RATE_LIMIT_WINDOW) {
+    rateLimitStore.set(key, { attempts: 1, lastAttempt: now });
+    return true; // Allow
+  }
+  
+  // Check if we've exceeded the limit
+  if (existing.attempts >= MAX_ATTEMPTS) {
+    return false; // Deny
+  }
+  
+  // Increment attempts
+  existing.attempts += 1;
+  existing.lastAttempt = now;
+  return true; // Allow
+}
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting check
+    const rateLimitKey = getRateLimitKey(request);
+    if (!checkRateLimit(rateLimitKey)) {
+      return NextResponse.json(
+        { success: false, error: 'Too many login attempts. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { password } = body;
 
-    // Validate password against environment variable
+    // Check for required environment variables
     const adminPassword = process.env.ADMIN_PASSWORD;
     
     if (!adminPassword) {
-      console.error('ADMIN_PASSWORD environment variable not set');
+      console.error('ADMIN_PASSWORD environment variable is not set');
       return NextResponse.json(
         { success: false, error: 'Server configuration error' },
         { status: 500 }
