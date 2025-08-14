@@ -15,14 +15,49 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+// Safe localStorage helper
+function safeLocalStorage() {
+  const isAvailable = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  
+  return {
+    getItem: (key: string): string | null => {
+      if (!isAvailable) return null;
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    },
+    setItem: (key: string, value: string): boolean => {
+      if (!isAvailable) return false;
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    removeItem: (key: string): boolean => {
+      if (!isAvailable) return false;
+      try {
+        localStorage.removeItem(key);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+  };
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const storage = safeLocalStorage();
 
   useEffect(() => {
     // Check if user is already authenticated from localStorage
-    const authStatus = localStorage.getItem('isAuthenticated');
-    const authTime = localStorage.getItem('authTime');
+    const authStatus = storage.getItem('isAuthenticated');
+    const authTime = storage.getItem('authTime');
     
     if (authStatus === 'true' && authTime) {
       const loginTime = new Date(authTime);
@@ -33,13 +68,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (hoursPassed < 1) {
         setIsAuthenticated(true);
       } else {
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('authTime');
+        storage.removeItem('isAuthenticated');
+        storage.removeItem('authTime');
       }
     }
     
     setIsLoading(false);
-  }, []);
+  }, [storage]);
 
   const login = async (password: string): Promise<boolean> => {
     try {
@@ -53,8 +88,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (response.ok) {
         setIsAuthenticated(true);
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('authTime', new Date().toISOString());
+        // Try to set localStorage, but don't fail if it's not available
+        storage.setItem('isAuthenticated', 'true');
+        storage.setItem('authTime', new Date().toISOString());
         return true;
       }
       
@@ -65,10 +101,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setIsAuthenticated(false);
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('authTime');
+    
+    // Clear localStorage safely
+    storage.removeItem('isAuthenticated');
+    storage.removeItem('authTime');
+    
+    // Clear server-side cookie
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout endpoint error:', error);
+      // Continue with client-side logout even if server request fails
+    }
   };
 
   return (
