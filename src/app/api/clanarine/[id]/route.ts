@@ -48,9 +48,8 @@ export async function PUT(
   request: NextRequest,
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<Clanarina>>> {
-  try {
     const { id } = await params;
-    
+  try {
     // Validate and sanitize ID
     const sanitizedId = sanitizeString(id);
     if (!validateId(sanitizedId)) {
@@ -127,7 +126,7 @@ export async function PUT(
 
     return NextResponse.json({ success: true, data: updatedClanarina });
   } catch (error) {
-    console.error(`Error in PUT /api/clanarine/${sanitizedId}:`, error);
+    console.error(`Error in PUT /api/clanarine/${id}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to update clanarina' },
       { status: 500 }
@@ -139,9 +138,8 @@ export async function DELETE(
   request: NextRequest,
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<null>>> {
+  const { id } = await params;
   try {
-    const { id } = await params;
-    
     // Validate and sanitize ID
     const sanitizedId = sanitizeString(id);
     if (!validateId(sanitizedId)) {
@@ -162,7 +160,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, data: null });
   } catch (error) {
-    console.error(`Error in DELETE /api/clanarine/${sanitizedId}:`, error);
+    console.error(`Error in DELETE /api/clanarine/${id}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to delete clanarina' },
       { status: 500 }

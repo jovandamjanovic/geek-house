@@ -18,7 +18,7 @@ export default function Home() {
           <Image
           className={styles.logo}
           src="/gh_large.png"
-          alt="K®itic logo"
+          alt="Eliksir logo"
           width={180}
           height={180}
           priority

@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "K®itic",
-  description: "Welcome to K®itic - Board Game Community",
+  title: "Eliksir",
+  description: "Welcome to Eliksir - Board Game Community",
 };
 
 /**

@@ -35,8 +35,8 @@ export async function GET(
   request: NextRequest,
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<Clan>>> {
+  const { id } = await params;
   try {
-    const { id } = await params;
     const clan = await googleSheetsService.getClanByNumber(id);
     
     if (!clan) {
@@ -60,8 +60,8 @@ export async function PUT(
   request: NextRequest,
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<Clan>>> {
+  const { id } = await params;
   try {
-    const { id } = await params;
     
     // Protect P/01 member from updates
     if (id === 'P/01') {
@@ -178,8 +178,8 @@ export async function DELETE(
   request: NextRequest,
   { params }: RouteParams
 ): Promise<NextResponse<ApiResponse<null>>> {
+  const { id } = await params;
   try {
-    const { id } = await params;
     
     // Protect P/01 member from deletion
     if (id === 'P/01') {

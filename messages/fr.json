@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Bienvenue chez K®itic !",
+    "title": "Bienvenue chez Eliksir !",
     "welcomeTitle": "Bienvenue chez ",
     "welcomeSubtitle": "Rejoignez notre communauté passionnée d'amateurs de jeux de plateau. Découvrez de nouveaux jeux, connectez-vous avec d'autres joueurs et partagez vos expériences de jeu.",
     "joinNow": "Rejoindre Maintenant",
@@ -28,13 +28,13 @@
   "Header": {
     "navigation": "Navigation",
     "boardGames": "Jeux de Plateau",
-    "clubName": "K®itic",
+    "clubName": "Eliksir",
     "home": "Accueil",
     "about": "À propos",
     "contact": "Contact"
   },
   "Footer": {
-    "copyright": "© 2025 K®itic. Tous droits réservés."
+    "copyright": "© 2025 Eliksir. Tous droits réservés."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Choisir la langue"

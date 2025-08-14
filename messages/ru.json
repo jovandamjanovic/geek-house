@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Добро пожаловать в K®itic!",
+    "title": "Добро пожаловать в Eliksir!",
     "welcomeTitle": "Добро пожаловать в ",
     "welcomeSubtitle": "Присоединяйтесь к нашему увлеченному сообществу любителей настольных игр. Открывайте новые игры, общайтесь с другими игроками и делитесь своим игровым опытом.",
     "joinNow": "Присоединиться Сейчас",
@@ -28,13 +28,13 @@
   "Header": {
     "navigation": "Навигация",
     "boardGames": "Настольные Игры",
-    "clubName": "K®itic",
+    "clubName": "Eliksir",
     "home": "Главная",
     "about": "О нас",
     "contact": "Контакты"
   },
   "Footer": {
-    "copyright": "© 2025 K®itic. Все права защищены."
+    "copyright": "© 2025 Eliksir. Все права защищены."
   },
   "LanguageSwitcher": {
     "selectLanguage": "Выберите язык"

@@ -1,3 +1,3 @@
-const IME_SAJTA = "K®itic"
+const IME_SAJTA = "Eliksir"
 
 export {IME_SAJTA}
