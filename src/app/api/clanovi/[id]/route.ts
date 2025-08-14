@@ -1,24 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { googleSheetsService } from '@/lib/googleSheets';
 import { Clan, ApiResponse, ClanStatus } from '@/types';
-
-// Input sanitization helpers
-function sanitizeString(value: unknown): string {
-  if (typeof value !== 'string') return '';
-  return value.trim().replace(/[<>"'&]/g, '');
-}
-
-function validateEmail(email: string): boolean {
-  if (!email) return true; // Optional field
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function validatePhone(phone: string): boolean {
-  if (!phone) return true; // Optional field
-  const phoneRegex = /^[0-9+\-\s()]{7,20}$/;
-  return phoneRegex.test(phone);
-}
+import { sanitizeString, validateEmail, validatePhone } from '@/lib/validation';
 
 function validateAndNormalizeStatus(status: unknown): ClanStatus | undefined {
   if (!status) return undefined;
@@ -65,7 +48,7 @@ export async function GET(
 
     return NextResponse.json({ success: true, data: clan });
   } catch (error) {
-    console.error(`Error in GET /api/clanovi/${(await params).id}:`, error);
+    console.error(`Error in GET /api/clanovi/${id}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch clan' },
       { status: 500 }
@@ -183,7 +166,6 @@ export async function PUT(
 
     return NextResponse.json({ success: true, data: updatedClan });
   } catch (error) {
-    const { id } = await params;
     console.error(`Error in PUT /api/clanovi/${id}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to update clan' },
@@ -217,7 +199,6 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, data: null });
   } catch (error) {
-    const { id } = await params;
     console.error(`Error in DELETE /api/clanovi/${id}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to delete clan' },

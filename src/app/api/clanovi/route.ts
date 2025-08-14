@@ -1,50 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { googleSheetsService } from '@/lib/googleSheets';
-import { Clan, ApiResponse, ClanStatus, ClanForCreation } from '@/types';
-
-// Input sanitization helper
-function sanitizeString(value: unknown): string {
-  if (typeof value !== 'string') return '';
-  return value.trim().replace(/[<>"'&]/g, '');
-}
-
-function validateEmail(email: string): boolean {
-  if (!email) return true; // Optional field
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-function validatePhone(phone: string): boolean {
-  if (!phone) return true; // Optional field
-  const phoneRegex = /^[0-9+\-\s()]{7,20}$/;
-  return phoneRegex.test(phone);
-}
-
-function getDefaultStatus(): ClanStatus {
-  return ClanStatus.PROBNI;
-}
-
-function validateAndNormalizeStatus(status: unknown): ClanStatus {
-  if (!status) return getDefaultStatus();
-  
-  const statusStr = sanitizeString(status).toUpperCase();
-  
-  // Map common variations to proper enum values
-  const statusMapping: Record<string, ClanStatus> = {
-    'AKTIVAN': ClanStatus.AKTIVAN,
-    'ACTIVE': ClanStatus.AKTIVAN,
-    'PASIVAN': ClanStatus.PASIVAN,
-    'PASSIVE': ClanStatus.PASIVAN,
-    'PROBNI': ClanStatus.PROBNI,
-    'TRIAL': ClanStatus.PROBNI,
-    'ISTEKAO': ClanStatus.ISTEKAO,
-    'EXPIRED': ClanStatus.ISTEKAO,
-    'ISKLJUCEN': ClanStatus.ISKLJUCEN,
-    'EXCLUDED': ClanStatus.ISKLJUCEN
-  };
-  
-  return statusMapping[statusStr] || getDefaultStatus();
-}
+import { Clan, ApiResponse, ClanForCreation } from '@/types';
+import { sanitizeString, validateEmail, validatePhone, validateAndNormalizeStatus } from '@/lib/validation';
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   try {

@@ -1,21 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { googleSheetsService } from '@/lib/googleSheets';
 import { Clanarina, ApiResponse } from '@/types';
-
-// Input sanitization helper
-function sanitizeString(value: unknown): string {
-  if (typeof value !== 'string') return '';
-  return value.trim().replace(/[<>"'&]/g, '');
-}
-
-function validateClanskiBroj(clanskiBroj: string): boolean {
-  // Must be either numeric or P/01 format
-  return /^\d{1,6}$/.test(clanskiBroj) || clanskiBroj === 'P/01';
-}
-
-function validateId(id: string): boolean {
-  return /^\d+$/.test(id) && parseInt(id, 10) > 0;
-}
+import { sanitizeString, validateClanskiBroj, validateId } from '@/lib/validation';
 
 interface RouteParams {
   params: Promise<{
@@ -141,8 +127,7 @@ export async function PUT(
 
     return NextResponse.json({ success: true, data: updatedClanarina });
   } catch (error) {
-    const { id } = await params;
-    console.error(`Error in PUT /api/clanarine/${id}:`, error);
+    console.error(`Error in PUT /api/clanarine/${sanitizedId}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to update clanarina' },
       { status: 500 }
@@ -177,8 +162,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, data: null });
   } catch (error) {
-    const { id } = await params;
-    console.error(`Error in DELETE /api/clanarine/${id}:`, error);
+    console.error(`Error in DELETE /api/clanarine/${sanitizedId}:`, error);
     return NextResponse.json(
       { success: false, error: 'Failed to delete clanarina' },
       { status: 500 }
