@@ -23,12 +23,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Simple password comparison (in production, consider using bcrypt for hashed passwords)
-    if (password === adminPassword) {
+    let isValidPassword = false;
+
+    try {
+      const passwordHash = await bcrypt.hash(adminPassword, 12);
+      isValidPassword = await bcrypt.compare(password, passwordHash);
+    } catch (bcryptError) {
+      console.error('Bcrypt comparison error:', bcryptError);
       return NextResponse.json(
-        { success: true, message: 'Authentication successful' },
+        { success: false, error: 'Authentication error' },
+        { status: 500 }
+      );
+    }
+
+    if (isValidPassword) {
+      const response = NextResponse.json(
+        { success: true, data: { message: 'Authentication successful' } },
         { status: 200 }
       );
+      
+      // Set secure HTTP-only cookie
+      response.cookies.set('gh_admin', '1', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 8, // 8 hours
+      });
+      
+      return response;
     } else {
       return NextResponse.json(
         { success: false, error: 'Invalid password' },
