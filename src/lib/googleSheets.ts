@@ -134,35 +134,37 @@ class GoogleSheetsService {
 
         const values = this.clanToRow(newClan);
         
-        // Use batchUpdate for atomic operation
-        const clanoviSheetId = await this.getSheetId('Clanovi');
-        await this.sheets.spreadsheets.batchUpdate({
+        // Append to the end of the list using append method
+        await this.sheets.spreadsheets.values.append({
           spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          requestBody: {
-            requests: [{
-              insertDimension: {
-                range: {
-                  sheetId: clanoviSheetId,
-                  dimension: 'ROWS',
-                  startIndex: 1,
-                  endIndex: 2,
-                },
-                inheritFromBefore: false,
-              },
-            }],
-            includeSpreadsheetInResponse: false,
-          },
-        });
-
-        // Update the newly inserted row
-        await this.sheets.spreadsheets.values.update({
-          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          range: 'Clanovi!A2:G2',
+          range: 'Clanovi!A:G',
           valueInputOption: 'RAW',
+          insertDataOption: 'INSERT_ROWS',
           requestBody: {
             values: [values],
           },
         });
+
+        // Since we used RAW for append, we need to update date fields with USER_ENTERED
+        // Get the row number where we just appended (last row with data)
+        const updatedData = await this.sheets.spreadsheets.values.get({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          range: 'Clanovi!A:G',
+        });
+        
+        const lastRowIndex = (updatedData.data.values?.length || 1);
+        
+        // Update only the date field (index 5 = Datum Rodjenja) with USER_ENTERED
+        if (values[5]) { // If there's a birth date
+          await this.sheets.spreadsheets.values.update({
+            spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+            range: `Clanovi!F${lastRowIndex}`, // Column F is index 5 (Datum Rodjenja)
+            valueInputOption: 'USER_ENTERED',
+            requestBody: {
+              values: [[values[5]]],
+            },
+          });
+        }
 
         return newClan;
       } catch (error) {
@@ -282,35 +284,37 @@ class GoogleSheetsService {
 
         const values = this.clanarinaToRow(newClanarina);
         
-        // Use batchUpdate for atomic operation
-        const clanarineSheetId = await this.getSheetId('Clanarine');
-        await this.sheets.spreadsheets.batchUpdate({
+        // Append to the end of the list using append method
+        await this.sheets.spreadsheets.values.append({
           spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          requestBody: {
-            requests: [{
-              insertDimension: {
-                range: {
-                  sheetId: clanarineSheetId,
-                  dimension: 'ROWS',
-                  startIndex: 1,
-                  endIndex: 2,
-                },
-                inheritFromBefore: false,
-              },
-            }],
-            includeSpreadsheetInResponse: false,
-          },
-        });
-
-        // Update the newly inserted row
-        await this.sheets.spreadsheets.values.update({
-          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          range: 'Clanarine!A2:C2',
+          range: 'Clanarine!A:C',
           valueInputOption: 'RAW',
+          insertDataOption: 'INSERT_ROWS',
           requestBody: {
             values: [values],
           },
         });
+
+        // Since we used RAW for append, we need to update date fields with USER_ENTERED
+        // Get the row number where we just appended (last row with data)
+        const updatedData = await this.sheets.spreadsheets.values.get({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          range: 'Clanarine!A:C',
+        });
+        
+        const lastRowIndex = (updatedData.data.values?.length || 1);
+        
+        // Update only the date field (index 2 = Datum Uplate) with USER_ENTERED
+        if (values[2]) { // If there's a payment date
+          await this.sheets.spreadsheets.values.update({
+            spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+            range: `Clanarine!C${lastRowIndex}`, // Column C is index 2 (Datum Uplate)
+            valueInputOption: 'USER_ENTERED',
+            requestBody: {
+              values: [[values[2]]],
+            },
+          });
+        }
 
         return newClanarina;
       } catch (error) {
