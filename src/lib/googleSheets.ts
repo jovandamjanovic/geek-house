@@ -214,7 +214,7 @@ class GoogleSheetsService {
   }
 
   // Generic method to find next available ID
-  private getNextId<T extends { id?: string; 'Clanski Broj'?: string }>(
+  private getNextId<T>(
     items: T[], 
     idField: keyof T
   ): string {
