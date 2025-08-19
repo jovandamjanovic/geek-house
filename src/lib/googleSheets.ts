@@ -2,13 +2,114 @@ import { GoogleAuth } from 'google-auth-library';
 import { sheets_v4, google } from 'googleapis';
 import { Clan, Clanarina, ClanStatus, ClanForCreation, ClanarinaForCreation } from '@/types';
 
+// Pure utility functions for date handling
+const DateUtils = {
+  parse: (dateStr: string): Date => {
+    if (!dateStr) return new Date();
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+      const year = parseInt(parts[2], 10);
+      return new Date(year, month, day);
+    }
+    return new Date(dateStr); // Fallback to default parsing
+  },
+
+  format: (date: Date | undefined): string => {
+    if (!date) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+};
+
+// Pure utility functions for formatting
+const FormatUtils = {
+  phone: (phone: string): string => {
+    if (!phone) return '';
+    const cleanPhone = phone.trim();
+    if (cleanPhone && !cleanPhone.startsWith('0')) {
+      return '0' + cleanPhone;
+    }
+    return cleanPhone;
+  },
+
+  clanskiBroj: (broj: string): string => {
+    if (!broj) return '';
+    return broj.padStart(6, '0');
+  }
+};
+
+// Pure transformation functions
+const DataTransformers = {
+  rowToClan: (row: string[]): Clan => ({
+    'Clanski Broj': row[0] || '',
+    'Ime i Prezime': row[1] || '',
+    email: row[2] || undefined,
+    telefon: row[3] || undefined,
+    status: (row[4] as ClanStatus) || ClanStatus.PROBNI,
+    'Datum Rodjenja': DateUtils.parse(row[5] || ''),
+    Napomene: row[6] || undefined,
+  }),
+
+  clanToRow: (clan: Clan): string[] => [
+    FormatUtils.clanskiBroj(clan['Clanski Broj']),
+    clan['Ime i Prezime'],
+    clan.email || '',
+    FormatUtils.phone(clan.telefon || ''),
+    clan.status ?? ClanStatus.PROBNI,
+    DateUtils.format(clan['Datum Rodjenja']),
+    clan.Napomene || '',
+  ],
+
+  rowToClanarina: (row: string[]): Clanarina => ({
+    id: row[0] || '',
+    'Clanski Broj': row[1] || '',
+    'Datum Uplate': DateUtils.parse(row[2] || ''),
+  }),
+
+  clanarinaToRow: (clanarina: Clanarina): string[] => [
+    clanarina.id,
+    clanarina['Clanski Broj'],
+    DateUtils.format(clanarina['Datum Uplate']),
+  ]
+};
+
+// Configuration for sheets
+interface SheetConfig {
+  name: string;
+  range: string;
+  dateColumn?: { index: number; letter: string };
+}
+
+const SHEET_CONFIGS = {
+  CLANOVI: {
+    name: 'Clanovi',
+    range: 'Clanovi!A:G',
+    dateColumn: { index: 5, letter: 'F' }
+  } as SheetConfig,
+  CLANARINE: {
+    name: 'Clanarine',
+    range: 'Clanarine!A:C',
+    dateColumn: { index: 2, letter: 'C' }
+  } as SheetConfig
+};
+
 class GoogleSheetsService {
   private auth: GoogleAuth;
   private sheets: sheets_v4.Sheets;
   private sheetIds: Map<string, number> = new Map();
 
   constructor() {
-    // Validate required environment variables
+    this.validateEnvironment();
+    this.auth = this.createAuth();
+    this.sheets = google.sheets({ version: 'v4', auth: this.auth });
+  }
+
+  // Environment validation
+  private validateEnvironment(): void {
     const requiredEnvVars = [
       'GOOGLE_PROJECT_ID',
       'GOOGLE_PRIVATE_KEY_ID', 
@@ -23,8 +124,11 @@ class GoogleSheetsService {
     if (missingVars.length > 0) {
       throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
     }
+  }
 
-    this.auth = new GoogleAuth({
+  // Authentication setup
+  private createAuth(): GoogleAuth {
+    return new GoogleAuth({
       credentials: {
         type: 'service_account',
         project_id: process.env.GOOGLE_PROJECT_ID!,
@@ -35,11 +139,34 @@ class GoogleSheetsService {
       },
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
-
-    this.sheets = google.sheets({ version: 'v4', auth: this.auth });
   }
 
-  // Get sheet ID dynamically by sheet name
+  // Retry operation with exponential backoff
+  private async retryOperation<T>(
+    operation: () => Promise<T>,
+    maxRetries: number = 3,
+    baseDelay: number = 100
+  ): Promise<T> {
+    let attempt = 0;
+    
+    while (attempt < maxRetries) {
+      try {
+        return await operation();
+      } catch (error) {
+        attempt++;
+        if (attempt >= maxRetries) {
+          throw error;
+        }
+        
+        const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 100;
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+    
+    throw new Error('Max retries exceeded');
+  }
+
+  // Get sheet ID with caching
   private async getSheetId(sheetName: string): Promise<number> {
     if (this.sheetIds.has(sheetName)) {
       return this.sheetIds.get(sheetName)!;
@@ -70,43 +197,184 @@ class GoogleSheetsService {
     }
   }
 
-  // Retry helper with exponential backoff
-  private async retryOperation<T>(
-    operation: () => Promise<T>,
-    maxRetries: number = 3,
-    baseDelay: number = 100
-  ): Promise<T> {
+  // Generic method to get all rows from a sheet
+  private async getSheetRows<T>(
+    config: SheetConfig, 
+    transformer: (row: string[]) => T
+  ): Promise<T[]> {
+    return this.retryOperation(async () => {
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+        range: `${config.name}!A2:${config.range.split('!')[1].split(':')[1]}`,
+      });
+
+      const rows = response.data.values || [];
+      return rows.map(transformer);
+    });
+  }
+
+  // Generic method to find next available ID
+  private getNextId<T>(
+    items: T[], 
+    idField: keyof T
+  ): string {
+    const maxId = items.reduce((max, item) => {
+      const value = item[idField] as string;
+      const num = parseInt(value, 10);
+      return num > max ? num : max;
+    }, 0);
+    
+    return idField === 'Clanski Broj' 
+      ? (maxId + 1).toString().padStart(6, '0')
+      : (maxId + 1).toString();
+  }
+
+  // Generic create method with mixed valueInputOption support
+  private async createEntity<TCreate, TEntity>(
+    config: SheetConfig,
+    createData: TCreate,
+    transformer: (entity: TEntity) => string[],
+    existingItems: TEntity[],
+    idField: keyof TEntity,
+    newEntityFactory: (createData: TCreate, id: string) => TEntity
+  ): Promise<TEntity> {
+    const maxRetries = 3;
     let attempt = 0;
     
     while (attempt < maxRetries) {
       try {
-        return await operation();
+        const id = this.getNextId(existingItems, idField);
+        const newEntity = newEntityFactory(createData, id);
+        const values = transformer(newEntity);
+        
+        // Append with RAW valueInputOption
+        await this.sheets.spreadsheets.values.append({
+          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+          range: config.range,
+          valueInputOption: 'RAW',
+          insertDataOption: 'INSERT_ROWS',
+          requestBody: {
+            values: [values],
+          },
+        });
+
+        // Update date field with USER_ENTERED if configured
+        if (config.dateColumn && values[config.dateColumn.index]) {
+          await this.updateDateField(config, values[config.dateColumn.index]);
+        }
+
+        return newEntity;
       } catch (error) {
         attempt++;
         if (attempt >= maxRetries) {
-          throw error;
+          console.error(`Error creating ${config.name} after retries:`, error);
+          throw new Error(`Failed to create ${config.name} after multiple attempts`);
         }
-        
-        // Exponential backoff with jitter
-        const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 100;
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
       }
     }
     
-    throw new Error('Max retries exceeded');
+    throw new Error(`Failed to create ${config.name}`);
+  }
+
+  // Update date field with USER_ENTERED
+  private async updateDateField(config: SheetConfig, dateValue: string): Promise<void> {
+    if (!config.dateColumn) return;
+
+    const updatedData = await this.sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+      range: config.range,
+    });
+    
+    const lastRowIndex = (updatedData.data.values?.length || 1);
+    
+    await this.sheets.spreadsheets.values.update({
+      spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+      range: `${config.name}!${config.dateColumn.letter}${lastRowIndex}`,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: {
+        values: [[dateValue]],
+      },
+    });
+  }
+
+  // Generic update method
+  private async updateEntity<T>(
+    config: SheetConfig,
+    idField: keyof T,
+    id: string,
+    updates: Partial<T>,
+    transformer: (row: string[]) => T,
+    toRowTransformer: (entity: T) => string[]
+  ): Promise<T | null> {
+    return this.retryOperation(async () => {
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+        range: `${config.name}!A2:${config.range.split('!')[1].split(':')[1]}`,
+      });
+
+      const rows = response.data.values || [];
+      const rowIndex = rows.findIndex(row => row[0] === id);
+      
+      if (rowIndex === -1) return null;
+
+      const existing = transformer(rows[rowIndex]);
+      const updated = { ...existing, ...updates } as T;
+      const values = toRowTransformer(updated);
+
+      await this.sheets.spreadsheets.values.update({
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+        range: `${config.name}!A${rowIndex + 2}:${config.range.split('!')[1].split(':')[1]}${rowIndex + 2}`,
+        valueInputOption: 'RAW',
+        requestBody: {
+          values: [values],
+        },
+      });
+
+      return updated;
+    });
+  }
+
+  // Generic delete method
+  private async deleteEntity(config: SheetConfig, id: string): Promise<boolean> {
+    try {
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+        range: `${config.name}!A2:${config.range.split('!')[1].split(':')[1]}`,
+      });
+
+      const rows = response.data.values || [];
+      const rowIndex = rows.findIndex(row => row[0] === id);
+      
+      if (rowIndex === -1) return false;
+
+      const sheetId = await this.getSheetId(config.name);
+      await this.sheets.spreadsheets.batchUpdate({
+        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
+        requestBody: {
+          requests: [{
+            deleteDimension: {
+              range: {
+                sheetId: sheetId,
+                dimension: 'ROWS',
+                startIndex: rowIndex + 1,
+                endIndex: rowIndex + 2,
+              },
+            },
+          }],
+        },
+      });
+
+      return true;
+    } catch (error) {
+      console.error(`Error deleting ${config.name}:`, error);
+      throw new Error(`Failed to delete ${config.name}`);
+    }
   }
 
   // Clanovi methods
   async getClanovi(): Promise<Clan[]> {
-    return this.retryOperation(async () => {
-      const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        range: 'Clanovi!A2:G',
-      });
-
-      const rows = response.data.values || [];
-      return rows.map(this.rowToClan);
-    });
+    return this.getSheetRows(SHEET_CONFIGS.CLANOVI, DataTransformers.rowToClan);
   }
 
   async getClanByNumber(clanskiBroj: string): Promise<Clan | null> {
@@ -115,148 +383,35 @@ class GoogleSheetsService {
   }
 
   async createClan(clan: ClanForCreation): Promise<Clan> {
-    const maxRetries = 3;
-    let attempt = 0;
-    
-    while (attempt < maxRetries) {
-      try {
-        // Generate new Clanski Broj with race condition protection
-        const existingClanovi = await this.getClanovi();
-        const maxNumber = existingClanovi.reduce((max, c) => {
-          const num = parseInt(c['Clanski Broj'], 10);
-          return num > max ? num : max;
-        }, 0);
-        
-        const newClan: Clan = {
-          ...clan,
-          'Clanski Broj': (maxNumber + 1).toString().padStart(6, '0'),
-        };
-
-        const values = this.clanToRow(newClan);
-        
-        // Append to the end of the list using append method
-        await this.sheets.spreadsheets.values.append({
-          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          range: 'Clanovi!A:G',
-          valueInputOption: 'RAW',
-          insertDataOption: 'INSERT_ROWS',
-          requestBody: {
-            values: [values],
-          },
-        });
-
-        // Since we used RAW for append, we need to update date fields with USER_ENTERED
-        // Get the row number where we just appended (last row with data)
-        const updatedData = await this.sheets.spreadsheets.values.get({
-          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          range: 'Clanovi!A:G',
-        });
-        
-        const lastRowIndex = (updatedData.data.values?.length || 1);
-        
-        // Update only the date field (index 5 = Datum Rodjenja) with USER_ENTERED
-        if (values[5]) { // If there's a birth date
-          await this.sheets.spreadsheets.values.update({
-            spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-            range: `Clanovi!F${lastRowIndex}`, // Column F is index 5 (Datum Rodjenja)
-            valueInputOption: 'USER_ENTERED',
-            requestBody: {
-              values: [[values[5]]],
-            },
-          });
-        }
-
-        return newClan;
-      } catch (error) {
-        attempt++;
-        if (attempt >= maxRetries) {
-          console.error('Error creating clan after retries:', error);
-          throw new Error('Failed to create clan after multiple attempts');
-        }
-        // Wait before retrying (exponential backoff)
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
-      }
-    }
-    
-    throw new Error('Failed to create clan');
+    const existingClanovi = await this.getClanovi();
+    return this.createEntity(
+      SHEET_CONFIGS.CLANOVI,
+      clan,
+      DataTransformers.clanToRow,
+      existingClanovi,
+      'Clanski Broj',
+      (createData, id) => ({ ...createData, 'Clanski Broj': id } as Clan)
+    );
   }
 
   async updateClan(clanskiBroj: string, updatedClan: Partial<Clan>): Promise<Clan | null> {
-    return this.retryOperation(async () => {
-      const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        range: 'Clanovi!A2:G',
-      });
-
-      const rows = response.data.values || [];
-      const rowIndex = rows.findIndex(row => row[0] === clanskiBroj);
-      
-      if (rowIndex === -1) return null;
-
-      const existingClan = this.rowToClan(rows[rowIndex]);
-      const updated: Clan = { ...existingClan, ...updatedClan };
-      const values = this.clanToRow(updated);
-
-      await this.sheets.spreadsheets.values.update({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        range: `Clanovi!A${rowIndex + 2}:G${rowIndex + 2}`,
-        valueInputOption: 'RAW',
-        requestBody: {
-          values: [values],
-        },
-      });
-
-      return updated;
-    });
+    return this.updateEntity(
+      SHEET_CONFIGS.CLANOVI,
+      'Clanski Broj',
+      clanskiBroj,
+      updatedClan,
+      DataTransformers.rowToClan,
+      DataTransformers.clanToRow
+    );
   }
 
   async deleteClan(clanskiBroj: string): Promise<boolean> {
-    try {
-      const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
-        range: 'Clanovi!A2:G',
-      });
-
-      const rows = response.data.values || [];
-      const rowIndex = rows.findIndex(row => row[0] === clanskiBroj);
-      
-      if (rowIndex === -1) return false;
-
-      const clanoviSheetId = await this.getSheetId('Clanovi');
-      await this.sheets.spreadsheets.batchUpdate({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        requestBody: {
-          requests: [{
-            deleteDimension: {
-              range: {
-                sheetId: clanoviSheetId,
-                dimension: 'ROWS',
-                startIndex: rowIndex + 1,
-                endIndex: rowIndex + 2,
-              },
-            },
-          }],
-        },
-      });
-
-      return true;
-    } catch (error) {
-      console.error('Error deleting clan:', error);
-      throw new Error('Failed to delete clan');
-    }
+    return this.deleteEntity(SHEET_CONFIGS.CLANOVI, clanskiBroj);
   }
 
   // Clanarine methods
   async getClanarine(): Promise<Clanarina[]> {
-    return this.retryOperation(async () => {
-      const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        range: 'Clanarine!A2:C',
-      });
-
-      const rows = response.data.values || [];
-      return rows.map(this.rowToClanarina);
-    });
+    return this.getSheetRows(SHEET_CONFIGS.CLANARINE, DataTransformers.rowToClanarina);
   }
 
   async getClanarinaById(id: string): Promise<Clanarina | null> {
@@ -265,237 +420,30 @@ class GoogleSheetsService {
   }
 
   async createClanarina(clanarina: ClanarinaForCreation): Promise<Clanarina> {
-    const maxRetries = 3;
-    let attempt = 0;
-    
-    while (attempt < maxRetries) {
-      try {
-        // Get existing clanarine to determine next ID with race condition protection
-        const existingClanarine = await this.getClanarine();
-        const maxId = existingClanarine.reduce((max, c) => {
-          const num = parseInt(c.id, 10);
-          return num > max ? num : max;
-        }, 0);
-        
-        const newClanarina: Clanarina = {
-          ...clanarina,
-          id: (maxId + 1).toString(),
-        };
-
-        const values = this.clanarinaToRow(newClanarina);
-        
-        // Append to the end of the list using append method
-        await this.sheets.spreadsheets.values.append({
-          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          range: 'Clanarine!A:C',
-          valueInputOption: 'RAW',
-          insertDataOption: 'INSERT_ROWS',
-          requestBody: {
-            values: [values],
-          },
-        });
-
-        // Since we used RAW for append, we need to update date fields with USER_ENTERED
-        // Get the row number where we just appended (last row with data)
-        const updatedData = await this.sheets.spreadsheets.values.get({
-          spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-          range: 'Clanarine!A:C',
-        });
-        
-        const lastRowIndex = (updatedData.data.values?.length || 1);
-        
-        // Update only the date field (index 2 = Datum Uplate) with USER_ENTERED
-        if (values[2]) { // If there's a payment date
-          await this.sheets.spreadsheets.values.update({
-            spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-            range: `Clanarine!C${lastRowIndex}`, // Column C is index 2 (Datum Uplate)
-            valueInputOption: 'USER_ENTERED',
-            requestBody: {
-              values: [[values[2]]],
-            },
-          });
-        }
-
-        return newClanarina;
-      } catch (error) {
-        attempt++;
-        if (attempt >= maxRetries) {
-          console.error('Error creating clanarina after retries:', error);
-          throw new Error('Failed to create clanarina after multiple attempts');
-        }
-        // Wait before retrying (exponential backoff)
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 100));
-      }
-    }
-    
-    throw new Error('Failed to create clanarina');
+    const existingClanarine = await this.getClanarine();
+    return this.createEntity(
+      SHEET_CONFIGS.CLANARINE,
+      clanarina,
+      DataTransformers.clanarinaToRow,
+      existingClanarine,
+      'id',
+      (createData, id) => ({ ...createData, id } as Clanarina)
+    );
   }
 
   async updateClanarina(id: string, updatedClanarina: Partial<Clanarina>): Promise<Clanarina | null> {
-    return this.retryOperation(async () => {
-      const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        range: 'Clanarine!A2:C',
-      });
-
-      const rows = response.data.values || [];
-      const rowIndex = rows.findIndex(row => row[0] === id);
-      
-      if (rowIndex === -1) return null;
-
-      const existingClanarina = this.rowToClanarina(rows[rowIndex]);
-      const updated: Clanarina = { ...existingClanarina, ...updatedClanarina };
-      const values = this.clanarinaToRow(updated);
-
-      await this.sheets.spreadsheets.values.update({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        range: `Clanarine!A${rowIndex + 2}:C${rowIndex + 2}`,
-        valueInputOption: 'RAW',
-        requestBody: {
-          values: [values],
-        },
-      });
-
-      return updated;
-    });
+    return this.updateEntity(
+      SHEET_CONFIGS.CLANARINE,
+      'id',
+      id,
+      updatedClanarina,
+      DataTransformers.rowToClanarina,
+      DataTransformers.clanarinaToRow
+    );
   }
 
   async deleteClanarina(id: string): Promise<boolean> {
-    try {
-      const response = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID,
-        range: 'Clanarine!A2:C',
-      });
-
-      const rows = response.data.values || [];
-      const rowIndex = rows.findIndex(row => row[0] === id);
-      
-      if (rowIndex === -1) return false;
-
-      const clanarineSheetId = await this.getSheetId('Clanarine');
-      await this.sheets.spreadsheets.batchUpdate({
-        spreadsheetId: process.env.GOOGLE_SPREADSHEET_ID!,
-        requestBody: {
-          requests: [{
-            deleteDimension: {
-              range: {
-                sheetId: clanarineSheetId,
-                dimension: 'ROWS',
-                startIndex: rowIndex + 1,
-                endIndex: rowIndex + 2,
-              },
-            },
-          }],
-        },
-      });
-
-      return true;
-    } catch (error) {
-      console.error('Error deleting clanarina:', error);
-      throw new Error('Failed to delete clanarina');
-    }
-  }
-
-  // Helper methods
-  private rowToClan(row: string[]): Clan {
-    // Parse dd/mm/yyyy date format
-    const parseDateFromString = (dateStr: string): Date => {
-      if (!dateStr) return new Date();
-      const parts = dateStr.split('/');
-      if (parts.length === 3) {
-        // Convert dd/mm/yyyy to yyyy-mm-dd
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
-        const year = parseInt(parts[2], 10);
-        return new Date(year, month, day);
-      }
-      return new Date(dateStr); // Fallback to default parsing
-    };
-
-    return {
-      'Clanski Broj': row[0] || '',
-      'Ime i Prezime': row[1] || '',
-      email: row[2] || undefined,
-      telefon: row[3] || undefined,
-      status: (row[4] as ClanStatus) || ClanStatus.PROBNI,
-      'Datum Rodjenja': parseDateFromString(row[5] || ''),
-      Napomene: row[6] || undefined,
-    };
-  }
-
-  private clanToRow(clan: Clan): string[] {
-    // Format date as dd/mm/yyyy
-    const formatDate = (date: Date | undefined): string => {
-      if (!date) return '';
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
-    };
-
-    // Format phone number to ensure it starts with 0
-    const formatPhone = (phone: string): string => {
-      if (!phone) return '';
-      const cleanPhone = phone.trim();
-      if (cleanPhone && !cleanPhone.startsWith('0')) {
-        return '0' + cleanPhone;
-      }
-      return cleanPhone;
-    };
-
-    // Format Clanski Broj to be padded to 6 digits
-    const formatClanskiBroj = (broj: string): string => {
-      if (!broj) return '';
-      return broj.padStart(6, '0');
-    };
-
-    return [
-      formatClanskiBroj(clan['Clanski Broj']),
-      clan['Ime i Prezime'],
-      clan.email || '',
-      formatPhone(clan.telefon || ''),
-      clan.status ?? ClanStatus.PROBNI,
-      formatDate(clan['Datum Rodjenja']),
-      clan.Napomene || '',
-    ];
-  }
-
-  private rowToClanarina(row: string[]): Clanarina {
-    // Parse dd/mm/yyyy date format
-    const parseDateFromString = (dateStr: string): Date => {
-      if (!dateStr) return new Date();
-      const parts = dateStr.split('/');
-      if (parts.length === 3) {
-        // Convert dd/mm/yyyy to yyyy-mm-dd
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
-        const year = parseInt(parts[2], 10);
-        return new Date(year, month, day);
-      }
-      return new Date(dateStr); // Fallback to default parsing
-    };
-
-    return {
-      id: row[0] || '',
-      'Clanski Broj': row[1] || '',
-      'Datum Uplate': parseDateFromString(row[2] || ''),
-    };
-  }
-
-  private clanarinaToRow(clanarina: Clanarina): string[] {
-    // Format date as dd/mm/yyyy
-    const formatDate = (date: Date): string => {
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
-    };
-
-    return [
-      clanarina.id,
-      clanarina['Clanski Broj'],
-      formatDate(clanarina['Datum Uplate']),
-    ];
+    return this.deleteEntity(SHEET_CONFIGS.CLANARINE, id);
   }
 }
 
