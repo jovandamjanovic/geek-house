@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { googleSheetsService } from '@/lib/googleSheets';
+import { clanarine, clanovi } from '@/lib/services';
 import { Clanarina, ApiResponse } from '@/types';
 import { sanitizeString, validateClanskiBroj, validateId } from '@/lib/validation';
 
@@ -25,7 +25,8 @@ export async function GET(
       );
     }
     
-    const clanarina = await googleSheetsService.getClanarinaById(sanitizedId);
+    // const clanarina = await googleSheetsService.getClanarinaById(sanitizedId);
+    const clanarina = await clanarine.getById(sanitizedId);
     
     if (!clanarina) {
       return NextResponse.json(
@@ -81,7 +82,8 @@ export async function PUT(
       body['Clanski Broj'] = sanitizedClanskiBroj;
       
       // Verify that the clan exists
-      const clan = await googleSheetsService.getClanByNumber(sanitizedClanskiBroj);
+      // const clan = await googleSheetsService.getClanByNumber(sanitizedClanskiBroj);
+      const clan = await clanovi.getClanByNumber(sanitizedClanskiBroj);
       if (!clan) {
         return NextResponse.json(
           { success: false, error: 'Clan with specified Clanski Broj does not exist' },
@@ -115,7 +117,8 @@ export async function PUT(
       body['Datum Uplate'] = datumUplate;
     }
 
-    const updatedClanarina = await googleSheetsService.updateClanarina(sanitizedId, body);
+    // const updatedClanarina = await googleSheetsService.updateClanarina(sanitizedId, body);
+    const updatedClanarina = await clanarine.updateClanarina(sanitizedId, body);
     
     if (!updatedClanarina) {
       return NextResponse.json(
@@ -149,7 +152,8 @@ export async function DELETE(
       );
     }
     
-    const deleted = await googleSheetsService.deleteClanarina(sanitizedId);
+    // const deleted = await googleSheetsService.deleteClanarina(sanitizedId);
+    const deleted = await clanarine.deleteClanarina(sanitizedId);
     
     if (!deleted) {
       return NextResponse.json(
