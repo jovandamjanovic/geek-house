@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { googleSheetsService } from '@/lib/googleSheets';
+import { clanovi } from '@/lib/services';
 import { Clan, ApiResponse, ClanStatus } from '@/types';
 import { sanitizeString, validateEmail, validatePhone } from '@/lib/validation';
 
@@ -37,7 +37,7 @@ export async function GET(
 ): Promise<NextResponse<ApiResponse<Clan>>> {
   const { id } = await params;
   try {
-    const clan = await googleSheetsService.getClanByNumber(id);
+    const clan = await clanovi.getClanByNumber(id);
     
     if (!clan) {
       return NextResponse.json(
@@ -155,7 +155,7 @@ export async function PUT(
       body['Datum Rodjenja'] = datumRodjenja;
     }
 
-    const updatedClan = await googleSheetsService.updateClan(id, body);
+    const updatedClan = await clanovi.updateClan(id, body);
     
     if (!updatedClan) {
       return NextResponse.json(
@@ -188,7 +188,7 @@ export async function DELETE(
         { status: 403 }
       );
     }
-    const deleted = await googleSheetsService.deleteClan(id);
+    const deleted = await clanovi.deleteClan(id);
     
     if (!deleted) {
       return NextResponse.json(

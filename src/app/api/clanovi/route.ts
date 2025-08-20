@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { googleSheetsService } from '@/lib/googleSheets';
+import { clanovi } from '@/lib/services';
 import { Clan, ApiResponse, ClanForCreation } from '@/types';
 import { sanitizeString, validateEmail, validatePhone, validateAndNormalizeStatus } from '@/lib/validation';
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   try {
-    const clanovi = await googleSheetsService.getClanovi();
-    return NextResponse.json({ success: true, data: clanovi });
+    const clanoviList = await clanovi.getClanovi();
+    return NextResponse.json({ success: true, data: clanoviList });
   } catch (error) {
     console.error('Error in GET /api/clanovi:', error);
     return NextResponse.json(
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       Napomene: sanitizeString(body.Napomene) || undefined,
     };
 
-    const newClan = await googleSheetsService.createClan(newClanData);
+    const newClan = await clanovi.createClan(newClanData);
     return NextResponse.json({ success: true, data: newClan }, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/clanovi:', error);

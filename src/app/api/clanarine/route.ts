@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { googleSheetsService } from '@/lib/googleSheets';
+import { clanarine, clanovi } from '@/lib/services';
 import { Clanarina, ApiResponse } from '@/types';
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clanarina[]>>> {
   try {
-    const clanarine = await googleSheetsService.getClanarine();
-    return NextResponse.json({ success: true, data: clanarine });
+    const clanarineList = await clanarine.getClanarine();
+    return NextResponse.json({ success: true, data: clanarineList });
   } catch (error) {
     console.error('Error in GET /api/clanarine:', error);
     return NextResponse.json(
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     }
 
     // Verify that the clan exists
-    const clan = await googleSheetsService.getClanByNumber(body['Clanski Broj']);
+    const clan = await clanovi.getClanByNumber(body['Clanski Broj']);
     if (!clan) {
       return NextResponse.json(
         { success: false, error: 'Clan with specified Clanski Broj does not exist' },
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       'Datum Uplate': datumUplate,
     };
 
-    const newClanarina = await googleSheetsService.createClanarina(newClanarinaData);
+    const newClanarina = await clanarine.createClanarina(newClanarinaData);
     return NextResponse.json({ success: true, data: newClanarina }, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/clanarine:', error);
