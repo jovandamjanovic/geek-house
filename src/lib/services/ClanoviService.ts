@@ -26,7 +26,7 @@ const clanoviDataTransformers = {
 };
 
 // Clanovi service configuration
-const clanoviConfig: ServiceConfig<Clan, ClanForCreation> = {
+const clanoviConfig: ServiceConfig<Clan> = {
   sheetConfig: {
     sheetName: 'Clanovi',
     range: 'Clanovi!A:G',
@@ -36,8 +36,8 @@ const clanoviConfig: ServiceConfig<Clan, ClanForCreation> = {
   idField: 'Clanski Broj'
 };
 
-export class ClanoviService extends CrudService<Clan, ClanForCreation> {
-  constructor(spreadsheetId: string, config?: ServiceConfig<Clan, ClanForCreation>) {
+export class ClanoviService extends CrudService<Clan> {
+  constructor(spreadsheetId: string, config?: ServiceConfig<Clan>) {
     super(spreadsheetId, config || clanoviConfig);
   }
 
