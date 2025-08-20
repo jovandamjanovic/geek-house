@@ -3,6 +3,13 @@ import { clanovi } from '@/lib/services';
 import { Clan, ApiResponse, ClanForCreation } from '@/types';
 import { sanitizeString, validateEmail, validatePhone, validateAndNormalizeStatus } from '@/lib/validation';
 
+/**
+ * Retrieve all clanovi and return them as a JSON API response.
+ *
+ * @returns A NextResponse wrapping an ApiResponse:
+ * - On success: `{ success: true, data: Clan[] }`.
+ * - On failure: `{ success: false, error: string }` with HTTP status 500.
+ */
 export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   try {
     const clanoviList = await clanovi.getClanovi();
@@ -16,6 +23,29 @@ export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   }
 }
 
+/**
+ * Create a new clan from a JSON request body.
+ *
+ * Expects a JSON body containing at least the required field "Ime i Prezime".
+ * Performs sanitization and validation for name, email, phone, status and optional
+ * "Datum Rodjenja" (birth date). If validation passes, delegates creation to the
+ * clanovi service and returns the created Clan.
+ *
+ * Validation and responses:
+ * - 201: success, returns { success: true, data: Clan } with the created clan.
+ * - 400: bad request for invalid/missing fields, invalid email/phone, invalid date,
+ *        or birth date outside a reasonable range (older than 100 years or in the future).
+ * - 500: server error when creation fails.
+ *
+ * @param request - NextRequest whose JSON body should include:
+ *   - "Ime i Prezime" (required string)
+ *   - email (optional string, validated)
+ *   - telefon (optional string, validated)
+ *   - status (optional, normalized via validateAndNormalizeStatus)
+ *   - "Datum Rodjenja" (optional date string, parsed and range-checked)
+ *   - Napomene (optional string)
+ * @returns NextResponse containing an ApiResponse with the created Clan on success or an error message.
+ */
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Clan>>> {
   try {
     const body = await request.json();

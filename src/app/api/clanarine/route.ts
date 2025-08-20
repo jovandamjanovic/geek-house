@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { clanarine, clanovi } from '@/lib/services';
 import { Clanarina, ApiResponse } from '@/types';
 
+/**
+ * Handles GET requests to fetch all clanarine.
+ *
+ * Returns a JSON NextResponse with `{ success: true, data: Clanarina[] }` on success.
+ * On failure returns a 500 response with `{ success: false, error: 'Failed to fetch clanarine' }`.
+ *
+ * @returns A NextResponse containing an ApiResponse with the list of clanarine or an error message.
+ */
 export async function GET(): Promise<NextResponse<ApiResponse<Clanarina[]>>> {
   try {
     const clanarineList = await clanarine.getClanarine();
@@ -15,6 +23,24 @@ export async function GET(): Promise<NextResponse<ApiResponse<Clanarina[]>>> {
   }
 }
 
+/**
+ * Create a new clanarina (membership payment) from the incoming JSON request.
+ *
+ * Expects a JSON body containing the fields `Clanski Broj` and `Datum Uplate`.
+ * - Validates presence of both fields and that `Datum Uplate` parses to a valid date.
+ * - Verifies the member exists via the `clanovi` service.
+ * - Creates the clanarina via the `clanarine` service and returns the created record.
+ *
+ * On validation failures the route returns 400 with a descriptive error message:
+ * - Missing required field: `<field>`
+ * - Invalid date format for `Datum Uplate`
+ * - Clan with specified `Clanski Broj` does not exist
+ *
+ * On success returns 201 with the created `Clanarina`. On unexpected errors returns 500.
+ *
+ * @returns A NextResponse wrapping an ApiResponse containing the created Clanarina on success,
+ *          or an error message and appropriate HTTP status on failure.
+ */
 export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Clanarina>>> {
   try {
     const body = await request.json();

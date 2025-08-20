@@ -31,6 +31,16 @@ interface RouteParams {
   }>;
 }
 
+/**
+ * Retrieve a clan by its number and return it as a JSON response.
+ *
+ * Returns 200 with { success: true, data: Clan } when found.
+ * Returns 404 with { success: false, error: 'Clan not found' } if no clan exists for the given id.
+ * Returns 500 with { success: false, error: 'Failed to fetch clan' } on unexpected errors.
+ *
+ * @param params - Route params promise resolving to an object with `id` (the clan number to look up).
+ * @returns A NextResponse containing an ApiResponse wrapping the found Clan or an error message.
+ */
 export async function GET(
   request: NextRequest,
   { params }: RouteParams
@@ -56,6 +66,19 @@ export async function GET(
   }
 }
 
+/**
+ * Updates a clan (member) identified by its route `id`.
+ *
+ * Accepts a JSON body with any updatable fields; performs sanitization and validation:
+ * - Protects the special member "P/01" from updates (403).
+ * - Validates name length, email and phone formats, normalizes `status` via validateAndNormalizeStatus,
+ *   and parses/validates `Datum Rodjenja` (must be a valid date within the last 100 years and not in the future).
+ * - Returns 400 for invalid input, 404 if the clan does not exist, and 500 on unexpected errors.
+ *
+ * @param params - Route parameters; `params.id` is the clan number/identifier to update.
+ * @returns A NextResponse containing an ApiResponse<Clan>: on success `{ success: true, data: updatedClan }`,
+ *          on error `{ success: false, error: <message> }` with appropriate HTTP status code.
+ */
 export async function PUT(
   request: NextRequest,
   { params }: RouteParams
@@ -174,6 +197,19 @@ export async function PUT(
   }
 }
 
+/**
+ * Deletes a clan/member identified by the route `id` parameter.
+ *
+ * Attempts to remove the member via the `clanovi` service and returns an HTTP JSON response:
+ * - 200 with `{ success: true, data: null }` on successful deletion.
+ * - 403 if the protected member `P/01` is requested for deletion.
+ * - 404 if no member with the given `id` exists.
+ * - 500 on unexpected errors encountered while deleting.
+ *
+ * The `id` is read from route parameters; this handler never throws—errors are caught and returned as 500 responses.
+ *
+ * @returns A NextResponse containing an ApiResponse with `data: null` on success or an `error` message on failure.
+ */
 export async function DELETE(
   request: NextRequest,
   { params }: RouteParams

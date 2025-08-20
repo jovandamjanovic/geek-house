@@ -9,6 +9,20 @@ interface RouteParams {
   }>;
 }
 
+/**
+ * Retrieve a clanarina (membership fee) by its route `id`.
+ *
+ * Validates and sanitizes the `id` route parameter, returns 400 if the id is invalid,
+ * fetches the clanarina from the service, returns 404 if not found, and 200 with the
+ * clanarina on success. On unexpected errors returns a 500 response.
+ *
+ * @param params - Route params object; must contain `id` (the clanarina identifier)
+ * @returns A NextResponse wrapping ApiResponse<Clanarina>. Possible responses:
+ * - 200: { success: true, data: Clanarina }
+ * - 400: { success: false, error: string } for invalid id
+ * - 404: { success: false, error: string } when not found
+ * - 500: { success: false, error: string } on server error
+ */
 export async function GET(
   request: NextRequest,
   { params }: RouteParams
@@ -45,6 +59,17 @@ export async function GET(
   }
 }
 
+/**
+ * Updates an existing clanarina (membership fee) by ID.
+ *
+ * Validates and sanitizes the route `id`, optional "Clanski Broj" (sanitized and checked that the member exists),
+ * and optional "Datum Uplate" (must parse to a valid Date and be within one year of the current date).
+ * Responds with 400 for validation errors, 404 if the clanarina was not found, and 500 for unexpected server errors.
+ *
+ * @returns A NextResponse containing an ApiResponse<Clanarina>:
+ * - On success: { success: true, data: updated Clanarina }
+ * - On failure: { success: false, error: string } with an appropriate HTTP status
+ */
 export async function PUT(
   request: NextRequest,
   { params }: RouteParams
@@ -137,6 +162,20 @@ export async function PUT(
   }
 }
 
+/**
+ * Delete a clanarina (membership fee) by its ID.
+ *
+ * Deletes the clanarina resource identified by the `id` route parameter.
+ * Validates and sanitizes the `id` before attempting deletion.
+ *
+ * Possible responses:
+ * - 200: { success: true, data: null } — deletion succeeded.
+ * - 400: { success: false, error } — invalid ID format.
+ * - 404: { success: false, error } — clanarina not found.
+ * - 500: { success: false, error } — server error while attempting deletion.
+ *
+ * @returns A NextResponse wrapping an ApiResponse with `data` set to `null` on success.
+ */
 export async function DELETE(
   request: NextRequest,
   { params }: RouteParams
