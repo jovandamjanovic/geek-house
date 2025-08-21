@@ -89,3 +89,18 @@ export interface ClanarinaDTO {
 export type ApiResponse<T> = 
   | { success: true; data: T }
   | { success: false; error: string };
+
+export interface Author {
+  id: string;
+  ime: string;
+  email?: string;
+  bio?: string;
+  avatar_url?: string;
+}
+
+export interface AuthorForCreation {
+  ime: string;
+  email?: string;
+  bio?: string;
+  avatar_url?: string;
+}
