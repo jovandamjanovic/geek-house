@@ -63,10 +63,10 @@ export async function PUT(
   const { id } = await params;
   try {
     
-    // Protect P/01 member from updates
-    if (id === 'P/01') {
+    // Protect P/ members from updates
+    if (id.startsWith('P/')) {
       return NextResponse.json(
-        { success: false, error: 'Cannot update protected member P/01' },
+        { success: false, error: 'Cannot update protected member' },
         { status: 403 }
       );
     }
@@ -181,10 +181,10 @@ export async function DELETE(
   const { id } = await params;
   try {
     
-    // Protect P/01 member from deletion
-    if (id === 'P/01') {
+    // Protect P/ members from deletion
+    if (id.startsWith('P/')) {
       return NextResponse.json(
-        { success: false, error: 'Cannot delete protected member P/01' },
+        { success: false, error: 'Cannot delete protected member' },
         { status: 403 }
       );
     }

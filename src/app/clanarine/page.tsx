@@ -331,7 +331,7 @@ function MemberModal({
   const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = !!member;
-  const isProtectedMember = member?.['Clanski Broj'] === 'P/01';
+  const isProtectedMember = member?.['Clanski Broj']?.startsWith('P/');
   const canPayMembership = isEditMode && !isProtectedMember;
 
   useEffect(() => {
