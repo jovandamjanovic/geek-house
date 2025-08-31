@@ -104,3 +104,54 @@ export interface AuthorForCreation {
   bio?: string;
   avatar_url?: string;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+}
+
+export interface CategoryForCreation {
+  name: string;
+  slug: string;
+  description?: string;
+}
+
+export enum PostStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  author_id: string;
+  category_id: string;
+  tags?: string[];
+  featured_image?: string;
+  status: PostStatus;
+  featured: boolean;
+  created_at: Date;
+  updated_at?: Date;
+  published_at?: Date;
+  seo_title?: string;
+  seo_description?: string;
+}
+
+export interface PostForCreation {
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  author_id: string;
+  category_id: string;
+  tags?: string[];
+  featured_image?: string;
+  featured: boolean;
+  seo_title?: string;
+  seo_description?: string;
+}
