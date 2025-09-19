@@ -1,0 +1,188 @@
+@startuml
+
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+  BackgroundColor White
+  ArrowColor #555555
+  BorderColor #333333
+}
+skinparam stereotype {
+  CBackgroundColor #eef7ff
+  ABackgroundColor #eef7ff
+  IBackgroundColor #fff7e6
+}
+
+' Layer packages
+package "Presentation" <<Layer>> #DFF1FF {
+    package api {
+        package clanarina {
+            package Controller {
+                class ClanarinaRoute {
+                    +getClanarine(): ClanarinaDTO[]
+                    +postClanarina(): ClanarinaDTO
+                }
+            }
+            package Response {
+                        class ClanDTO {
+                          +Clanski Broj: string;
+                          +Ime i Prezime: string;
+                          +email: string|null;
+                          +telefon: string|null;
+                          +status: ClanStatus;
+                          +Datum Rodjenja: string|null;
+                          +Napomene: string|null;
+                        }
+
+                        class ClanarinaDTO {
+                          +id: string;
+                          +Clanski Broj: string;
+                          +Datum Uplate: string;
+                        }
+                    }
+
+        }
+        package auth {
+        }
+    }
+}
+
+package "Domain" <<Layer>> #EAF8E6 {
+    package ClanManagement {
+        package Entity {
+            class Clan <<entity>> {
+              +Clanski Broj: string
+              +Ime i Prezime: string
+              +email: string|null
+              +telefon: string|null
+              +status: ClanStatus
+              +Datum Rodjenja: Date|null
+              +Napomene: string|null
+            }
+
+            class Clanarina {
+              +id(id: string): string
+              +Clanski Broj: string
+              +Datum Uplate: Date
+            }
+        }
+        package Repository {
+            interface IClanRepository {
+               +findAll(): Clan[]
+               +find(string id): Clan|null
+               +save(Clan clan): void
+               +delete(Clan clan): void
+            }
+            interface IClanarinaRepository {
+                +findAll(): Clanarina[]
+                +find(string id): Clanarina|null
+                +save(Clanarina clanarina): void
+                +delete(Clan clan): void
+            }
+        }
+        package Service {
+            class ClanService {
+               - clanRepository: IClanRepository
+               +createClan(CreateClanRequest request): Clan
+               +updateClan(UpdateClanRequest request): Clan
+            }
+            class ClanarinaService {
+               - clanarinaRepository: IClanarinaRepository
+               +createClanarina(CreateClanarinaRequest request): Clanarina
+            }
+        }
+        package Request {
+            class CreateClanRequest {
+              +Ime i Prezime: string;
+              +email: string|null;
+              +telefon: string|null;
+              +status: ClanStatus|null;
+              +Datum Rodjenja: Date | string |null;
+              +Napomene: string|null;
+            }
+
+            class CreateClanarinaRequest {
+              +Clanski Broj: string;
+              +Datum Uplate: Date | string;
+            }
+
+            class UpdateClanRequest {
+              +Ime i Prezime: string|null;
+              +email: string|null;
+              +telefon: string|null;
+              +status: ClanStatus|null;
+              +Datum Rodjenja: Date | string |null;
+              +Napomene: string|null;
+            }
+        }
+    }
+}
+
+package "Persistence" <<Layer>> #FFF4DF {
+    package GoogleSpreadsheet {
+        package Repository {
+            class ClanRepository {
+                 +findAll(): Clan[]
+                 +find(string id): Clan|null
+                 +save(Clan clan): void
+                 +delete(Clan clan): void
+            }
+            class ClanarinaRepository {
+                +findAll(): Clanarina[]
+                +find(string id): Clanarina|null
+                +save(Clanarina clanarina): void
+                +delete(Clan clan): void
+            }
+        }
+        package Config {
+            class ClanConfig {
+                sheetConfig: {
+                    +sheetName: 'Clanovi',
+                    +range: 'Clanovi!A:G',
+                    +dateColumn: { index: 5, letter: 'F' }
+                  },
+                +dataTransformers: ClanDataTransformer,
+                +idField: 'Clanski Broj'
+            }
+            class ClanarinaConfig {
+                            sheetConfig: {
+                              sheetName: 'Clanarine',
+                              range: 'Clanarine!A:C',
+                              dateColumn: { index: 2, letter: 'C' }
+                            },
+                            dataTransformers: ClanarinaDataTransformer,
+                            idField: 'id'
+                        }
+            class ClanDataTransformer {
+                +rowToEntity(string[] row): Clan
+                +entityToRow(Clan clan): string[]
+            }
+            class ClanarinaDataTransformer {
+                +rowToEntity(string[] row): Clanarina
+                +entityToRow(Clanarina clanarina): string[]
+            }
+        }
+
+    }
+}
+
+' Relationships - using direct references
+ClanarinaRoute --> ClanarinaDTO : uses
+ClanarinaRoute --> CreateClanarinaRequest : uses
+ClanarinaRoute --> ClanarinaService : uses
+
+ClanService --> IClanRepository : uses
+ClanarinaService --> CreateClanarinaRequest : uses
+ClanarinaService --> IClanarinaRepository : uses
+
+' Implementation relationships - referencing the Domain interfaces directly
+Persistence.GoogleSpreadsheet.Repository.ClanRepository ..|> Domain.ClanManagement.Repository.IClanRepository : implements
+Persistence.GoogleSpreadsheet.Repository.ClanarinaRepository ..|> Domain.ClanManagement.Repository.IClanarinaRepository : implements
+
+ClanRepository --> ClanConfig : connects to
+ClanarinaRepository --> ClanarinaConfig : connects to
+ClanConfig --> ClanDataTransformer : has
+ClanarinaConfig --> ClanarinaDataTransformer : has
+
+@enduml
