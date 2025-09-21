@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { clanovi } from '@/lib/services';
-import { Clan, ApiResponse, ClanStatus } from '@/types';
-import { sanitizeString, validateEmail, validatePhone } from '@/lib/validation';
+import {NextRequest, NextResponse} from 'next/server';
+import {clanService} from '@/lib/domain/clan-management/services';
+import {ApiResponse, Clan, ClanStatus} from '@/types';
+import {sanitizeString, validateEmail, validatePhone} from '@/lib/validation';
 
 function validateAndNormalizeStatus(status: unknown): ClanStatus | undefined {
   if (!status) return undefined;
@@ -37,7 +37,7 @@ export async function GET(
 ): Promise<NextResponse<ApiResponse<Clan>>> {
   const { id } = await params;
   try {
-    const clan = await clanovi.getClanByNumber(id);
+      const clan = await clanService.getClanByNumber(id);
     
     if (!clan) {
       return NextResponse.json(
@@ -155,7 +155,7 @@ export async function PUT(
       body['Datum Rodjenja'] = datumRodjenja;
     }
 
-    const updatedClan = await clanovi.updateClan(id, body);
+      const updatedClan = await clanService.updateClan(id, body);
     
     if (!updatedClan) {
       return NextResponse.json(
@@ -188,16 +188,8 @@ export async function DELETE(
         { status: 403 }
       );
     }
-    const deleted = await clanovi.deleteClan(id);
-    
-    if (!deleted) {
-      return NextResponse.json(
-        { success: false, error: 'Clan not found' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({ success: true, data: null });
+      await clanService.deleteClan(id);
+      return NextResponse.json({success: true, data: null});
   } catch (error) {
     console.error(`Error in DELETE /api/clanovi/${id}:`, error);
     return NextResponse.json(

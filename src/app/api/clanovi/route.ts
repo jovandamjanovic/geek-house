@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { clanovi } from '@/lib/services';
-import { Clan, ApiResponse, ClanForCreation } from '@/types';
-import { sanitizeString, validateEmail, validatePhone, validateAndNormalizeStatus } from '@/lib/validation';
+import {NextRequest, NextResponse} from 'next/server';
+import {clanService} from '@/lib/domain/clan-management/services';
+import {ApiResponse, Clan, ClanForCreation} from '@/types';
+import {sanitizeString, validateAndNormalizeStatus, validateEmail, validatePhone} from '@/lib/validation';
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   try {
-    const clanoviList = await clanovi.getClanovi();
+      const clanoviList = await clanService.getClanovi();
     return NextResponse.json({ success: true, data: clanoviList });
   } catch (error) {
     console.error('Error in GET /api/clanovi:', error);
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       Napomene: sanitizeString(body.Napomene) || undefined,
     };
 
-    const newClan = await clanovi.createClan(newClanData);
+      const newClan = await clanService.createClan(newClanData);
     return NextResponse.json({ success: true, data: newClan }, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/clanovi:', error);

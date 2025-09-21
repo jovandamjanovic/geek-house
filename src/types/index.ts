@@ -8,7 +8,7 @@ export enum ClanStatus {
 
 // Base interfaces for existing entities (with required IDs)
 export interface Clan {
-  'Clanski Broj': string;
+    'Clanski Broj': string | null;
   'Ime i Prezime': string;
   email?: string;
   telefon?: string;
@@ -17,8 +17,8 @@ export interface Clan {
   Napomene?: string;
 }
 
-export interface Clanarina {
-  id: string;
+export type Clanarina = {
+    id: string | null;
   'Clanski Broj': string;
   'Datum Uplate': Date;
 }
@@ -86,6 +86,6 @@ export interface ClanarinaDTO {
 }
 
 // Discriminated union for API responses
-export type ApiResponse<T> = 
+export type ApiResponse<T> =
   | { success: true; data: T }
   | { success: false; error: string };
