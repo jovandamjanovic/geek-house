@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { clanarine, clanovi } from '@/lib/services';
-import { Clanarina, ApiResponse } from '@/types';
-import { sanitizeString, validateClanskiBroj, validateId } from '@/lib/validation';
+import {NextRequest, NextResponse} from 'next/server';
+import {clanarinaService, clanService} from '@/lib/domain/clan-management/services';
+import {ApiResponse, Clanarina} from '@/types';
+import {sanitizeString, validateClanskiBroj, validateId} from '@/lib/validation';
 
 interface RouteParams {
   params: Promise<{
@@ -26,7 +26,7 @@ export async function GET(
     }
     
     // const clanarina = await googleSheetsService.getClanarinaById(sanitizedId);
-    const clanarina = await clanarine.getById(sanitizedId);
+      const clanarina = await clanarinaService.getClanarinaById(sanitizedId);
     
     if (!clanarina) {
       return NextResponse.json(
@@ -83,7 +83,7 @@ export async function PUT(
       
       // Verify that the clan exists
       // const clan = await googleSheetsService.getClanByNumber(sanitizedClanskiBroj);
-      const clan = await clanovi.getClanByNumber(sanitizedClanskiBroj);
+        const clan = await clanService.getClanByNumber(sanitizedClanskiBroj);
       if (!clan) {
         return NextResponse.json(
           { success: false, error: 'Clan with specified Clanski Broj does not exist' },
@@ -118,7 +118,7 @@ export async function PUT(
     }
 
     // const updatedClanarina = await googleSheetsService.updateClanarina(sanitizedId, body);
-    const updatedClanarina = await clanarine.updateClanarina(sanitizedId, body);
+      const updatedClanarina = await clanarinaService.updateClanarina(sanitizedId, body);
     
     if (!updatedClanarina) {
       return NextResponse.json(
@@ -153,14 +153,8 @@ export async function DELETE(
     }
     
     // const deleted = await googleSheetsService.deleteClanarina(sanitizedId);
-    const deleted = await clanarine.deleteClanarina(sanitizedId);
-    
-    if (!deleted) {
-      return NextResponse.json(
-        { success: false, error: 'Clanarina not found' },
-        { status: 404 }
-      );
-    }
+      await clanarinaService.deleteClanarina(sanitizedId);
+
 
     return NextResponse.json({ success: true, data: null });
   } catch (error) {

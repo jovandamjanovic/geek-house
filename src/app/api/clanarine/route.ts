@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { clanarine, clanovi } from '@/lib/services';
-import { Clanarina, ApiResponse } from '@/types';
+import {NextRequest, NextResponse} from 'next/server';
+import {clanarinaService, clanService} from '@/lib/domain/clan-management/services';
+import {ApiResponse, Clanarina} from '@/types';
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clanarina[]>>> {
   try {
-    const clanarineList = await clanarine.getClanarine();
+      const clanarineList = await clanarinaService.getClanarine();
     return NextResponse.json({ success: true, data: clanarineList });
   } catch (error) {
     console.error('Error in GET /api/clanarine:', error);
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     }
 
     // Verify that the clan exists
-    const clan = await clanovi.getClanByNumber(body['Clanski Broj']);
+      const clan = await clanService.getClanByNumber(body['Clanski Broj']);
     if (!clan) {
       return NextResponse.json(
         { success: false, error: 'Clan with specified Clanski Broj does not exist' },
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
       'Datum Uplate': datumUplate,
     };
 
-    const newClanarina = await clanarine.createClanarina(newClanarinaData);
+      const newClanarina = await clanarinaService.createClanarina(newClanarinaData);
     return NextResponse.json({ success: true, data: newClanarina }, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/clanarine:', error);
