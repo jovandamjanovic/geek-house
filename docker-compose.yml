@@ -11,6 +11,7 @@ services:
       - NEXT_TELEMETRY_DISABLED=1
     volumes:
       - ./:/app
+      - ./.env.development:/app/.env
       # Keep container's node_modules separate from host to avoid conflicts
       - /app/node_modules
     command: sh -c "npm install && npm run dev"
