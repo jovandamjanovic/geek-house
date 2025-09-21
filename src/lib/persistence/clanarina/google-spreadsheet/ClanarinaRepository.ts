@@ -75,7 +75,7 @@ export class ClanarinaRepository extends EntityRepository<Clanarina> implements 
     }
 
     private async update(entity: Clanarina): Promise<Clanarina> {
-        let id = entity.id;
+        const id = entity.id;
         try {
             if (!id) {
                 throw new Error('Cannot update clanarina without an ID');

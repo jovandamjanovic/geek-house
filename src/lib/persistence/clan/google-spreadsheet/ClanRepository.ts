@@ -74,7 +74,7 @@ export class ClanRepository extends EntityRepository<Clan> implements DomainClan
     }
 
     private async update(entity: Clan): Promise<Clan> {
-        let id = entity[`Clanski Broj`];
+        const id = entity[`Clanski Broj`];
         try {
             if (!id) {
                 throw new Error('Cannot update clan without a clanski broj');
