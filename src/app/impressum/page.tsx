@@ -17,6 +17,7 @@ export default function ImpressumPage() {
             <p><strong>Organization Name:</strong> Klub Društvenih Igara Eliksir</p>
             <p><strong>Legal Form:</strong> Non-Profit Citizens Association</p>
             <p><strong>Registration Number:</strong> 28215096</p>
+            <p><strong>Taxpayer Identification Number:</strong> 109787406</p>
             <p><strong>Registered at:</strong> Serbian Business Registrations Agency</p>
           </div>
         </section>
