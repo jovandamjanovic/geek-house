@@ -6,6 +6,7 @@ export function middleware(request: NextRequest) {
   // Define paths that are allowed (not redirected to under construction)
   const allowedPaths = [
     '/clanarine',
+    '/impressum',
     '/under-construction',
     '/api/',
     '/_next/',
