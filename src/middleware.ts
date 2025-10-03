@@ -17,12 +17,7 @@ export function middleware(request: NextRequest) {
   const isAllowedPath = allowedPaths.some(path => pathname.startsWith(path));
 
   // Redirect to under construction if not an allowed path
-  if (!isAllowedPath && pathname !== '/') {
-    return NextResponse.redirect(new URL('/under-construction', request.url));
-  }
-
-  // Redirect root path to under construction as well
-  if (pathname === '/') {
+  if (!isAllowedPath && pathname !== "/") {
     return NextResponse.redirect(new URL('/under-construction', request.url));
   }
 
