@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
+import {userService} from "@/lib/domain/user-management/service";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -36,9 +37,11 @@ export function middleware(request: NextRequest) {
 
   if (isProtectedPath) {
     // Check for authentication cookie
-    const authCookie = request.cookies.get('gh_admin');
-    
-    if (!authCookie || authCookie.value !== '1') {
+      const adminCookie = request.cookies.get('gh_admin');
+      const loggedInUser = request.cookies.get('logged_in_user');
+      const username = loggedInUser?.value;
+      const user = username ? userService.getUserByUsername(username) : null;
+      if ((user && !isUserAuthorized(user)) || !adminCookie || adminCookie.value !== '1') {
       // For API routes, return JSON error
       if (pathname.startsWith('/api/')) {
         return NextResponse.json(
@@ -53,6 +56,12 @@ export function middleware(request: NextRequest) {
   }
 
   return NextResponse.next();
+}
+
+function isUserAuthorized(user: User) {
+    if (user.username === 'admin') {
+        return true;
+    }
 }
 
 export const config = {

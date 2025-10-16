@@ -5,7 +5,7 @@ import {ClanarinaDataTransformer} from "@/lib/persistence/clanarina/google-sprea
 export const ClanarinaSpreadsheetConfig: SpreadsheetConfig<Clanarina> = {
     sheetConfig: {
         sheetName: 'Clanarine',
-        range: 'Clanarine!A:C',
+        range: 'Clanarine!A:F',
         dateColumn: {index: 2, letter: 'C'}
     },
     dataTransformer: new ClanarinaDataTransformer(),

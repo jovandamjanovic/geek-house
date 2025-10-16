@@ -16,7 +16,7 @@ export class ClanarinaService {
     }
 
     async createClanarina(request: ClanarinaForCreation): Promise<Clanarina> {
-        const entity = {id: null, ...request} as Clanarina;
+        const entity = {id: null, ...request, napravio} as Clanarina;
         return this.clanarinaRepository.save(entity)
     }
 
