@@ -7,6 +7,7 @@ import {
   validateEmail,
   validatePhone,
 } from "@/lib/validation";
+import { ClanRequest } from "@/types/request/api_request";
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   try {
@@ -25,14 +26,7 @@ export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse<Clan>>> {
   try {
-    const body = (await request.json()) as {
-      "Ime i Prezime"?: string | null;
-      email?: string | null;
-      telefon?: string | null;
-      status?: string | null;
-      "Datum Rodjenja"?: string | null;
-      Napomene?: string | null;
-    } | null;
+    const body = (await request.json()) as ClanRequest | null;
 
     // Input sanitization
     if (typeof body !== "object" || body === null) {
@@ -42,15 +36,14 @@ export async function POST(
       );
     }
 
-    // Validate required fields
-    const requiredFields = ["Ime i Prezime"];
-    for (const field of requiredFields) {
-      if (!body[field] || sanitizeString(body[field]).length === 0) {
-        return NextResponse.json(
-          { success: false, error: `Missing required field: ${field}` },
-          { status: 400 },
-        );
-      }
+    if (
+      !body["Ime i Prezime"] ||
+      sanitizeString(body["Ime i Prezime"]).length === 0
+    ) {
+      return NextResponse.json(
+        { success: false, error: "Missing required field: Ime i Prezime" },
+        { status: 400 },
+      );
     }
 
     // Sanitize and validate input fields

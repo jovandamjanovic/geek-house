@@ -1,3 +1,5 @@
+import { ClanStatus, ClanarinaType, PlacanjeType } from "@/types";
+
 // Internal service interfaces (for service layer with parsed Date objects)
 export type ClanForCreation = {
   "Ime i Prezime": string;

@@ -70,12 +70,12 @@ export async function PUT(
 
     const body = (await request.json()) as ClanarinaRequest | null;
 
-    request = foo(body);
+    const apiRequest = await foo(body);
 
     // const updatedClanarina = await googleSheetsService.updateClanarina(sanitizedId, body);
     const updatedClanarina = await clanarinaService.updateClanarina(
       sanitizedId,
-      request,
+      apiRequest,
     );
 
     if (!updatedClanarina) {
@@ -131,57 +131,55 @@ export async function DELETE(
   }
 }
 
-function foo(body: ClanarinaRequest | null): Partial<Clanarina> {
+async function foo(body: ClanarinaRequest | null): Promise<Partial<Clanarina>> {
   // Input sanitization
   if (typeof body !== "object" || body === null) {
     throw new InvalidArgumentError("Invalid request body");
   }
 
-  let clanskiBroj: string = undefined;
-  let datumUplate: Date = undefined;
   // Sanitize and validate Clanski Broj if provided
-  if (body["Clanski Broj"]) {
-    const sanitizedClanskiBroj = sanitizeString(body["Clanski Broj"]);
-    if (!validateClanskiBroj(sanitizedClanskiBroj)) {
-      throw new InvalidArgumentError("Invalid Clanski Broj format");
-    }
-    clanskiBroj = sanitizedClanskiBroj;
+  if (!body["Clanski Broj"]) {
+    throw new NotFoundError("Clanski broj not found");
+  }
+  const sanitizedClanskiBroj = sanitizeString(body["Clanski Broj"]);
+  if (!validateClanskiBroj(sanitizedClanskiBroj)) {
+    throw new InvalidArgumentError("Invalid Clanski Broj format");
+  }
+  const clanskiBroj = sanitizedClanskiBroj;
 
-    // Verify that the clan exists
-    // const clan = await googleSheetsService.getClanByNumber(sanitizedClanskiBroj);
-    const clan = await clanService.getClanByNumber(sanitizedClanskiBroj);
-    if (!clan) {
-      throw new NotFoundError(
-        "Clan with specified Clanski Broj does not exist",
-      );
-    }
+  // Verify that the clan exists
+  // const clan = await googleSheetsService.getClanByNumber(sanitizedClanskiBroj);
+  const clan = await clanService.getClanByNumber(sanitizedClanskiBroj);
+  if (!clan) {
+    throw new NotFoundError("Clan with specified Clanski Broj does not exist");
   }
 
   // Validate and parse date if provided
-  if (body["Datum Uplate"]) {
-    datumUplate = new Date(body["Datum Uplate"]);
-    if (isNaN(datumUplate.getTime())) {
-      throw new InvalidArgumentError("Invalid date format for Datum Uplate");
-    }
+  if (!body["Datum Uplate"]) {
+    throw new InvalidArgumentError("Datum Uplate is required");
+  }
+  const datumUplate = new Date(body["Datum Uplate"]);
+  if (isNaN(datumUplate.getTime())) {
+    throw new InvalidArgumentError("Invalid date format for Datum Uplate");
+  }
 
-    // Additional date validation - not too far in past or future
-    const now = new Date();
-    const oneYearAgo = new Date(
-      now.getFullYear() - 1,
-      now.getMonth(),
-      now.getDate(),
-    );
-    const oneYearFromNow = new Date(
-      now.getFullYear() + 1,
-      now.getMonth(),
-      now.getDate(),
-    );
+  // Additional date validation - not too far in past or future
+  const now = new Date();
+  const oneYearAgo = new Date(
+    now.getFullYear() - 1,
+    now.getMonth(),
+    now.getDate(),
+  );
+  const oneYearFromNow = new Date(
+    now.getFullYear() + 1,
+    now.getMonth(),
+    now.getDate(),
+  );
 
-    if (datumUplate < oneYearAgo || datumUplate > oneYearFromNow) {
-      throw new InvalidArgumentError(
-        "Date must be within one year of current date",
-      );
-    }
+  if (datumUplate < oneYearAgo || datumUplate > oneYearFromNow) {
+    throw new InvalidArgumentError(
+      "Date must be within one year of current date",
+    );
   }
   return {
     "Clanski Broj": clanskiBroj,

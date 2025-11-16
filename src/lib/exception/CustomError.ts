@@ -1,9 +1,9 @@
-export default class CustomError extends Error {
+export default abstract class CustomError extends Error {
   public readonly message: string;
 
-  constructor(
+  protected constructor(
     message: string,
-    public readonly status: string,
+    public readonly status: number,
   ) {
     super(message);
     this.message = message;

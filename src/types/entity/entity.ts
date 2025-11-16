@@ -1,3 +1,5 @@
+import { ClanStatus, ClanarinaType, PlacanjeType } from "@/types";
+
 export type User = {
   username: string;
   name: string;

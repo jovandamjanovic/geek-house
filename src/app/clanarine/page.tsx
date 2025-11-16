@@ -259,7 +259,8 @@ function MemberList({
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesStatus =
-      statusFilter === "all" || member.status === ClanStatus[statusFilter];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      statusFilter === "all" || member.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -857,7 +858,8 @@ export default function ClanarinePage() {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesStatus =
-      statusFilter === "all" || member.status === ClanStatus[statusFilter];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      statusFilter === "all" || member.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
   const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
