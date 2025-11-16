@@ -8,8 +8,8 @@ export class ClanarinaDataTransformer implements DataTransformer<Clanarina> {
       entity.id || "",
       entity["Clanski Broj"],
       DateUtils.format(entity["Datum Uplate"]),
-      entity.tip,
-      entity["Nacin Placanja"],
+      String(entity.tip),
+      String(entity["Nacin Placanja"]),
       entity.napravio,
     ];
   }

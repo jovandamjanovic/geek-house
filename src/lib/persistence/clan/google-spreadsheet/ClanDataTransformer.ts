@@ -9,7 +9,7 @@ export class ClanDataTransformer implements DataTransformer<Clan> {
       entity["Ime i Prezime"],
       entity.email || "",
       FormatUtils.phone(entity.telefon || ""),
-      entity.status ?? ClanStatus.PROBNI,
+      String(entity.status ?? ClanStatus.PROBNI),
       DateUtils.format(entity["Datum Rodjenja"]),
       entity.Napomene || "",
     ];
