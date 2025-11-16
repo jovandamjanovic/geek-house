@@ -1,6 +1,6 @@
 // DTO interfaces for API responses (with serialized dates)
 export interface ClanRequest {
-  "Clanski Broj": string|null;
+  "Clanski Broj": string | null;
   "Ime i Prezime": string;
   email?: string;
   telefon?: string;
@@ -11,6 +11,6 @@ export interface ClanRequest {
 
 export interface ClanarinaRequest {
   id: string;
-  "Clanski Broj": string|null;
-  "Datum Uplate": string|null; // ISO string in API responses
+  "Clanski Broj": string | null;
+  "Datum Uplate": string | null; // ISO string in API responses
 }

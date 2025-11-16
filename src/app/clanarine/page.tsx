@@ -413,7 +413,7 @@ function MemberModal({
           "Ime i Prezime": member["Ime i Prezime"],
           email: member.email || "",
           telefon: member.telefon || "",
-          status: member.status,
+          status: String(member.status) as ClanStatus,
           "Datum Rodjenja": member["Datum Rodjenja"],
           Napomene: member.Napomene || "",
         });
@@ -533,7 +533,7 @@ function MemberModal({
                 <select
                   disabled={isProtectedMember || isLoading}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
-                  value={formData.status || ClanStatus.PROBNI}
+                  value={String(formData.status || ClanStatus.PROBNI)}
                   onChange={(e) =>
                     setFormData((prev) => ({
                       ...prev,
