@@ -1,4 +1,4 @@
-import { Clanarina } from "@/types";
+import { Clanarina, ClanarinaType, PlacanjeType } from "@/types";
 import { DateUtils } from "@/lib/utils";
 import { DataTransformer } from "@/lib/persistence/google-spreadsheet/DataTransformer";
 
@@ -19,8 +19,8 @@ export class ClanarinaDataTransformer implements DataTransformer<Clanarina> {
       id: row[0] || "",
       "Clanski Broj": row[1] || "",
       "Datum Uplate": DateUtils.parse(row[2] || ""),
-      tip: row[3] || "",
-      "Nacin Placanja": row[4] || "",
+      tip: row[3] || ClanarinaType.MESECNA,
+      "Nacin Placanja": row[4] || PlacanjeType.GOTOVINSKI,
       napravio: row[5] || "",
     };
   }
