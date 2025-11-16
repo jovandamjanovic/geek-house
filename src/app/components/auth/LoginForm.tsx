@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import {useState} from 'react';
+import {useAuth} from '@/contexts/AuthContext';
 
 interface LoginFormProps {
   onSuccess?: () => void;
 }
 
 export default function LoginForm({ onSuccess }: LoginFormProps) {
+    const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -19,9 +20,10 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
     setIsLoading(true);
 
     try {
-      const success = await login(password);
-      
+        const success = await login(username, password);
+
       if (success) {
+          setUsername('');
         setPassword('');
         onSuccess?.();
       } else {
@@ -47,6 +49,21 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="username" className="sr-only">
+                    Lozinka
+                </label>
+                <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    required
+                    disabled={isLoading}
+                    className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-lg disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+            </div>
           <div>
             <label htmlFor="password" className="sr-only">
               Lozinka
@@ -72,7 +89,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
           <div>
             <button
               type="submit"
-              disabled={isLoading || !password.trim()}
+              disabled={isLoading || (!username.trim() && !password.trim())}
               className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading && (

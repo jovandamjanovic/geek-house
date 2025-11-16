@@ -1,10 +1,10 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (password: string) => Promise<boolean>;
+    login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -76,14 +76,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(false);
   }, [storage]);
 
-  const login = async (password: string): Promise<boolean> => {
+    const login = async (username: string = 'admin', password: string): Promise<boolean> => {
     try {
-      const response = await fetch('/api/auth/login', {
+        console.log('Login attempt with username:', username);
+        const response = await fetch('/api/auth/v2/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ password }),
+            body: JSON.stringify({username: username, password: password}),
       });
 
       if (response.ok) {
