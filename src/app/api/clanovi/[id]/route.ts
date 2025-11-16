@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {clanService} from '@/lib/domain/clan-management/services';
+import {clanService} from '@/lib/domain/clan-management/service';
 import {ApiResponse, Clan, ClanStatus} from '@/types';
 import {sanitizeString, validateEmail, validatePhone} from '@/lib/validation';
 
