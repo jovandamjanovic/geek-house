@@ -71,8 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
-    const { password } = body;
+    const { password } = (await request.json()) as { password: string };
 
     // Check for required environment variables
     const adminPassword = process.env.ADMIN_PASSWORD;

@@ -17,13 +17,13 @@
   font-size: 18px;
   font-weight: bold;
   margin: 0;
-    color: #2c1810;
+  color: #2c1810;
 }
 
 .viewAll {
   background: none;
   border: none;
-    color: #8b4513;
+  color: #8b4513;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -48,12 +48,12 @@
   align-items: center;
   padding: 12px;
   border-radius: 8px;
-    background: #f8f8f8;
+  background: #f8f8f8;
   transition: background-color 0.2s;
 }
 
 .article:hover {
-    background: #f0f0f0;
+  background: #f0f0f0;
 }
 
 .articleImage {
@@ -69,7 +69,7 @@
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 4px 0;
-    color: #2c1810;
+  color: #2c1810;
   line-height: 1.3;
 }
 

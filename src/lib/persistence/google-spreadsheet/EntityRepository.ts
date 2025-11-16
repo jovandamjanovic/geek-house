@@ -107,7 +107,9 @@ export abstract class EntityRepository<TEntity> {
 
       if (rowIndex === -1) return null;
 
-      const entity = this.config.dataTransformer.rowToEntity(rows[rowIndex]);
+      const entity = this.config.dataTransformer.rowToEntity(
+        rows[rowIndex].map(String),
+      );
       return { entity, rowIndex };
     });
   }

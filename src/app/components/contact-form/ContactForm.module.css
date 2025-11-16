@@ -106,12 +106,12 @@
     padding: 1rem;
   }
 
-    .title {
+  .title {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
   }
 
-    .submitButton {
+  .submitButton {
     align-self: stretch;
   }
 }

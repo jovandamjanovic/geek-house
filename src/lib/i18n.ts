@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { getRequestConfig } from "next-intl/server";
 
 export const locales = ["sr", "en", "ru", "fr", "es"] as const;

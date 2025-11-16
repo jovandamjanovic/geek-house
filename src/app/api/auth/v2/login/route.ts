@@ -4,8 +4,11 @@ import { authService, userService } from "@/lib/domain/user-management/service";
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
-    const body = await request.json();
-    const { username, password } = body;
+
+    const { username, password } = (await request.json()) as {
+      username: string;
+      password: string;
+    };
     const user = await userService.getUserByUsername(username);
     if (!user) {
       throw new Error("User not found");

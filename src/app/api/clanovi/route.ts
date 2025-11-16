@@ -25,7 +25,14 @@ export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse<Clan>>> {
   try {
-    const body = await request.json();
+    const body = (await request.json()) as {
+      "Ime i Prezime"?: string | null;
+      email?: string | null;
+      telefon?: string | null;
+      status?: string | null;
+      "Datum Rodjenja"?: string | null;
+      Napomene?: string | null;
+    } | null;
 
     // Input sanitization
     if (typeof body !== "object" || body === null) {

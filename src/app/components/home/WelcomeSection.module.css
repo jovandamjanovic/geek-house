@@ -1,6 +1,6 @@
 /* Welcome Section */
 .welcome {
-    background: #8b4513;
+  background: #8b4513;
   border-radius: 16px;
   padding: 24px;
   text-align: center;
@@ -28,7 +28,7 @@
 }
 
 .joinButton {
-    background: #d2691e;
+  background: #d2691e;
   color: white;
   border: none;
   border-radius: 20px;
@@ -40,7 +40,7 @@
 }
 
 .joinButton:hover {
-    background: #cd853f;
+  background: #cd853f;
 }
 
 /* Desktop Responsive */

@@ -15,12 +15,24 @@ export class ClanarinaDataTransformer implements DataTransformer<Clanarina> {
   }
 
   rowToEntity(row: string[]): Clanarina {
+    const tip = (ClanarinaType = Object.values(ClanarinaType).includes(
+      row[3] as ClanarinaType,
+    )
+      ? (row[3] as ClanarinaType)
+      : ClanarinaType.MESECNA);
+
+    const nacinPlacanja = (PlacanjeType = Object.values(PlacanjeType).includes(
+      row[4] as PlacanjeType,
+    )
+      ? (row[4] as PlacanjeType)
+      : PlacanjeType.GOTOVINSKI);
+
     return {
       id: row[0] || "",
       "Clanski Broj": row[1] || "",
       "Datum Uplate": DateUtils.parse(row[2] || ""),
-      tip: ClanarinaType[row[3]] || ClanarinaType.MESECNA,
-      "Nacin Placanja": PlacanjeType[row[4]] || PlacanjeType.GOTOVINSKI,
+      tip: tip,
+      "Nacin Placanja": nacinPlacanja,
       napravio: row[5] || "",
     };
   }

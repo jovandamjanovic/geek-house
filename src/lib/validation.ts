@@ -3,7 +3,7 @@ import { ClanStatus } from "@/types";
 // Input sanitization helper
 export function sanitizeString(value: unknown): string {
   if (typeof value !== "string") return "";
-  return value.trim().replace(/[<>"'&`\/\\]/g, "");
+  return value.trim().replace(/[<>"'&`/\\]/g, "");
 }
 
 export function validateEmail(email: string): boolean {

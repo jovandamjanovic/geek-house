@@ -85,13 +85,13 @@ function MemberTable({
               <td className="px-6 py-4 whitespace-nowrap">
                 <span
                   className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    member.status === "Aktivan"
+                    member.status === ClanStatus.AKTIVAN
                       ? "bg-green-100 text-green-800"
-                      : member.status === "Pasivan"
+                      : member.status === ClanStatus.PASIVAN
                         ? "bg-yellow-100 text-yellow-800"
-                        : member.status === "Probni"
+                        : member.status === ClanStatus.PROBNI
                           ? "bg-blue-100 text-blue-800"
-                          : member.status === "Istekao"
+                          : member.status === ClanStatus.ISTEKAO
                             ? "bg-red-100 text-red-800"
                             : "bg-gray-100 text-gray-800"
                   }`}
@@ -259,7 +259,7 @@ function MemberList({
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesStatus =
-      statusFilter === "all" || member.status === statusFilter;
+      statusFilter === "all" || member.status === ClanStatus[statusFilter];
     return matchesSearch && matchesStatus;
   });
 
@@ -688,7 +688,11 @@ export default function ClanarinePage() {
         if (!response.ok) {
           throw new Error("Failed to fetch members");
         }
-        const data = await response.json();
+        const data = (await response.json()) as {
+          success: boolean;
+          data: Clan[];
+          error?: string;
+        };
         if (data.success) {
           setMembers(data.data);
         } else {
@@ -745,7 +749,11 @@ export default function ClanarinePage() {
 
       // Refresh members list
       const membersResponse = await fetch("/api/clanovi");
-      const membersData = await membersResponse.json();
+      const membersData = (await membersResponse.json()) as {
+        success: boolean;
+        data: Clan[];
+        error?: string;
+      };
       if (membersData.success) {
         setMembers(membersData.data);
       }
@@ -826,7 +834,11 @@ export default function ClanarinePage() {
 
       // Refresh members list
       const membersResponse = await fetch("/api/clanovi");
-      const membersData = await membersResponse.json();
+      const membersData = (await membersResponse.json()) as {
+        success: boolean;
+        data: Clan[];
+        error?: string;
+      };
       if (membersData.success) {
         setMembers(membersData.data);
       }
@@ -845,7 +857,7 @@ export default function ClanarinePage() {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesStatus =
-      statusFilter === "all" || member.status === statusFilter;
+      statusFilter === "all" || member.status === ClanStatus[statusFilter];
     return matchesSearch && matchesStatus;
   });
   const totalPages = Math.ceil(filteredMembers.length / membersPerPage);

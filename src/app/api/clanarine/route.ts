@@ -22,7 +22,10 @@ export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse<Clanarina>>> {
   try {
-    const body = await request.json();
+    const body = (await request.json()) as {
+      "Clanski Broj"?: string | null;
+      "Datum Uplate"?: string | null;
+    } | null;
 
     // Validate required fields
     const requiredFields = ["Clanski Broj", "Datum Uplate"];
