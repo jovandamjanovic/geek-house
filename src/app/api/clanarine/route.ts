@@ -24,7 +24,7 @@ export async function POST(
   try {
     const body = (await request.json()) as {
       "Clanski Broj"?: string | null;
-      "Datum Uplate"?: string | null;
+      "Datum Uplate"?: string | Date | null;
     } | null;
 
     // Validate required fields
