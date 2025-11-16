@@ -69,7 +69,7 @@ export async function PUT(
 
     const body = (await request.json()) as {
       "Clanski Broj"?: string | null;
-      "Datum Uplate"?: string | null;
+      "Datum Uplate"?: string | Date | null;
     } | null;
 
     // Input sanitization
