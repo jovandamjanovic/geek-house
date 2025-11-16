@@ -32,8 +32,9 @@ export function middleware(request: NextRequest) {
   if (isProtectedPath) {
     // Check for authentication cookie
     const authCookie = request.cookies.get("gh_admin");
+    const loggedInUser = request.cookies.get("logged_in_user");
 
-    if (!authCookie || authCookie.value !== "1") {
+    if (!loggedInUser && (!authCookie || authCookie.value !== "1")) {
       // For API routes, return JSON error
       if (pathname.startsWith("/api/")) {
         return NextResponse.json(
