@@ -19,8 +19,8 @@ export class ClanarinaDataTransformer implements DataTransformer<Clanarina> {
       id: row[0] || "",
       "Clanski Broj": row[1] || "",
       "Datum Uplate": DateUtils.parse(row[2] || ""),
-      tip: row[3] || ClanarinaType.MESECNA,
-      "Nacin Placanja": row[4] || PlacanjeType.GOTOVINSKI,
+      tip: ClanarinaType[row[3]] || ClanarinaType.MESECNA,
+      "Nacin Placanja": PlacanjeType[row[4]] || PlacanjeType.GOTOVINSKI,
       napravio: row[5] || "",
     };
   }
