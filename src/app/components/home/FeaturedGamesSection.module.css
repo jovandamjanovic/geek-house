@@ -10,7 +10,7 @@
   font-size: 18px;
   font-weight: bold;
   margin: 0 0 16px 0;
-  color: #2C1810;
+    color: #2c1810;
 }
 
 .carouselContainer {
@@ -27,7 +27,7 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  background: #F8F8F8;
+    background: #f8f8f8;
   border-radius: 12px;
   padding: 16px;
   height: 180px;
@@ -48,7 +48,7 @@
   font-size: 14px;
   font-weight: bold;
   margin: 0 0 6px 0;
-  color: #2C1810;
+    color: #2c1810;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -86,13 +86,13 @@
 }
 
 .carouselContainer :global(.slick-dots li button:before) {
-  color: #8B4513;
+    color: #8b4513;
   opacity: 0.5;
   font-size: 12px;
 }
 
 .carouselContainer :global(.slick-dots li.slick-active button:before) {
-  color: #8B4513;
+    color: #8b4513;
   opacity: 1;
 }
 
@@ -192,13 +192,13 @@
   .slideWrapper {
     padding: 0 4px;
   }
-  
-  .gameCard {
+
+    .gameCard {
     margin: 0 2px;
     height: 160px;
   }
-  
-  .gameImage {
+
+    .gameImage {
     width: 80px;
     height: 80px;
   }

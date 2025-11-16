@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LanguageWrapperProps {
   children: React.ReactNode;
@@ -12,7 +12,11 @@ interface LanguageWrapperProps {
   };
 }
 
-const LanguageWrapper = ({ children, geistSans, geistMono }: LanguageWrapperProps) => {
+const LanguageWrapper = ({
+  children,
+  geistSans,
+  geistMono,
+}: LanguageWrapperProps) => {
   const { locale } = useLanguage();
 
   return (

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import LoginForm from './LoginForm';
+import { ReactNode } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import LoginForm from "./LoginForm";
 
 interface ProtectedPageProps {
   children: ReactNode;

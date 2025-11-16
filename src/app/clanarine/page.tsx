@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Clan, ClanStatus } from '@/types';
-import ProtectedPage from '@/app/components/auth/ProtectedPage';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEffect, useState } from "react";
+import { Clan, ClanStatus } from "@/types";
+import ProtectedPage from "@/app/components/auth/ProtectedPage";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MemberListProps {
   members: Clan[];
@@ -20,7 +20,13 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-function MemberTable({ members, onRowClick }: { members: Clan[]; onRowClick: (member: Clan) => void }) {
+function MemberTable({
+  members,
+  onRowClick,
+}: {
+  members: Clan[];
+  onRowClick: (member: Clan) => void;
+}) {
   if (members.length === 0) {
     return (
       <div className="text-center py-8">
@@ -59,46 +65,49 @@ function MemberTable({ members, onRowClick }: { members: Clan[]; onRowClick: (me
         </thead>
         <tbody className="divide-y divide-gray-200">
           {members.map((member) => (
-            <tr 
-              key={member['Ime i Prezime']} 
+            <tr
+              key={member["Ime i Prezime"]}
               className="hover:bg-gray-50 cursor-pointer"
               onClick={() => onRowClick(member)}
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {member['Clanski Broj']}
+                {member["Clanski Broj"]}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {member['Ime i Prezime']}
+                {member["Ime i Prezime"]}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {member.email || '-'}
+                {member.email || "-"}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {member.telefon || '-'}
+                {member.telefon || "-"}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                  member.status === 'Aktivan' 
-                    ? 'bg-green-100 text-green-800'
-                    : member.status === 'Pasivan'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : member.status === 'Probni'
-                    ? 'bg-blue-100 text-blue-800'
-                    : member.status === 'Istekao'
-                    ? 'bg-red-100 text-red-800'
-                    : 'bg-gray-100 text-gray-800'
-                }`}>
+                <span
+                  className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    member.status === "Aktivan"
+                      ? "bg-green-100 text-green-800"
+                      : member.status === "Pasivan"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : member.status === "Probni"
+                          ? "bg-blue-100 text-blue-800"
+                          : member.status === "Istekao"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                  }`}
+                >
                   {member.status}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {member['Datum Rodjenja'] 
-                  ? new Date(member['Datum Rodjenja']).toLocaleDateString('sr-RS')
-                  : '-'
-                }
+                {member["Datum Rodjenja"]
+                  ? new Date(member["Datum Rodjenja"]).toLocaleDateString(
+                      "sr-RS",
+                    )
+                  : "-"}
               </td>
               <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
-                {member.Napomene || '-'}
+                {member.Napomene || "-"}
               </td>
             </tr>
           ))}
@@ -108,10 +117,19 @@ function MemberTable({ members, onRowClick }: { members: Clan[]; onRowClick: (me
   );
 }
 
-function SearchBar({ searchTerm, onSearchChange }: { searchTerm: string; onSearchChange: (value: string) => void }) {
+function SearchBar({
+  searchTerm,
+  onSearchChange,
+}: {
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+}) {
   return (
     <div className="mb-6">
-      <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+      <label
+        htmlFor="search"
+        className="block text-sm font-medium text-gray-700 mb-2"
+      >
         Pretraga članova po imenu
       </label>
       <input
@@ -126,20 +144,40 @@ function SearchBar({ searchTerm, onSearchChange }: { searchTerm: string; onSearc
   );
 }
 
-function StatusFilter({ 
-  selectedStatus, 
-  onStatusChange 
-}: { 
-  selectedStatus: string; 
+function StatusFilter({
+  selectedStatus,
+  onStatusChange,
+}: {
+  selectedStatus: string;
   onStatusChange: (status: string) => void;
 }) {
   const statusOptions = [
-    { value: 'all', label: 'Svi članovi', color: 'bg-gray-100 text-gray-800' },
-    { value: ClanStatus.AKTIVAN, label: 'Aktivni', color: 'bg-green-100 text-green-800' },
-    { value: ClanStatus.PASIVAN, label: 'Pasivni', color: 'bg-yellow-100 text-yellow-800' },
-    { value: ClanStatus.PROBNI, label: 'Probni', color: 'bg-blue-100 text-blue-800' },
-    { value: ClanStatus.ISTEKAO, label: 'Istekao', color: 'bg-red-100 text-red-800' },
-    { value: ClanStatus.ISKLJUCEN, label: 'Isključen', color: 'bg-gray-100 text-gray-800' },
+    { value: "all", label: "Svi članovi", color: "bg-gray-100 text-gray-800" },
+    {
+      value: ClanStatus.AKTIVAN,
+      label: "Aktivni",
+      color: "bg-green-100 text-green-800",
+    },
+    {
+      value: ClanStatus.PASIVAN,
+      label: "Pasivni",
+      color: "bg-yellow-100 text-yellow-800",
+    },
+    {
+      value: ClanStatus.PROBNI,
+      label: "Probni",
+      color: "bg-blue-100 text-blue-800",
+    },
+    {
+      value: ClanStatus.ISTEKAO,
+      label: "Istekao",
+      color: "bg-red-100 text-red-800",
+    },
+    {
+      value: ClanStatus.ISKLJUCEN,
+      label: "Isključen",
+      color: "bg-gray-100 text-gray-800",
+    },
   ];
 
   return (
@@ -155,7 +193,7 @@ function StatusFilter({
             className={`px-4 py-2 text-sm font-medium rounded-full border transition-colors ${
               selectedStatus === option.value
                 ? `${option.color} border-current`
-                : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-50'
+                : "bg-white text-gray-500 border-gray-300 hover:bg-gray-50"
             }`}
           >
             {option.label}
@@ -166,9 +204,13 @@ function StatusFilter({
   );
 }
 
-function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  
+
   return (
     <div className="flex justify-center items-center space-x-4 mt-12">
       <button
@@ -178,21 +220,21 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       >
         Prethodna
       </button>
-      
-      {pages.map(page => (
+
+      {pages.map((page) => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
           className={`px-4 py-3 text-base font-medium rounded-lg transition-colors ${
             currentPage === page
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
-              : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50'
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
           }`}
         >
           {page}
         </button>
       ))}
-      
+
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
@@ -204,10 +246,20 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
   );
 }
 
-function MemberList({ members, searchTerm, statusFilter, currentPage, membersPerPage, onRowClick }: MemberListProps) {
-  const filteredMembers = members.filter(member => {
-    const matchesSearch = member['Ime i Prezime'].toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || member.status === statusFilter;
+function MemberList({
+  members,
+  searchTerm,
+  statusFilter,
+  currentPage,
+  membersPerPage,
+  onRowClick,
+}: MemberListProps) {
+  const filteredMembers = members.filter((member) => {
+    const matchesSearch = member["Ime i Prezime"]
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || member.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -219,7 +271,9 @@ function MemberList({ members, searchTerm, statusFilter, currentPage, membersPer
     return (
       <div className="text-center py-8">
         <p className="text-gray-500">
-          {searchTerm ? 'Nema članova koji odgovaraju pretrazi.' : 'Nema članova za prikaz.'}
+          {searchTerm
+            ? "Nema članova koji odgovaraju pretrazi."
+            : "Nema članova za prikaz."}
         </p>
       </div>
     );
@@ -235,13 +289,13 @@ function MemberList({ members, searchTerm, statusFilter, currentPage, membersPer
   );
 }
 
-function ConfirmationDialog({ 
-  isOpen, 
-  onClose, 
-  onConfirm, 
-  title, 
+function ConfirmationDialog({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
   message,
-  isLoading = false 
+  isLoading = false,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -254,14 +308,17 @@ function ConfirmationDialog({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto !pt-12">
-      <div 
+      <div
         className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
         onClick={onClose}
       >
-        <div className="fixed inset-0 z-40 transition-opacity" aria-hidden="true">
+        <div
+          className="fixed inset-0 z-40 transition-opacity"
+          aria-hidden="true"
+        >
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <div 
+        <div
           className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 relative z-50"
           onClick={(e) => e.stopPropagation()}
         >
@@ -271,9 +328,7 @@ function ConfirmationDialog({
                 {title}
               </h3>
               <div className="mt-2">
-                <p className="text-sm text-gray-500">
-                  {message}
-                </p>
+                <p className="text-sm text-gray-500">{message}</p>
               </div>
             </div>
           </div>
@@ -285,12 +340,28 @@ function ConfirmationDialog({
               onClick={onConfirm}
             >
               {isLoading && (
-                <svg className="animate-spin h-4 w-4 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin h-4 w-4 text-white mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
               )}
-              {isLoading ? 'Obrađuje...' : 'Potvrdi'}
+              {isLoading ? "Obrađuje..." : "Potvrdi"}
             </button>
             <button
               type="button"
@@ -307,12 +378,12 @@ function ConfirmationDialog({
   );
 }
 
-function MemberModal({ 
-  isOpen, 
-  onClose, 
-  member, 
-  onSave, 
-  onPayMembership 
+function MemberModal({
+  isOpen,
+  onClose,
+  member,
+  onSave,
+  onPayMembership,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -321,39 +392,39 @@ function MemberModal({
   onPayMembership: (clanskiBroj: string) => void;
 }) {
   const [formData, setFormData] = useState<Partial<Clan>>({
-    'Ime i Prezime': '',
-    email: '',
-    telefon: '',
+    "Ime i Prezime": "",
+    email: "",
+    telefon: "",
     status: ClanStatus.PROBNI,
-    'Datum Rodjenja': undefined,
-    Napomene: ''
+    "Datum Rodjenja": undefined,
+    Napomene: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = !!member;
-  const isProtectedMember = member?.['Clanski Broj'] === 'P/01';
+  const isProtectedMember = member?.["Clanski Broj"] === "P/01";
   const canPayMembership = isEditMode && !isProtectedMember;
 
   useEffect(() => {
     if (isOpen) {
       if (member) {
         setFormData({
-          'Clanski Broj': member['Clanski Broj'],
-          'Ime i Prezime': member['Ime i Prezime'],
-          email: member.email || '',
-          telefon: member.telefon || '',
+          "Clanski Broj": member["Clanski Broj"],
+          "Ime i Prezime": member["Ime i Prezime"],
+          email: member.email || "",
+          telefon: member.telefon || "",
           status: member.status,
-          'Datum Rodjenja': member['Datum Rodjenja'],
-          Napomene: member.Napomene || ''
+          "Datum Rodjenja": member["Datum Rodjenja"],
+          Napomene: member.Napomene || "",
         });
       } else {
         setFormData({
-          'Ime i Prezime': '',
-          email: '',
-          telefon: '',
+          "Ime i Prezime": "",
+          email: "",
+          telefon: "",
           status: ClanStatus.PROBNI,
-          'Datum Rodjenja': undefined,
-          Napomene: ''
+          "Datum Rodjenja": undefined,
+          Napomene: "",
         });
       }
     }
@@ -374,30 +445,33 @@ function MemberModal({
   };
 
   const handlePayMembership = () => {
-    if (member?.['Clanski Broj']) {
-      onPayMembership(member['Clanski Broj']);
+    if (member?.["Clanski Broj"]) {
+      onPayMembership(member["Clanski Broj"]);
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto !pt-12">
-      <div 
+      <div
         className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
         onClick={onClose}
       >
-        <div className="fixed inset-0 z-40 transition-opacity" aria-hidden="true">
+        <div
+          className="fixed inset-0 z-40 transition-opacity"
+          aria-hidden="true"
+        >
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <div 
+        <div
           className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6 relative z-50"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="mb-4">
             <h3 className="text-lg leading-6 font-medium text-gray-900">
-              {isEditMode ? 'Uredi člana' : 'Novi član'}
+              {isEditMode ? "Uredi člana" : "Novi član"}
             </h3>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -409,11 +483,16 @@ function MemberModal({
                   required
                   disabled={isProtectedMember || isLoading}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
-                  value={formData['Ime i Prezime'] || ''}
-                  onChange={(e) => setFormData(prev => ({ ...prev, 'Ime i Prezime': e.target.value }))}
+                  value={formData["Ime i Prezime"] || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      "Ime i Prezime": e.target.value,
+                    }))
+                  }
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Email
@@ -422,11 +501,13 @@ function MemberModal({
                   type="email"
                   disabled={isProtectedMember || isLoading}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
-                  value={formData.email || ''}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  value={formData.email || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Telefon
@@ -435,11 +516,16 @@ function MemberModal({
                   type="tel"
                   disabled={isProtectedMember || isLoading}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
-                  value={formData.telefon || ''}
-                  onChange={(e) => setFormData(prev => ({ ...prev, telefon: e.target.value }))}
+                  value={formData.telefon || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      telefon: e.target.value,
+                    }))
+                  }
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Status
@@ -448,7 +534,12 @@ function MemberModal({
                   disabled={isProtectedMember || isLoading}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
                   value={formData.status || ClanStatus.PROBNI}
-                  onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as ClanStatus }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      status: e.target.value as ClanStatus,
+                    }))
+                  }
                 >
                   <option value={ClanStatus.PROBNI}>Probni</option>
                   <option value={ClanStatus.AKTIVAN}>Aktivan</option>
@@ -457,7 +548,7 @@ function MemberModal({
                   <option value={ClanStatus.ISKLJUCEN}>Isključen</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Datum Rođenja
@@ -466,15 +557,25 @@ function MemberModal({
                   type="date"
                   disabled={isProtectedMember || isLoading}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
-                  value={formData['Datum Rodjenja'] ? new Date(formData['Datum Rodjenja']).toISOString().split('T')[0] : ''}
-                  onChange={(e) => setFormData(prev => ({ 
-                    ...prev, 
-                    'Datum Rodjenja': e.target.value ? new Date(e.target.value) : undefined 
-                  }))}
+                  value={
+                    formData["Datum Rodjenja"]
+                      ? new Date(formData["Datum Rodjenja"])
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      "Datum Rodjenja": e.target.value
+                        ? new Date(e.target.value)
+                        : undefined,
+                    }))
+                  }
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Napomene
@@ -483,11 +584,13 @@ function MemberModal({
                 disabled={isProtectedMember || isLoading}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 text-gray-900"
-                value={formData.Napomene || ''}
-                onChange={(e) => setFormData(prev => ({ ...prev, Napomene: e.target.value }))}
+                value={formData.Napomene || ""}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, Napomene: e.target.value }))
+                }
               />
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               {canPayMembership && (
                 <button
@@ -499,7 +602,7 @@ function MemberModal({
                   Uplati Članarinu
                 </button>
               )}
-              
+
               <div className="flex gap-3 ml-auto">
                 {!isProtectedMember && (
                   <button
@@ -508,15 +611,35 @@ function MemberModal({
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     {isLoading && (
-                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                     )}
-                    {isLoading ? 'Čuva...' : (isEditMode ? 'Ažuriraj' : 'Kreiraj')}
+                    {isLoading
+                      ? "Čuva..."
+                      : isEditMode
+                        ? "Ažuriraj"
+                        : "Kreiraj"}
                   </button>
                 )}
-                
+
                 <button
                   type="button"
                   onClick={onClose}
@@ -538,8 +661,8 @@ export default function ClanarinePage() {
   const [members, setMembers] = useState<Clan[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedMember, setSelectedMember] = useState<Clan | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -551,28 +674,28 @@ export default function ClanarinePage() {
     isLoading: boolean;
   }>({
     isOpen: false,
-    title: '',
-    message: '',
+    title: "",
+    message: "",
     onConfirm: () => {},
-    isLoading: false
+    isLoading: false,
   });
   const membersPerPage = 20;
 
   useEffect(() => {
     async function fetchMembers() {
       try {
-        const response = await fetch('/api/clanovi');
+        const response = await fetch("/api/clanovi");
         if (!response.ok) {
-          throw new Error('Failed to fetch members');
+          throw new Error("Failed to fetch members");
         }
         const data = await response.json();
         if (data.success) {
           setMembers(data.data);
         } else {
-          throw new Error(data.error || 'Failed to fetch members');
+          throw new Error(data.error || "Failed to fetch members");
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -600,20 +723,20 @@ export default function ClanarinePage() {
   const handleSaveMember = async (memberData: Partial<Clan>): Promise<void> => {
     try {
       const isEdit = !!selectedMember;
-      const url = isEdit 
-        ? `/api/clanovi/${selectedMember?.['Clanski Broj']}` 
-        : '/api/clanovi';
-      
+      const url = isEdit
+        ? `/api/clanovi/${selectedMember?.["Clanski Broj"]}`
+        : "/api/clanovi";
+
       const response = await fetch(url, {
-        method: isEdit ? 'PUT' : 'POST',
+        method: isEdit ? "PUT" : "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(memberData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to save member');
+        throw new Error("Failed to save member");
       }
 
       // Close modal only on successful response (200-299)
@@ -621,90 +744,108 @@ export default function ClanarinePage() {
       setSelectedMember(null);
 
       // Refresh members list
-      const membersResponse = await fetch('/api/clanovi');
+      const membersResponse = await fetch("/api/clanovi");
       const membersData = await membersResponse.json();
       if (membersData.success) {
         setMembers(membersData.data);
       }
     } catch (err) {
       // Modal stays open on error
-      alert('Greška pri čuvanju člana: ' + (err instanceof Error ? err.message : 'Nepoznata greška'));
+      alert(
+        "Greška pri čuvanju člana: " +
+          (err instanceof Error ? err.message : "Nepoznata greška"),
+      );
     }
   };
 
   const handlePayMembership = (clanskiBroj: string) => {
     setConfirmDialog({
       isOpen: true,
-      title: 'Potvrda uplate članarine',
+      title: "Potvrda uplate članarine",
       message: `Da li ste sigurni da želite da uplatite članarinu za člana ${clanskiBroj}? Ova akcija će ažurirati status člana na "Aktivan" i kreirati novi zapis o uplati.`,
       onConfirm: () => confirmPayMembership(clanskiBroj),
-      isLoading: false
+      isLoading: false,
     });
   };
 
   const confirmPayMembership = async (clanskiBroj: string) => {
     // Set loading state
-    setConfirmDialog(prev => ({ ...prev, isLoading: true }));
-    
+    setConfirmDialog((prev) => ({ ...prev, isLoading: true }));
+
     try {
-      const member = members.find(m => m['Clanski Broj'] === clanskiBroj);
+      const member = members.find((m) => m["Clanski Broj"] === clanskiBroj);
       if (!member) return;
 
       // Update member status to Aktivan if they are Probni or Pasivan
-      if (member.status === ClanStatus.PROBNI || member.status === ClanStatus.PASIVAN) {
+      if (
+        member.status === ClanStatus.PROBNI ||
+        member.status === ClanStatus.PASIVAN
+      ) {
         const updateResponse = await fetch(`/api/clanovi/${clanskiBroj}`, {
-          method: 'PUT',
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             ...member,
-            status: ClanStatus.AKTIVAN
+            status: ClanStatus.AKTIVAN,
           }),
         });
 
         if (!updateResponse.ok) {
-          throw new Error('Failed to update member status');
+          throw new Error("Failed to update member status");
         }
       }
 
       // Create new clanarina record
-      const clanarinResponse = await fetch('/api/clanarine', {
-        method: 'POST',
+      const clanarinResponse = await fetch("/api/clanarine", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          'Clanski Broj': clanskiBroj,
-          'Datum Uplate': new Date().toISOString()
+          "Clanski Broj": clanskiBroj,
+          "Datum Uplate": new Date().toISOString(),
         }),
       });
 
       if (!clanarinResponse.ok) {
-        throw new Error('Failed to create membership payment record');
+        throw new Error("Failed to create membership payment record");
       }
 
       // Close both modals only on successful payment (200-299)
-      setConfirmDialog({ isOpen: false, title: '', message: '', onConfirm: () => {}, isLoading: false });
+      setConfirmDialog({
+        isOpen: false,
+        title: "",
+        message: "",
+        onConfirm: () => {},
+        isLoading: false,
+      });
       setIsModalOpen(false);
       setSelectedMember(null);
 
       // Refresh members list
-      const membersResponse = await fetch('/api/clanovi');
+      const membersResponse = await fetch("/api/clanovi");
       const membersData = await membersResponse.json();
       if (membersData.success) {
         setMembers(membersData.data);
       }
     } catch (err) {
       // Reset loading state on error, keep dialog open
-      setConfirmDialog(prev => ({ ...prev, isLoading: false }));
-      alert('Greška pri uplati članarine: ' + (err instanceof Error ? err.message : 'Nepoznata greška'));
+      setConfirmDialog((prev) => ({ ...prev, isLoading: false }));
+      alert(
+        "Greška pri uplati članarine: " +
+          (err instanceof Error ? err.message : "Nepoznata greška"),
+      );
     }
   };
 
-  const filteredMembers = members.filter(member => {
-    const matchesSearch = member['Ime i Prezime'].toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || member.status === statusFilter;
+  const filteredMembers = members.filter((member) => {
+    const matchesSearch = member["Ime i Prezime"]
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || member.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
   const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
@@ -743,7 +884,9 @@ export default function ClanarinePage() {
           <div className="mb-8">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Članarine</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  Članarine
+                </h1>
                 <p className="text-gray-600">Pregled članova organizacije</p>
               </div>
               <button
@@ -756,13 +899,13 @@ export default function ClanarinePage() {
           </div>
 
           <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-          
-          <StatusFilter 
-            selectedStatus={statusFilter} 
-            onStatusChange={setStatusFilter} 
+
+          <StatusFilter
+            selectedStatus={statusFilter}
+            onStatusChange={setStatusFilter}
           />
 
-          <MemberList 
+          <MemberList
             members={members}
             searchTerm={searchTerm}
             statusFilter={statusFilter}
@@ -793,7 +936,15 @@ export default function ClanarinePage() {
 
         <ConfirmationDialog
           isOpen={confirmDialog.isOpen}
-          onClose={() => setConfirmDialog({ isOpen: false, title: '', message: '', onConfirm: () => {}, isLoading: false })}
+          onClose={() =>
+            setConfirmDialog({
+              isOpen: false,
+              title: "",
+              message: "",
+              onConfirm: () => {},
+              isLoading: false,
+            })
+          }
           onConfirm={confirmDialog.onConfirm}
           title={confirmDialog.title}
           message={confirmDialog.message}

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useTranslations } from '@/hooks/useTranslations';
-import styles from './QuickActionsSection.module.css';
+import React from "react";
+import { useTranslations } from "@/hooks/useTranslations";
+import styles from "./QuickActionsSection.module.css";
 
 interface ActionData {
   id: string;
@@ -18,39 +18,39 @@ interface QuickActionsSectionProps {
   onActionClick?: (action: ActionData) => void;
 }
 
-const QuickActionsSection: React.FC<QuickActionsSectionProps> = ({ 
+const QuickActionsSection: React.FC<QuickActionsSectionProps> = ({
   className,
   actions,
-  onActionClick
+  onActionClick,
 }) => {
-  const t = useTranslations('HomePage');
+  const t = useTranslations("HomePage");
 
   // Default action data if none provided
   const defaultActions: ActionData[] = [
     {
-      id: 'search',
-      icon: '🔍',
-      text: t('search'),
-      url: '/search'
+      id: "search",
+      icon: "🔍",
+      text: t("search"),
+      url: "/search",
     },
     {
-      id: 'members',
-      icon: '👥',
-      text: t('members'),
-      url: '/members'
+      id: "members",
+      icon: "👥",
+      text: t("members"),
+      url: "/members",
     },
     {
-      id: 'favorites',
-      icon: '⭐',
-      text: t('favorites'),
-      url: '/favorites'
+      id: "favorites",
+      icon: "⭐",
+      text: t("favorites"),
+      url: "/favorites",
     },
     {
-      id: 'stats',
-      icon: '📊',
-      text: t('stats'),
-      url: '/stats'
-    }
+      id: "stats",
+      icon: "📊",
+      text: t("stats"),
+      url: "/stats",
+    },
   ];
 
   const displayActions = actions || defaultActions;
@@ -61,8 +61,8 @@ const QuickActionsSection: React.FC<QuickActionsSectionProps> = ({
     } else if (action.onClick) {
       action.onClick();
     } else if (action.url) {
-      if (action.url.startsWith('http')) {
-        window.open(action.url, '_blank');
+      if (action.url.startsWith("http")) {
+        window.open(action.url, "_blank");
       } else {
         window.location.href = action.url;
       }
@@ -70,8 +70,8 @@ const QuickActionsSection: React.FC<QuickActionsSectionProps> = ({
   };
 
   return (
-    <section className={`${styles.quickActions} ${className || ''}`}>
-      <h2 className={styles.sectionTitle}>{t('quickActions')}</h2>
+    <section className={`${styles.quickActions} ${className || ""}`}>
+      <h2 className={styles.sectionTitle}>{t("quickActions")}</h2>
       <div className={styles.actionGrid}>
         {displayActions.map((action) => (
           <button

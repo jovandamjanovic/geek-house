@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import Slider from 'react-slick';
-import { useTranslations } from '@/hooks/useTranslations';
-import styles from './FeaturedGamesSection.module.css';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React from "react";
+import Image from "next/image";
+import Slider from "react-slick";
+import { useTranslations } from "@/hooks/useTranslations";
+import styles from "./FeaturedGamesSection.module.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 interface GameData {
   id: string;
@@ -23,59 +23,63 @@ interface FeaturedGamesSectionProps {
   games?: GameData[];
 }
 
-const FeaturedGamesSection: React.FC<FeaturedGamesSectionProps> = ({ 
+const FeaturedGamesSection: React.FC<FeaturedGamesSectionProps> = ({
   className,
-  games 
+  games,
 }) => {
-  const t = useTranslations('HomePage');
+  const t = useTranslations("HomePage");
 
   // Default game data if none provided - expanded for better carousel demo
   const defaultGames: GameData[] = [
     {
-      id: '1',
-      title: 'FANTASY QUEST',
-      description: t('fantasyDescription'),
-      image: '/gh_large.png',
+      id: "1",
+      title: "FANTASY QUEST",
+      description: t("fantasyDescription"),
+      image: "/gh_large.png",
       rating: 4.8,
-      players: '2-4',
-      duration: '60-90min'
+      players: "2-4",
+      duration: "60-90min",
     },
     {
-      id: '2',
-      title: 'SPACE COLONIES',
-      description: 'Build and manage colonies across different planets in this strategic space exploration game.',
-      image: '/gh_large.png',
+      id: "2",
+      title: "SPACE COLONIES",
+      description:
+        "Build and manage colonies across different planets in this strategic space exploration game.",
+      image: "/gh_large.png",
       rating: 4.6,
-      players: '1-5',
-      duration: '45-75min'
+      players: "1-5",
+      duration: "45-75min",
     },
     {
-      id: '3',
-      title: 'MEDIEVAL TRADE',
-      description: 'Become a merchant in medieval Europe, trading goods and building your commercial empire.',
-      image: '/gh_large.png',
+      id: "3",
+      title: "MEDIEVAL TRADE",
+      description:
+        "Become a merchant in medieval Europe, trading goods and building your commercial empire.",
+      image: "/gh_large.png",
       rating: 4.7,
-      players: '2-6',
-      duration: '90-120min'
+      players: "2-6",
+      duration: "90-120min",
     },
     {
-      id: '4',
-      title: 'CYBER WARFARE',
-      description: 'Lead your faction in a dystopian future where technology and strategy determine survival.',
-      image: '/gh_large.png',
+      id: "4",
+      title: "CYBER WARFARE",
+      description:
+        "Lead your faction in a dystopian future where technology and strategy determine survival.",
+      image: "/gh_large.png",
       rating: 4.5,
-      players: '2-4',
-      duration: '75-100min'
+      players: "2-4",
+      duration: "75-100min",
     },
     {
-      id: '5',
-      title: 'OCEAN EXPLORERS',
-      description: 'Dive deep into the mysteries of the ocean and discover ancient treasures and sea creatures.',
-      image: '/gh_large.png',
+      id: "5",
+      title: "OCEAN EXPLORERS",
+      description:
+        "Dive deep into the mysteries of the ocean and discover ancient treasures and sea creatures.",
+      image: "/gh_large.png",
       rating: 4.9,
-      players: '1-4',
-      duration: '30-60min'
-    }
+      players: "1-4",
+      duration: "30-60min",
+    },
   ];
 
   const displayGames = games || defaultGames;
@@ -96,15 +100,15 @@ const FeaturedGamesSection: React.FC<FeaturedGamesSectionProps> = ({
           slidesToShow: 1,
           slidesToScroll: 1,
           dots: true,
-          arrows: false
-        }
-      }
-    ]
+          arrows: false,
+        },
+      },
+    ],
   };
 
   return (
-    <section className={`${styles.featured} ${className || ''}`}>
-      <h2 className={styles.sectionTitle}>{t('featuredGames')}</h2>
+    <section className={`${styles.featured} ${className || ""}`}>
+      <h2 className={styles.sectionTitle}>{t("featuredGames")}</h2>
       <div className={styles.carouselContainer}>
         <Slider {...carouselSettings}>
           {displayGames.map((game) => (

@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { useTranslations } from '@/hooks/useTranslations';
-import styles from './header.module.css';
-import { useThrottle } from '@/hooks/useThrottle';
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslations";
+import styles from "./header.module.css";
+import { useThrottle } from "@/hooks/useThrottle";
 
 const Header: React.FC = () => {
-  const t = useTranslations('Header');
+  const t = useTranslations("Header");
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const prevScrollY = useRef(0);
 
@@ -24,18 +24,20 @@ const Header: React.FC = () => {
   }, 100);
 
   useEffect(() => {
-    window.addEventListener('scroll', throttledScroll);
-    return () => window.removeEventListener('scroll', throttledScroll);
+    window.addEventListener("scroll", throttledScroll);
+    return () => window.removeEventListener("scroll", throttledScroll);
   }, [throttledScroll]);
 
   return (
-    <header className={`${styles.header} ${!isHeaderVisible ? styles.hidden : ''}`}>
+    <header
+      className={`${styles.header} ${!isHeaderVisible ? styles.hidden : ""}`}
+    >
       <div className={styles.headerContent}>
-        <h1 className={styles.title}>{t('clubName')}</h1>
+        <h1 className={styles.title}>{t("clubName")}</h1>
         <nav className={styles.nav}>
-          <Link href="/">{t('home')}</Link>
-          <Link href="/about">{t('about')}</Link>
-          <Link href="/contact">{t('contact')}</Link>
+          <Link href="/">{t("home")}</Link>
+          <Link href="/about">{t("about")}</Link>
+          <Link href="/contact">{t("contact")}</Link>
         </nav>
       </div>
     </header>

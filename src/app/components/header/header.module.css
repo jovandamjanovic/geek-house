@@ -1,12 +1,13 @@
 .header {
-  transition: transform 0.4s ease, opacity 0.4s ease;
+    transition: transform 0.4s ease,
+    opacity 0.4s ease;
   transform: translateY(0);
   opacity: 1;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 100;
-  background: #8B4513;
+    background: #8b4513;
   color: white;
   padding: 12px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -55,16 +56,16 @@
   .headerContent {
     padding: 0 40px;
   }
-  
-  .title {
+
+    .title {
     font-size: 24px;
   }
-  
-  .nav {
+
+    .nav {
     gap: 32px;
   }
-  
-  .nav a {
+
+    .nav a {
     font-size: 16px;
   }
 }

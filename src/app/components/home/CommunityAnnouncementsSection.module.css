@@ -10,7 +10,7 @@
   font-size: 18px;
   font-weight: bold;
   margin: 0 0 16px 0;
-  color: #2C1810;
+    color: #2c1810;
 }
 
 .announcement {
@@ -19,7 +19,7 @@
   align-items: flex-start;
   padding: 12px;
   border-radius: 8px;
-  background: #F8F8F8;
+    background: #f8f8f8;
   margin-bottom: 12px;
   transition: background-color 0.2s;
 }
@@ -29,7 +29,7 @@
 }
 
 .announcement:hover {
-  background: #F0F0F0;
+    background: #f0f0f0;
 }
 
 .announcementIcon {
@@ -47,7 +47,7 @@
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 4px 0;
-  color: #2C1810;
+    color: #2c1810;
 }
 
 .announcementText {

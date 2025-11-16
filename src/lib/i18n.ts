@@ -1,7 +1,7 @@
-import {getRequestConfig} from 'next-intl/server';
+import { getRequestConfig } from "next-intl/server";
 
-export const locales = ['sr', 'en', 'ru', 'fr', 'es'] as const;
-export const defaultLocale = 'sr' as const;
+export const locales = ["sr", "en", "ru", "fr", "es"] as const;
+export const defaultLocale = "sr" as const;
 
 export default getRequestConfig(async () => {
   // Always use default locale for server-side rendering
@@ -10,6 +10,6 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default
+    messages: (await import(`../../messages/${locale}.json`)).default,
   };
 });
