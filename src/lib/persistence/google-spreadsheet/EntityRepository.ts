@@ -115,15 +115,28 @@ export abstract class EntityRepository<TEntity> {
   }
 
   protected getNextId(items: TEntity[]): string {
+    if (this.config.idField === "Clanski Broj") {
+      // Start from count + 1 and find first available ID
+      let candidateId = items.length + 1;
+      const existingIds = new Set(
+        items.map((item) => parseInt(item[this.config.idField] as string, 10)),
+      );
+
+      while (existingIds.has(candidateId)) {
+        candidateId++;
+      }
+
+      return candidateId.toString().padStart(6, "0");
+    }
+
+    // For other ID fields, use max + 1 approach
     const maxId = items.reduce((max, item) => {
       const value = item[this.config.idField] as string;
       const num = parseInt(value, 10);
       return num > max ? num : max;
     }, 0);
 
-    return this.config.idField === "Clanski Broj"
-      ? (maxId + 1).toString().padStart(6, "0")
-      : (maxId + 1).toString();
+    return (maxId + 1).toString();
   }
 
   protected async appendRow(entity: TEntity): Promise<void> {
