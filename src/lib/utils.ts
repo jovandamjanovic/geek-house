@@ -2,7 +2,7 @@
 const DateUtils = {
   parse: (dateStr: string): Date => {
     if (!dateStr) return new Date();
-    const parts = dateStr.split('/');
+    const parts = dateStr.split("/");
     if (parts.length === 3) {
       const day = parseInt(parts[0], 10);
       const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
@@ -13,9 +13,9 @@ const DateUtils = {
   },
 
   format: (date: Date | undefined): string => {
-    if (!date) return '';
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    if (!date) return "";
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   },
@@ -24,17 +24,17 @@ const DateUtils = {
 // Pure utility functions for formatting
 const FormatUtils = {
   phone: (phone: string): string => {
-    if (!phone) return '';
+    if (!phone) return "";
     const cleanPhone = phone.trim();
-    if (cleanPhone && !cleanPhone.startsWith('0')) {
-      return '0' + cleanPhone;
+    if (cleanPhone && !cleanPhone.startsWith("0")) {
+      return "0" + cleanPhone;
     }
     return cleanPhone;
   },
 
   clanskiBroj: (broj: string): string => {
-    if (!broj) return '';
-    return broj.padStart(6, '0');
+    if (!broj) return "";
+    return broj.padStart(6, "0");
   },
 };
 

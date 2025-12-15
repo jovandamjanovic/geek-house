@@ -1,3 +1,3 @@
-const IME_SAJTA = "Eliksir"
+const IME_SAJTA = "Eliksir";
 
-export {IME_SAJTA}
+export { IME_SAJTA };

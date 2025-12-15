@@ -1,66 +1,73 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {clanService} from '@/lib/domain/clan-management/services';
-import {ApiResponse, Clan, ClanForCreation} from '@/types';
-import {sanitizeString, validateAndNormalizeStatus, validateEmail, validatePhone} from '@/lib/validation';
+import { NextRequest, NextResponse } from "next/server";
+import { clanService } from "@/lib/domain/clan-management/service";
+import { ApiResponse, Clan, ClanForCreation } from "@/types";
+import {
+  sanitizeString,
+  validateAndNormalizeStatus,
+  validateEmail,
+  validatePhone,
+} from "@/lib/validation";
+import { ClanRequest } from "@/types/request/api_request";
 
 export async function GET(): Promise<NextResponse<ApiResponse<Clan[]>>> {
   try {
-      const clanoviList = await clanService.getClanovi();
+    const clanoviList = await clanService.getClanovi();
     return NextResponse.json({ success: true, data: clanoviList });
   } catch (error) {
-    console.error('Error in GET /api/clanovi:', error);
+    console.error("Error in GET /api/clanovi:", error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch clanovi' },
-      { status: 500 }
+      { success: false, error: "Failed to fetch clanovi" },
+      { status: 500 },
     );
   }
 }
 
-export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Clan>>> {
+export async function POST(
+  request: NextRequest,
+): Promise<NextResponse<ApiResponse<Clan>>> {
   try {
-    const body = await request.json();
-    
+    const body = (await request.json()) as ClanRequest | null;
+
     // Input sanitization
-    if (typeof body !== 'object' || body === null) {
+    if (typeof body !== "object" || body === null) {
       return NextResponse.json(
-        { success: false, error: 'Invalid request body' },
-        { status: 400 }
+        { success: false, error: "Invalid request body" },
+        { status: 400 },
       );
     }
-    
-    // Validate required fields
-    const requiredFields = ['Ime i Prezime'];
-    for (const field of requiredFields) {
-      if (!body[field] || sanitizeString(body[field]).length === 0) {
-        return NextResponse.json(
-          { success: false, error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
-      }
+
+    if (
+      !body["Ime i Prezime"] ||
+      sanitizeString(body["Ime i Prezime"]).length === 0
+    ) {
+      return NextResponse.json(
+        { success: false, error: "Missing required field: Ime i Prezime" },
+        { status: 400 },
+      );
     }
 
     // Sanitize and validate input fields
-    const sanitizedName = sanitizeString(body['Ime i Prezime']);
+    const sanitizedName = sanitizeString(body["Ime i Prezime"]);
     if (sanitizedName.length < 2) {
       return NextResponse.json(
-        { success: false, error: 'Name must be at least 2 characters long' },
-        { status: 400 }
+        { success: false, error: "Name must be at least 2 characters long" },
+        { status: 400 },
       );
     }
-    
+
     const sanitizedEmail = sanitizeString(body.email);
     if (sanitizedEmail && !validateEmail(sanitizedEmail)) {
       return NextResponse.json(
-        { success: false, error: 'Invalid email format' },
-        { status: 400 }
+        { success: false, error: "Invalid email format" },
+        { status: 400 },
       );
     }
-    
+
     const sanitizedPhone = sanitizeString(body.telefon);
     if (sanitizedPhone && !validatePhone(sanitizedPhone)) {
       return NextResponse.json(
-        { success: false, error: 'Invalid phone format' },
-        { status: 400 }
+        { success: false, error: "Invalid phone format" },
+        { status: 400 },
       );
     }
 
@@ -70,43 +77,50 @@ export async function POST(request: NextRequest): Promise<NextResponse<ApiRespon
     let datumRodjenja: Date | undefined;
 
     // Validate and parse date
-    if(body['Datum Rodjenja']) {
-      datumRodjenja = new Date(body['Datum Rodjenja']);
+    if (body["Datum Rodjenja"]) {
+      datumRodjenja = new Date(body["Datum Rodjenja"]);
       if (isNaN(datumRodjenja.getTime())) {
         return NextResponse.json(
-          { success: false, error: 'Invalid date format for Datum Rodjenja' },
-          { status: 400 }
+          { success: false, error: "Invalid date format for Datum Rodjenja" },
+          { status: 400 },
         );
       }
-      
+
       // Additional date validation - must be reasonable birth date
       const now = new Date();
-      const oneHundredYearsAgo = new Date(now.getFullYear() - 100, now.getMonth(), now.getDate());
-      
+      const oneHundredYearsAgo = new Date(
+        now.getFullYear() - 100,
+        now.getMonth(),
+        now.getDate(),
+      );
+
       if (datumRodjenja < oneHundredYearsAgo || datumRodjenja > now) {
         return NextResponse.json(
-          { success: false, error: 'Birth date must be within reasonable range' },
-          { status: 400 }
+          {
+            success: false,
+            error: "Birth date must be within reasonable range",
+          },
+          { status: 400 },
         );
       }
     }
 
     const newClanData: ClanForCreation = {
-      'Ime i Prezime': sanitizedName,
+      "Ime i Prezime": sanitizedName,
       email: sanitizedEmail || undefined,
       telefon: sanitizedPhone || undefined,
       status: normalizedStatus,
-      'Datum Rodjenja': datumRodjenja,
+      "Datum Rodjenja": datumRodjenja,
       Napomene: sanitizeString(body.Napomene) || undefined,
     };
 
-      const newClan = await clanService.createClan(newClanData);
+    const newClan = await clanService.createClan(newClanData);
     return NextResponse.json({ success: true, data: newClan }, { status: 201 });
   } catch (error) {
-    console.error('Error in POST /api/clanovi:', error);
+    console.error("Error in POST /api/clanovi:", error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create clan' },
-      { status: 500 }
+      { success: false, error: "Failed to create clan" },
+      { status: 500 },
     );
   }
 }

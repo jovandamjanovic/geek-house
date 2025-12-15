@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
-import { useRef, useCallback } from 'react';
+import { useCallback, useRef } from "react";
 
-export function useThrottle<T extends (...args: unknown[]) => void>(callback: T, delay: number) {
+export function useThrottle<T extends (...args: unknown[]) => void>(
+  callback: T,
+  delay: number,
+) {
   const lastCall = useRef<number>(0);
 
-  return useCallback((...args: Parameters<T>) => {
-    const now = Date.now();
-    if (now - lastCall.current >= delay) {
-      callback(...args);
-      lastCall.current = now;
-    }
-  }, [callback, delay]);
+  return useCallback(
+    (...args: Parameters<T>) => {
+      const now = Date.now();
+      if (now - lastCall.current >= delay) {
+        callback(...args);
+        lastCall.current = now;
+      }
+    },
+    [callback, delay],
+  );
 }

@@ -1,9 +1,9 @@
-import { ClanStatus } from '@/types';
+import { ClanStatus } from "@/types";
 
 // Input sanitization helper
 export function sanitizeString(value: unknown): string {
-  if (typeof value !== 'string') return '';
-  return value.trim().replace(/[<>"'&`\/\\]/g, '');
+  if (typeof value !== "string") return "";
+  return value.trim().replace(/[<>"'&`/\\]/g, "");
 }
 
 export function validateEmail(email: string): boolean {
@@ -29,33 +29,35 @@ export function validateId(id: string): boolean {
 
 // Better field presence validation that allows falsy values like 0 and false
 export function isFieldPresent(body: unknown, field: string): boolean {
-  if (typeof body !== 'object' || body === null) return false;
+  if (typeof body !== "object" || body === null) return false;
   const obj = body as Record<string, unknown>;
-  return Object.prototype.hasOwnProperty.call(obj, field) && 
-         obj[field] !== null && 
-         obj[field] !== undefined && 
-         obj[field] !== '';
+  return (
+    Object.prototype.hasOwnProperty.call(obj, field) &&
+    obj[field] !== null &&
+    obj[field] !== undefined &&
+    obj[field] !== ""
+  );
 }
 
 export function validateAndNormalizeStatus(status: unknown): ClanStatus {
   if (!status) return getDefaultStatus();
-  
+
   const statusStr = sanitizeString(status).toUpperCase();
-  
+
   // Map common variations to proper enum values
   const statusMapping: Record<string, ClanStatus> = {
-    'AKTIVAN': ClanStatus.AKTIVAN,
-    'ACTIVE': ClanStatus.AKTIVAN,
-    'PASIVAN': ClanStatus.PASIVAN,
-    'PASSIVE': ClanStatus.PASIVAN,
-    'PROBNI': ClanStatus.PROBNI,
-    'TRIAL': ClanStatus.PROBNI,
-    'ISTEKAO': ClanStatus.ISTEKAO,
-    'EXPIRED': ClanStatus.ISTEKAO,
-    'ISKLJUCEN': ClanStatus.ISKLJUCEN,
-    'EXCLUDED': ClanStatus.ISKLJUCEN
+    AKTIVAN: ClanStatus.AKTIVAN,
+    ACTIVE: ClanStatus.AKTIVAN,
+    PASIVAN: ClanStatus.PASIVAN,
+    PASSIVE: ClanStatus.PASIVAN,
+    PROBNI: ClanStatus.PROBNI,
+    TRIAL: ClanStatus.PROBNI,
+    ISTEKAO: ClanStatus.ISTEKAO,
+    EXPIRED: ClanStatus.ISTEKAO,
+    ISKLJUCEN: ClanStatus.ISKLJUCEN,
+    EXCLUDED: ClanStatus.ISKLJUCEN,
   };
-  
+
   return statusMapping[statusStr] || getDefaultStatus();
 }
 

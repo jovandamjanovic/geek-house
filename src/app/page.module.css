@@ -1,5 +1,5 @@
 .page {
-  background: linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 100%);
+  background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
   min-height: 100vh;
   font-family: var(--font-geist-sans);
   padding-top: 80px;

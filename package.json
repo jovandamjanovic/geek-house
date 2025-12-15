@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "next lint",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -26,15 +27,24 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.39.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9",
+    "eslint": "^9.39.1",
     "eslint-config-next": "15.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "postcss": "^8.5.6",
+    "prettier": "3.6.2",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --cache --fix",
+    "*.{js,ts,tsx,css,md}": "prettier --write"
   }
 }

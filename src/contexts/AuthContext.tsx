@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (password: string) => Promise<boolean>;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -17,8 +23,9 @@ interface AuthProviderProps {
 
 // Safe localStorage helper
 function safeLocalStorage() {
-  const isAvailable = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-  
+  const isAvailable =
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+
   return {
     getItem: (key: string): string | null => {
       if (!isAvailable) return null;
@@ -45,7 +52,7 @@ function safeLocalStorage() {
       } catch {
         return false;
       }
-    }
+    },
   };
 }
 
@@ -56,63 +63,68 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     // Check if user is already authenticated from localStorage
-    const authStatus = storage.getItem('isAuthenticated');
-    const authTime = storage.getItem('authTime');
-    
-    if (authStatus === 'true' && authTime) {
+    const authStatus = storage.getItem("isAuthenticated");
+    const authTime = storage.getItem("authTime");
+
+    if (authStatus === "true" && authTime) {
       const loginTime = new Date(authTime);
       const now = new Date();
-      const hoursPassed = (now.getTime() - loginTime.getTime()) / (1000 * 60 * 60);
-      
+      const hoursPassed =
+        (now.getTime() - loginTime.getTime()) / (1000 * 60 * 60);
+
       // Session expires after 1 hours
       if (hoursPassed < 1) {
         setIsAuthenticated(true);
       } else {
-        storage.removeItem('isAuthenticated');
-        storage.removeItem('authTime');
+        storage.removeItem("isAuthenticated");
+        storage.removeItem("authTime");
       }
     }
-    
+
     setIsLoading(false);
   }, [storage]);
 
-  const login = async (password: string): Promise<boolean> => {
+  const login = async (
+    username: string = "admin",
+    password: string,
+  ): Promise<boolean> => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      console.log("Login attempt with username:", username);
+      const response = await fetch("/api/auth/v2/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username: username, password: password }),
       });
 
       if (response.ok) {
         setIsAuthenticated(true);
         // Try to set localStorage, but don't fail if it's not available
-        storage.setItem('isAuthenticated', 'true');
-        storage.setItem('authTime', new Date().toISOString());
+        storage.setItem("isAuthenticated", "true");
+        storage.setItem("authTime", new Date().toISOString());
         return true;
       }
-      
+
       return false;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       return false;
     }
   };
 
   const logout = async () => {
     setIsAuthenticated(false);
-    
+
     // Clear localStorage safely
-    storage.removeItem('isAuthenticated');
-    storage.removeItem('authTime');
-    
+    storage.removeItem("isAuthenticated");
+    storage.removeItem("authTime");
+
     // Clear server-side cookie
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch("/api/auth/logout", { method: "POST" });
     } catch (error) {
-      console.error('Logout endpoint error:', error);
+      console.error("Logout endpoint error:", error);
       // Continue with client-side logout even if server request fails
     }
   };
@@ -127,7 +139,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
