@@ -1,7 +1,7 @@
 import { EntityRepository } from "@/lib/domain/clan-management/repository/EntityRepository";
-import { Sto } from "@/types";
+import { Sto, Soba } from "@/types";
 
 export interface StoRepository
   extends Omit<EntityRepository<Sto>, "save" | "delete"> {
-  findAllForSoba(Soba: Soba): Promise<Sto[]>;
+  findAllForSoba(soba: Soba): Promise<Sto[]>;
 }
