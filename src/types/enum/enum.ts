@@ -16,3 +16,12 @@ export enum PlacanjeType {
   GOTOVINSKI = "Gotovinski",
   RACUN = "Racun",
 }
+
+export enum SobaName {
+  ARKADA = "Arkada",
+  TAVERNA = "Taverna",
+  ALEKSANDRIJA = "Aleksandrija",
+  STEAMPUNK = "Steampunk",
+  RAVENLOFT = "Ravenloft",
+  DUNGEON = "Dungeon",
+}

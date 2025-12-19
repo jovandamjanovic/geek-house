@@ -1,4 +1,4 @@
-import { ClanStatus, ClanarinaType, PlacanjeType } from "@/types";
+import { ClanStatus, ClanarinaType, PlacanjeType, SobaName } from "@/types";
 
 export type User = {
   username: string;
@@ -24,4 +24,36 @@ export type Clanarina = {
   tip: ClanarinaType;
   "Nacin Placanja": PlacanjeType;
   napravio: string;
+};
+
+type RezervacijaUser = {
+  ime: string;
+};
+
+type DiscordRezervacijaUser = RezervacijaUser & {
+  kontakt: string;
+};
+type TelefonRezervacijaUser = RezervacijaUser & {
+  kontakt: string;
+};
+
+export type Rezervacija = {
+  id: string | null;
+  datum: Date;
+  rezervisao: DiscordRezervacijaUser | TelefonRezervacijaUser;
+  stolovi: Sto[];
+};
+
+export type Soba = {
+  id: string;
+  naziv: SobaName;
+  sprat: -1 | 0 | 1;
+  stolovi: Sto[];
+};
+
+export type Sto = {
+  id: string;
+  opis: string;
+  broj_stolica: number;
+  soba: Soba;
 };
