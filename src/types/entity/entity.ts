@@ -38,7 +38,7 @@ type TelefonRezervacijaUser = RezervacijaUser & {
 };
 
 export type Rezervacija = {
-  id: string;
+  id: string | null;
   datum: Date;
   rezervisao: DiscordRezervacijaUser | TelefonRezervacijaUser;
   stolovi: Sto[];

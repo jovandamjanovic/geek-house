@@ -64,7 +64,7 @@ export class RezervacijaRepository
     return this.create(entity);
   }
 
-  private async create(data: Omit<Rezervacija, "id">): Promise<Rezervacija> {
+  private async create(data: Rezervacija): Promise<Rezervacija> {
     const maxRetries = 3;
     let attempt = 0;
 

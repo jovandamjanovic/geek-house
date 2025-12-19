@@ -3,7 +3,7 @@ import { DataTransformer } from "@/lib/persistence/google-spreadsheet/DataTransf
 
 export class SobaDataTransformer implements DataTransformer<Soba> {
   entityToRow(entity: Soba): string[] {
-    return [entity.id || "", String(entity.naziv) || "", entity.sprat];
+    return [entity.id || "", String(entity.naziv) || "", String(entity.sprat)];
   }
 
   rowToEntity(row: string[]): Soba {

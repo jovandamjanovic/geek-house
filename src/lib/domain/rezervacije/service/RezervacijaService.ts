@@ -15,7 +15,7 @@ export class RezervacijaService {
   async createRezervacija(
     entity: Omit<Rezervacija, "id">,
   ): Promise<Rezervacija> {
-    return this.rezervacijaRepository.save(entity);
+    return this.rezervacijaRepository.save({ ...entity, id: null });
   }
 
   async deleteRezervacija(id: string): Promise<void> {

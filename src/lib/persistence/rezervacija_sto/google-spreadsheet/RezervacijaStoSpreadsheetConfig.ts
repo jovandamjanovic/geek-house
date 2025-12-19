@@ -9,5 +9,5 @@ export const RezervacijaStoSpreadsheetConfig: SpreadsheetConfig<RezervacijaSto> 
       range: "RezervacijeStolovi!A:B",
     },
     dataTransformer: new RezervacijaStoDataTransformer(),
-    idField: "id",
+    idField: "rezervacija",
   };

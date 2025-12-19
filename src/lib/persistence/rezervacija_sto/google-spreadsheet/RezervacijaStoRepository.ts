@@ -29,6 +29,7 @@ export class RezervacijaStoRepository extends EntityRepository<RezervacijaSto> {
         );
       }
     }
+    throw new Error("Failed to create rezervacija sto");
   }
 
   async findAllByRezervacija(

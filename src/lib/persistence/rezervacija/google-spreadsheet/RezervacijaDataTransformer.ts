@@ -8,7 +8,7 @@ export class RezervacijaDataTransformer
   entityToRow(entity: Rezervacija): string[] {
     return [
       entity.id || "",
-      entity.datum || "",
+      DateUtils.format(entity.datum),
       entity.rezervisao.ime,
       entity.rezervisao.kontakt,
     ];

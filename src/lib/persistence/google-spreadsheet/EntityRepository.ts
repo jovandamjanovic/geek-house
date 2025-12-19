@@ -2,16 +2,16 @@ import { google, sheets_v4 } from "googleapis";
 import { GoogleAuth } from "google-auth-library";
 import { SpreadsheetConfig } from "@/lib/persistence/google-spreadsheet/SpreadsheetConfig";
 
-export abstract class EntityRepository<TEntity> {
+export abstract class EntityRepository<TEntity, TRow = TEntity> {
   protected auth: GoogleAuth;
   protected sheets: sheets_v4.Sheets;
   protected spreadsheetId: string;
-  protected config: SpreadsheetConfig<TEntity>;
+  protected config: SpreadsheetConfig<TEntity, TRow>;
   private sheetIds: Map<string, number> = new Map();
 
   protected constructor(
     spreadsheetId: string,
-    config: SpreadsheetConfig<TEntity>,
+    config: SpreadsheetConfig<TEntity, TRow>,
   ) {
     this.spreadsheetId = spreadsheetId;
     this.config = config;
@@ -81,7 +81,7 @@ export abstract class EntityRepository<TEntity> {
   }
 
   // Protected helper methods for subclasses
-  protected async getAllRows(): Promise<TEntity[]> {
+  protected async getAllRows(): Promise<TRow[]> {
     return this.retryOperation(async () => {
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,
@@ -95,7 +95,7 @@ export abstract class EntityRepository<TEntity> {
 
   protected async findRowById(
     id: string,
-  ): Promise<{ entity: TEntity; rowIndex: number } | null> {
+  ): Promise<{ entity: TRow; rowIndex: number } | null> {
     return this.retryOperation(async () => {
       const response = await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.spreadsheetId,

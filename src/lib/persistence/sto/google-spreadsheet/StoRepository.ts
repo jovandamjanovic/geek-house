@@ -7,7 +7,7 @@ import { sobaRepository } from "@/lib/domain/rezervacije/repository";
 import { StoWithSobaId } from "@/lib/persistence/sto/google-spreadsheet/types";
 
 export class StoRepository
-  extends EntityRepository<Sto>
+  extends EntityRepository<Sto, StoWithSobaId>
   implements DomainStoRepository
 {
   constructor(spreadsheetId: string) {
@@ -90,15 +90,5 @@ export class StoRepository
       console.error("Error fetching stolovi:", error);
       throw new Error("Failed to fetch stolovi");
     }
-  }
-
-  protected async getAllRows(): Promise<StoWithSobaId[]> {
-    return super.getAllRows();
-  }
-
-  protected async findRowById(
-    id: string,
-  ): Promise<{ entity: StoWithSobaId; rowIndex: number } | null> {
-    return super.findRowById(id);
   }
 }
