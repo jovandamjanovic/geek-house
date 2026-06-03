@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakt | Eliksir</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/pages/kontakt.css">
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Kontakt</h1>
+      <p>Javi nam se za rezervacije, prijave za događaje ili bilo kakvo pitanje u vezi sa klubom.</p>
+
+      <div class="page-hero-meta">
+        <span>Odgovaramo u najkraćem roku</span>
+        <span class="dot">•</span>
+        <span>Oblačića Rada 11, Niš</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Informacije</h2>
+
+          <div id="openStatus" class="open-status" aria-live="polite"></div>
+
+          <div class="quick-actions">
+            <a class="qa-btn" href="viber://chat?number=%2B381693060969">💜 Viber</a>
+            <a class="qa-btn" href="https://wa.me/381693060969" target="_blank" rel="noopener">💚 WhatsApp</a>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">📍 Adresa</span>
+            <p class="muted">Oblačića Rada 11, Niš</p>
+            <p class="muted map-link-wrap">
+              <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=Oblačića%20Rada%2011%2C%20Niš"
+                target="_blank" rel="noopener">
+                Otvori u Google Maps
+              </a>
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">🕒 Radno vreme</span>
+            <p class="muted">Uto–Ned: 17:00–23:00</p>
+            <p class="muted">Pon: zatvoreno</p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">📩 Email</span>
+            <p class="muted">
+              <a href="mailto:eliksir@gmail.com">eliksir@gmail.com</a>
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">📸 Instagram</span>
+            <p class="muted">
+              <a href="https://www.instagram.com/eliksir.club/" target="_blank" rel="noopener">@eliksir.club</a>
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">📘 Facebook</span>
+            <p class="muted">
+              <a href="https://www.facebook.com/Eliksirklub/" target="_blank" rel="noopener">
+                Klub Društvenih Igara "Eliksir" – Niš
+              </a>
+            </p>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">🎮 Discord</span>
+            <p class="muted">
+              <a href="https://discord.com/invite/9r7mpcMmYk" target="_blank" rel="noopener">
+                Pridruži nam se na Discordu
+              </a>
+            </p>
+          </div>
+
+          <div class="mini-note">
+            <div class="note-row">✨ Prvi put? Napiši koliko vas je i koje igre volite.</div>
+            <div class="note-row">🧾 Rezervacija: <b>broj ljudi</b> • <b>dan</b> • <b>vreme</b></div>
+          </div>
+        </div>
+
+        <div class="contact-form-wrap">
+          <h2>Pošalji poruku</h2>
+
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="field">
+              <label for="name">Ime</label>
+              <input id="name" name="name" type="text" placeholder="Tvoje ime" required>
+              <small class="error"></small>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="ime@email.com" required>
+              <small class="error"></small>
+            </div>
+
+            <div class="field">
+              <label for="topic">Tema</label>
+
+              <div class="custom-select" id="topicSelect">
+                <button type="button" class="select-selected" aria-haspopup="listbox" aria-expanded="false">
+                  Opšte
+                  <span class="select-caret">▼</span>
+                </button>
+
+                <div class="select-options" role="listbox">
+                  <button type="button" class="select-option active" data-value="opste">Opšte</button>
+                  <button type="button" class="select-option" data-value="dogadjaji">Događaji</button>
+                  <button type="button" class="select-option" data-value="rezervacija">Rezervacija</button>
+                  <button type="button" class="select-option" data-value="shop">Porudžbina</button>
+                </div>
+
+                <select id="topic" name="topic">
+                  <option value="opste" selected>Opšte</option>
+                  <option value="dogadjaji">Događaji</option>
+                  <option value="rezervacija">Rezervacija</option>
+                  <option value="shop">Porudžbina</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="message">Poruka</label>
+              <textarea id="message" name="message" rows="5" placeholder="Napiši poruku..." required></textarea>
+              <small class="error"></small>
+            </div>
+
+            <button class="contact-btn" type="submit">Pošalji</button>
+            <div id="formStatus" class="form-status" aria-live="polite"></div>
+          </form>
+
+          <p class="form-helper">Odgovaramo najčešće u roku od nekoliko sati (radnim danima).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="site-footer"></div>
+
+  <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Vrati na vrh">
+    ↑
+  </button>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
