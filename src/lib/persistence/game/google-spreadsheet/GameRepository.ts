@@ -1,6 +1,6 @@
 import { EntityRepository } from "@/lib/persistence/google-spreadsheet/EntityRepository";
 import { Game } from "@/types";
-import { GameRepository as DomainGameRepository } from "@/lib/domain/sadrzaj/repository/GameRepository";
+import { GameRepository as DomainGameRepository } from "@/lib/domain/game/repository/GameRepository";
 import { GameSpreadsheetConfig } from "@/lib/persistence/game/google-spreadsheet/GameSpreadsheetConfig";
 
 export class GameRepository

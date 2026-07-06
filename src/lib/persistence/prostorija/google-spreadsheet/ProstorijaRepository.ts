@@ -1,6 +1,6 @@
 import { EntityRepository } from "@/lib/persistence/google-spreadsheet/EntityRepository";
 import { Prostorija } from "@/types";
-import { ProstorijaRepository as DomainProstorijaRepository } from "@/lib/domain/sadrzaj/repository/ProstorijaRepository";
+import { ProstorijaRepository as DomainProstorijaRepository } from "@/lib/domain/prostorija/repository/ProstorijaRepository";
 import { ProstorijaSpreadsheetConfig } from "@/lib/persistence/prostorija/google-spreadsheet/ProstorijaSpreadsheetConfig";
 
 export class ProstorijaRepository

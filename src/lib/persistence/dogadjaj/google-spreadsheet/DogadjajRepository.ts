@@ -1,6 +1,6 @@
 import { EntityRepository } from "@/lib/persistence/google-spreadsheet/EntityRepository";
 import { Dogadjaj } from "@/types";
-import { DogadjajRepository as DomainDogadjajRepository } from "@/lib/domain/sadrzaj/repository/DogadjajRepository";
+import { DogadjajRepository as DomainDogadjajRepository } from "@/lib/domain/dogadjaj/repository/DogadjajRepository";
 import { DogadjajSpreadsheetConfig } from "@/lib/persistence/dogadjaj/google-spreadsheet/DogadjajSpreadsheetConfig";
 
 export class DogadjajRepository

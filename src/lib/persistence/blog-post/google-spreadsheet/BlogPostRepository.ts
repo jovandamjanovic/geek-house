@@ -1,6 +1,6 @@
 import { EntityRepository } from "@/lib/persistence/google-spreadsheet/EntityRepository";
 import { BlogPost } from "@/types";
-import { BlogPostRepository as DomainBlogPostRepository } from "@/lib/domain/sadrzaj/repository/BlogPostRepository";
+import { BlogPostRepository as DomainBlogPostRepository } from "@/lib/domain/blog-post/repository/BlogPostRepository";
 import { BlogPostSpreadsheetConfig } from "@/lib/persistence/blog-post/google-spreadsheet/BlogPostSpreadsheetConfig";
 
 export class BlogPostRepository
