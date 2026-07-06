@@ -2,12 +2,13 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 const TOPIC_OPTIONS = [
   { value: "opste", label: "Opšte" },
   { value: "dogadjaji", label: "Događaji" },
   { value: "rezervacija", label: "Rezervacija" },
-  { value: "shop", label: "Porudžbina" },
+  ...(FEATURE_FLAGS.shop ? [{ value: "shop", label: "Porudžbina" }] : []),
 ];
 
 function isEmail(value: string) {

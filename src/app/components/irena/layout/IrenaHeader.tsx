@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 const NAV_LINKS = [
   {
@@ -35,6 +36,7 @@ const NAV_LINKS = [
     href: "/irena/shop",
     label: "Prodavnica",
     match: (path: string) => path.startsWith("/irena/shop"),
+    feature: "shop" as const,
   },
   {
     href: "/irena/blog",
@@ -108,7 +110,9 @@ export default function IrenaHeader() {
         </button>
 
         <nav className="menu" id="main-menu">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS.filter(
+            (link) => !link.feature || FEATURE_FLAGS[link.feature],
+          ).map((link) => (
             <Link
               key={link.href}
               href={link.href}

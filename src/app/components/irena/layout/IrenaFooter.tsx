@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 const FOOTER_LINKS = [
   { href: "/irena", label: "Početna" },
@@ -6,13 +7,16 @@ const FOOTER_LINKS = [
   { href: "/irena/rezervacija", label: "Rezervacije" },
   { href: "/irena/dogadjaji", label: "Događaji" },
   { href: "/irena/igre", label: "Igre" },
-  { href: "/irena/shop", label: "Prodavnica" },
+  { href: "/irena/shop", label: "Prodavnica", feature: "shop" as const },
   { href: "/irena/blog", label: "Blog" },
   { href: "/irena/kontakt", label: "Kontakt" },
 ];
 
 export default function IrenaFooter() {
   const year = new Date().getFullYear();
+  const footerLinks = FOOTER_LINKS.filter(
+    (link) => !link.feature || FEATURE_FLAGS[link.feature],
+  );
 
   return (
     <footer className="footer">
@@ -35,7 +39,7 @@ export default function IrenaFooter() {
         </div>
 
         <div className="footer-links" aria-label="Linkovi">
-          {FOOTER_LINKS.map((link) => (
+          {footerLinks.map((link) => (
             <Link key={link.href} href={link.href}>
               {link.label}
             </Link>

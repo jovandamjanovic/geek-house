@@ -57,3 +57,53 @@ export type Sto = {
   broj_stolica: number;
   soba: Soba;
 };
+
+export type BlogPost = {
+  id: string;
+  image: string;
+  imageAlt: string;
+  meta: string;
+  title: string;
+  paragraphs: string[];
+  list: { title: string; description: string }[];
+};
+
+export type Dogadjaj = {
+  id: string;
+  featured: boolean;
+  title: string;
+  description: string;
+  badge: string;
+  badgeClass: string;
+  date: string;
+  day: string;
+  num: string;
+  month: string;
+  year: string;
+  time: string;
+  players: string;
+  location: string;
+  meta: string;
+  actionLabel: string;
+  actionHref: string;
+  signupHref: string;
+};
+
+export type Game = {
+  id: string;
+  title: string;
+  displayTitle: string;
+  meta: string;
+  description: string;
+  category: string;
+  tags: string[];
+};
+
+export type Prostorija = {
+  id: string;
+  name: string;
+  image: string;
+  capacity: string;
+  description: string;
+  tags: string[];
+};

@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (
+    !FEATURE_FLAGS.shop &&
+    (pathname.startsWith("/irena/shop") || pathname.startsWith("/api/shop"))
+  ) {
+    return NextResponse.redirect(new URL("/irena", request.url));
+  }
 
   // Define paths that are allowed (not redirected to under construction)
   const allowedPaths = [
