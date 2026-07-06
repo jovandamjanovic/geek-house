@@ -5,6 +5,7 @@ export function middleware(request: NextRequest) {
 
   // Define paths that are allowed (not redirected to under construction)
   const allowedPaths = [
+    "/irena",
     "/clanarine",
     "/impressum",
     "/under-construction",
