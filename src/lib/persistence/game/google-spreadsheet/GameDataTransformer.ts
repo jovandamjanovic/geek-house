@@ -13,6 +13,8 @@ export class GameDataTransformer implements DataTransformer<Game> {
       entity.description,
       entity.category,
       entity.tags.join(TAGS_SEPARATOR),
+      entity.bggLink || "",
+      entity.youtube || "",
     ];
   }
 
@@ -25,6 +27,8 @@ export class GameDataTransformer implements DataTransformer<Game> {
       description: row[4],
       category: row[5],
       tags: row[6] ? row[6].split(TAGS_SEPARATOR) : [],
+      bggLink: row[7] || undefined,
+      youtube: row[8] || undefined,
     };
   }
 }

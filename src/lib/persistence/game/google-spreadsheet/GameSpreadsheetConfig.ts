@@ -5,7 +5,7 @@ import { GameDataTransformer } from "@/lib/persistence/game/google-spreadsheet/G
 export const GameSpreadsheetConfig: SpreadsheetConfig<Game> = {
   sheetConfig: {
     sheetName: "Igre",
-    range: "Igre!A:G",
+    range: "Igre!A:I",
   },
   dataTransformer: new GameDataTransformer(),
   idField: "id",

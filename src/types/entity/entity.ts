@@ -97,6 +97,8 @@ export type Game = {
   description: string;
   category: string;
   tags: string[];
+  bggLink?: string;
+  youtube?: string;
 };
 
 export type Prostorija = {

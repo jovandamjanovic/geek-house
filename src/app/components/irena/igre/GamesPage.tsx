@@ -38,11 +38,30 @@ const FEATURED = [
     pill: "Lagano",
   },
   {
-    game: "Catan",
+    game: "Catan + Expansion for 5-6 players",
     type: "mini" as const,
     pill: "Klasik",
   },
 ];
+
+function toYoutubeEmbedUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes("youtu.be")) {
+      return `https://www.youtube.com/embed${parsed.pathname}`;
+    }
+    const videoId = parsed.searchParams.get("v");
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    if (parsed.pathname.startsWith("/embed/")) {
+      return url;
+    }
+    return url;
+  } catch {
+    return url;
+  }
+}
 
 export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
   const GAMES = initialGames;
@@ -331,6 +350,27 @@ export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
                   </span>
                 ))}
               </div>
+              {modalGame.bggLink && (
+                <p className="modal-bgg-link">
+                  <a
+                    href={modalGame.bggLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {modalGame.title} on BoardGameGeek
+                  </a>
+                </p>
+              )}
+              {modalGame.youtube && (
+                <div className="modal-video">
+                  <iframe
+                    src={toYoutubeEmbedUrl(modalGame.youtube)}
+                    title={`${modalGame.title} - YouTube`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              )}
             </>
           ) : null}
         </div>

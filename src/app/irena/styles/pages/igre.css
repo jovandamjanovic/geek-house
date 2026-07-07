@@ -580,6 +580,34 @@
   font-size: 12px;
 }
 
+.modal-bgg-link {
+  margin-top: 14px;
+}
+
+.modal-bgg-link a {
+  color: var(--accent);
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.modal-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.modal-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /* Animations */
 
 @keyframes shake {
