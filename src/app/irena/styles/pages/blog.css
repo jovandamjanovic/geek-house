@@ -1,0 +1,136 @@
+/* Blog posts */
+
+.blog-posts {
+  padding-bottom: 40px;
+  margin-top: -30px;
+  text-align: justify;
+}
+
+.blog-post {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 34px;
+  align-items: stretch;
+
+  padding: 34px 0;
+
+  border-bottom: 1px solid rgba(201, 162, 39, 0.12);
+}
+
+.blog-post__image {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 300px;
+
+  background: #18181b;
+  border: 1px solid rgba(201, 162, 39, 0.16);
+  border-radius: 24px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+}
+
+.blog-post__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.45s ease;
+}
+
+.blog-post:hover .blog-post__image img {
+  transform: scale(1.04);
+}
+
+.blog-post__content {
+  padding: 8px 0;
+}
+
+.blog-post__meta {
+  margin: 0 0 14px;
+
+  color: var(--accent);
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+}
+
+.blog-post__content h2 {
+  margin: 0 0 18px;
+
+  color: #fff8e7;
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.25;
+  text-align: left;
+}
+
+.blog-post__content h2::after {
+  content: "";
+  display: block;
+
+  width: 72px;
+  height: 2px;
+  margin-top: 14px;
+
+  background: linear-gradient(90deg, var(--accent), transparent);
+  border-radius: 999px;
+}
+
+.blog-post__content p {
+  margin: 0 0 16px;
+
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.blog-list {
+  margin: 0 0 18px;
+  padding-left: 20px;
+
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.blog-list li {
+  margin-bottom: 10px;
+}
+
+.blog-list strong {
+  color: var(--text);
+}
+
+/* Responsive */
+
+@media (max-width: 980px) {
+  .blog-post {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .blog-post__image {
+    min-height: 260px;
+  }
+}
+
+@media (max-width: 640px) {
+  .blog-post {
+    padding: 28px 0;
+  }
+
+  .blog-post__image {
+    min-height: 220px;
+    border-radius: 18px;
+  }
+
+  .blog-post__content h2 {
+    font-size: 1.45rem;
+  }
+
+  .blog-post__content p,
+  .blog-list {
+    font-size: 0.97rem;
+    line-height: 1.8;
+  }
+}

@@ -14,7 +14,7 @@ export default function ConditionalLayout({
   const pathname = usePathname();
 
   // Pages that should not have header and footer
-  const excludedPaths = ["/under-construction"];
+  const excludedPaths = ["/under-construction", "/irena"];
 
   const shouldShowHeaderFooter = !excludedPaths.some((path) =>
     pathname.startsWith(path),
