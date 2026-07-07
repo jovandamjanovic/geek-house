@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { GAMES, type Game } from "@/app/irena/data/games";
+import type { Game } from "@/types";
 
 const FILTERS = [
   { id: "brza", label: "Brzo (≤20 min)" },
@@ -44,7 +44,8 @@ const FEATURED = [
   },
 ];
 
-export default function GamesPage() {
+export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
+  const GAMES = initialGames;
   const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
   const [shake, setShake] = useState(false);
@@ -60,7 +61,7 @@ export default function GamesPage() {
       map.set(game.category, list);
     }
     return Array.from(map.entries());
-  }, []);
+  }, [GAMES]);
 
   const visibleGames = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -75,7 +76,7 @@ export default function GamesPage() {
         );
       return matchesSearch && matchesFilters;
     });
-  }, [search, activeFilters]);
+  }, [search, activeFilters, GAMES]);
 
   const visibleTitles = useMemo(
     () => new Set(visibleGames.map((g) => g.title)),
@@ -90,7 +91,7 @@ export default function GamesPage() {
       return `Pronađeno: ${visibleGames.length}`;
     }
     return "Nema pronađenih igara.";
-  }, [search, activeFilters, visibleGames.length]);
+  }, [search, activeFilters.size, visibleGames.length, GAMES.length]);
 
   const toggleFilter = (filter: string) => {
     setActiveFilters((prev) => {

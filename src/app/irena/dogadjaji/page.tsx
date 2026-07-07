@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { EVENTS, FEATURED_EVENT } from "@/app/irena/data/events";
 import PageHero from "@/app/components/irena/shared/PageHero";
+import { dogadjajService } from "@/lib/domain/dogadjaj/service";
 import "../styles/pages/dogadjaji.css";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Događaji | Eliksir",
@@ -10,7 +12,11 @@ export const metadata: Metadata = {
     "Predstojeći događaji u Eliksiru — kvizovi, turniri, RPG sesije i večeri društvenih igara.",
 };
 
-export default function DogadjajiPage() {
+export default async function DogadjajiPage() {
+  const dogadjaji = await dogadjajService.getDogadjaji();
+  const featuredEvent = dogadjaji.find((event) => event.featured);
+  const events = dogadjaji.filter((event) => !event.featured);
+
   return (
     <>
       <PageHero
@@ -33,29 +39,31 @@ export default function DogadjajiPage() {
             za neke događaje je ograničen.
           </p>
 
-          <div className="featured-event">
-            <span className="badge badge-special">{FEATURED_EVENT.badge}</span>
-            <h3>{FEATURED_EVENT.title}</h3>
-            <p className="muted">{FEATURED_EVENT.description}</p>
-            <div className="featured-meta">
-              <span>{FEATURED_EVENT.date}</span>
-              <span>{FEATURED_EVENT.time}</span>
-              <span>{FEATURED_EVENT.players}</span>
-              <span>{FEATURED_EVENT.location}</span>
+          {featuredEvent ? (
+            <div className="featured-event">
+              <span className="badge badge-special">{featuredEvent.badge}</span>
+              <h3>{featuredEvent.title}</h3>
+              <p className="muted">{featuredEvent.description}</p>
+              <div className="featured-meta">
+                <span>{featuredEvent.date}</span>
+                <span>{featuredEvent.time}</span>
+                <span>{featuredEvent.players}</span>
+                <span>{featuredEvent.location}</span>
+              </div>
+              <div className="hero-actions">
+                <Link className="btn" href={featuredEvent.signupHref}>
+                  Prijavi se
+                </Link>
+                <Link className="btn btn-ghost" href="/irena/igre">
+                  Vidi igre
+                </Link>
+              </div>
             </div>
-            <div className="hero-actions">
-              <Link className="btn" href={FEATURED_EVENT.signupHref}>
-                Prijavi se
-              </Link>
-              <Link className="btn btn-ghost" href="/irena/igre">
-                Vidi igre
-              </Link>
-            </div>
-          </div>
+          ) : null}
 
           <div className="events-grid">
-            {EVENTS.map((event) => (
-              <article key={event.title} className="event-card">
+            {events.map((event) => (
+              <article key={event.id} className="event-card">
                 <div className="event-date">
                   <div className="event-day">{event.day}</div>
                   <div className="event-num">{event.num}</div>

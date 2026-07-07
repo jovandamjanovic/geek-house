@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { BLOG_POSTS } from "@/app/irena/data/blog-posts";
 import PageHero from "@/app/components/irena/shared/PageHero";
+import { blogPostService } from "@/lib/domain/blog-post/service";
 import "../styles/pages/blog.css";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Blog | Eliksir",
@@ -10,7 +12,9 @@ export const metadata: Metadata = {
     "Preporuke za igre, utisci iz kluba i saveti za sve koji žele da uđu u svet društvenih igara.",
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await blogPostService.getBlogPosts();
+
   return (
     <>
       <PageHero
@@ -30,7 +34,7 @@ export default function BlogPage() {
       <div className="blog-page">
         <section className="blog-posts">
           <div className="container">
-            {BLOG_POSTS.map((post) => (
+            {posts.map((post) => (
               <article key={post.id} className="blog-post" id={post.id}>
                 <div className="blog-post__image">
                   <Image
@@ -46,7 +50,7 @@ export default function BlogPage() {
                   {post.paragraphs.map((paragraph) => (
                     <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                   ))}
-                  {post.list ? (
+                  {post.list && post.list.length > 0 ? (
                     <ul className="blog-list">
                       {post.list.map((item) => (
                         <li key={item.title}>

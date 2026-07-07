@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ROOMS } from "@/app/irena/data/rooms";
 import Lightbox from "@/app/components/irena/shared/Lightbox";
 import PageHero from "@/app/components/irena/shared/PageHero";
+import { prostorijaService } from "@/lib/domain/prostorija/service";
 import "../styles/pages/rezervacija.css";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Rezervacije | Eliksir",
@@ -12,7 +14,9 @@ export const metadata: Metadata = {
     "Rezerviši sto ili prostor u Eliksiru — klubu društvenih igara u Nišu.",
 };
 
-export default function RezervacijaPage() {
+export default async function RezervacijaPage() {
+  const rooms = await prostorijaService.getProstorije();
+
   return (
     <>
       <PageHero
@@ -93,7 +97,7 @@ export default function RezervacijaPage() {
             </div>
 
             <div className="rooms-grid">
-              {ROOMS.map((room) => (
+              {rooms.map((room) => (
                 <article key={room.id} className="room-card">
                   <div className="room-image-wrap">
                     <Image
