@@ -1,4 +1,5 @@
 import { ClanarinaRepository } from "@/lib/domain/clan-management/repository/ClanarinaRepository";
+import NotFoundError from "@/lib/exception/NotFoundError";
 import { Clanarina, ClanarinaForCreation } from "@/types";
 
 export class ClanarinaService {
@@ -22,7 +23,7 @@ export class ClanarinaService {
     request: Partial<Clanarina>,
   ): Promise<Clanarina | null> {
     const entity = await this.clanarinaRepository.find(id);
-    if (entity === null) throw new Error("Clanarina not found");
+    if (entity === null) throw new NotFoundError("Clanarina not found");
     const updatedEntity = { ...entity, ...request } as Clanarina;
     return this.clanarinaRepository.save(updatedEntity);
   }

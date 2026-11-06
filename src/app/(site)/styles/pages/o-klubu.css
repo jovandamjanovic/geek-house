@@ -1,0 +1,280 @@
+/* About */
+
+.about-section {
+  padding: 40px 20px;
+  background: #0f2538;
+}
+
+.about-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-image {
+  order: -1;
+}
+
+.about-image img {
+  width: 92%;
+  margin-top: 6px;
+
+  display: block;
+
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+
+  transition: transform 0.4s ease;
+}
+
+.about-image img:hover {
+  transform: scale(1.02);
+}
+
+.about-text {
+  text-align: center;
+}
+
+.about-text h2 {
+  margin: 0 0 15px;
+  font-size: 2.1rem;
+}
+
+.about-text p {
+  margin-bottom: 25px;
+
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.about-highlights {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.about-highlights li {
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Expect */
+
+.expect {
+  padding: 60px 20px;
+
+  background: #0f2538;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  overflow-x: hidden;
+}
+
+.expect-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 46px;
+  align-items: start;
+}
+
+.expect-head h2 {
+  margin: 14px 0 36px;
+  font-size: clamp(28px, 3.4vw, 44px);
+}
+
+.expect-head p {
+  max-width: 42ch;
+  margin: 0 0 16px;
+
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.65;
+  text-align: justify;
+}
+
+.expect-head p:last-child {
+  margin-bottom: 0;
+}
+
+.expect-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  margin: 0;
+}
+
+.expect-card {
+  position: relative;
+
+  min-width: 0;
+  padding: 18px;
+
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
+
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.expect-card::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+
+  width: 3px;
+
+  background: rgba(244, 180, 0, 0.55);
+  border-radius: 999px;
+  opacity: 0;
+
+  transition: opacity 0.25s ease;
+}
+
+.expect-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(244, 180, 0, 0.35);
+}
+
+.expect-card:hover::before {
+  opacity: 1;
+}
+
+.expect-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(244, 180, 0, 0.1);
+  border: 1px solid rgba(244, 180, 0, 0.25);
+  border-radius: 12px;
+
+  font-size: 18px;
+}
+
+.expect-card h3 {
+  margin: 0 0 6px;
+
+  color: var(--accent);
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.expect-card p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.55;
+}
+
+.expect-card.is-feature {
+  grid-column: span 2;
+  padding: 22px;
+
+  background:
+    radial-gradient(
+      700px 220px at 20% 0%,
+      rgba(244, 180, 0, 0.18),
+      transparent 55%
+    ),
+    rgba(255, 255, 255, 0.035);
+
+  border-color: rgba(244, 180, 0, 0.22);
+}
+
+.expect-card.is-feature .expect-icon {
+  background: rgba(244, 180, 0, 0.14);
+}
+
+.expect-card.drinks {
+  grid-column: span 2;
+  padding: 22px;
+
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Responsive */
+
+@media (max-width: 920px) {
+  .expect-wrap {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .expect-head p {
+    max-width: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .about-wrapper {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .about-image {
+    order: -1;
+  }
+
+  .about-image img {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .about-text,
+  .about-text p,
+  .about-highlights {
+    text-align: center;
+  }
+
+  .about-highlights li {
+    display: inline-block;
+  }
+
+  .expect-head {
+    text-align: center;
+  }
+
+  .expect-head p {
+    text-align: center;
+  }
+
+  .expect-card {
+    text-align: center;
+  }
+
+  .expect-icon {
+    margin: 0 auto 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .expect-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expect-card.is-feature,
+  .expect-card.drinks {
+    grid-column: auto;
+    padding: 18px;
+  }
+}

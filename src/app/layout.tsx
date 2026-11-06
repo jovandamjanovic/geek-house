@@ -4,7 +4,6 @@ import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import LanguageWrapper from "@/app/components/LanguageWrapper";
-import ConditionalLayout from "@/app/components/ConditionalLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,11 +21,12 @@ export const metadata: Metadata = {
 };
 
 /**
- * Defines the root layout for the application, applying global fonts and conditionally rendering Header/Footer.
+ * Root layout: html/body, global fonts and app-wide providers.
  *
- * Wraps all pages with a consistent HTML structure, including language settings and font variables.
- *
- * @param children - The content to be rendered, with conditional Header/Footer based on route
+ * Header/Footer are provided by the route-group layouts:
+ * - `(site)/layout.tsx`   — the public site
+ * - `(legacy)/layout.tsx` — /impressum, /clanarine and other standalone pages
+ * Pages outside a group (e.g. /under-construction) render without either.
  */
 export default function RootLayout({
   children,
@@ -37,7 +37,7 @@ export default function RootLayout({
     <LanguageProvider>
       <AuthProvider>
         <LanguageWrapper geistSans={geistSans} geistMono={geistMono}>
-          <ConditionalLayout>{children}</ConditionalLayout>
+          {children}
         </LanguageWrapper>
       </AuthProvider>
     </LanguageProvider>
