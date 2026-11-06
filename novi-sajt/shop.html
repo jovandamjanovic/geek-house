@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prodavnica | Eliksir</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/pages/shop.css">
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main class="shop-page">
+    <!-- Page hero -->
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <h1>Prodavnica</h1>
+        <p>Originalne društvene igre — proveri dostupnost i cenu. ✨</p>
+
+        <div class="shop-controls">
+          <div class="control">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="shopSearch" type="search" placeholder="Pretraži igre ili izdavača..." autocomplete="off">
+          </div>
+
+          <div class="control select custom-select" id="shopSortWrap">
+            <i class="fa-solid fa-arrow-up-wide-short"></i>
+
+            <button type="button" class="cs-trigger" id="shopSortTrigger" aria-haspopup="listbox" aria-expanded="false">
+              <span id="shopSortLabel">Sortiraj: podrazumevano</span>
+              <i class="fa-solid fa-chevron-down cs-chevron"></i>
+            </button>
+
+            <div class="cs-panel" id="shopSortPanel" role="listbox" tabindex="-1">
+              <button type="button" class="cs-option is-active" data-value="relevance">Podrazumevano</button>
+              <button type="button" class="cs-option" data-value="price-asc">Cena: rastuće</button>
+              <button type="button" class="cs-option" data-value="price-desc">Cena: opadajuće</button>
+              <button type="button" class="cs-option" data-value="name-asc">Naziv: A–Z</button>
+              <button type="button" class="cs-option" data-value="name-desc">Naziv: Z–A</button>
+            </div>
+          </div>
+
+          <label class="control checkbox">
+            <input id="inStockOnly" type="checkbox">
+            <span>Samo na stanju</span>
+          </label>
+        </div>
+
+        <div class="shop-meta">
+          <span id="resultsCount">0</span>
+          <span class="dot">•</span>
+          <span class="hint">Klikni karticu za detalje</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shop grid -->
+    <section class="shop-grid-wrap">
+      <div id="shopGrid" class="shop-grid"></div>
+    </section>
+  </main>
+
+  <!-- Product modal -->
+  <div id="shopModal" class="shop-modal" aria-hidden="true">
+    <div class="shop-modal-backdrop" data-close></div>
+
+    <div class="shop-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="shop-modal-close" aria-label="Zatvori" data-close>
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="shop-modal-body">
+        <div class="shop-badge" id="modalStockBadge"></div>
+
+        <h2 id="modalTitle"></h2>
+        <p class="modal-publisher" id="modalPublisher"></p>
+
+        <div class="modal-price-row">
+          <div class="modal-price" id="modalPrice"></div>
+          <div class="modal-qty" id="modalQty"></div>
+        </div>
+
+        <div class="modal-actions">
+          <a class="btn-gold" id="modalOrderBtn" href="kontakt.html?topic=shop">Kontaktiraj</a>
+          <button class="btn-ghost" data-close>Zatvori</button>
+        </div>
+
+        <p class="modal-note">
+          Raspitajte se preko kontakta ili društvenih mreža o dostupnosti, ceni i načinu isporuke.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Vrati na vrh">
+    ↑
+  </button>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

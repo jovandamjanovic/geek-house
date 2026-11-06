@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Igre | Eliksir</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/pages/igre.css">
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Igre</h1>
+      <p>
+        Preko 120 društvenih igara različitih žanrova čeka te u Eliksiru —
+        od laganih porodičnih i party igara do strateških naslova, dedukcije i TCG duela.
+      </p>
+
+      <div class="page-hero-meta">
+        <span id="gamesCount">120+ igara</span>
+        <span class="dot">•</span>
+        <span>Klikni karticu za detalje</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured games -->
+  <section class="featured-section">
+    <div class="featured-head">
+      <h2 class="section-title fancy-title">✨ Tople preporuke</h2>
+    </div>
+
+    <div class="featured-layout">
+      <div class="featured-hero featured-card" data-game="Codenames">
+        <div class="fh-top">
+          <span class="fh-kicker">Najbolje za ekipu</span>
+          <span class="fh-chip">Party</span>
+        </div>
+
+        <h3>Codenames</h3>
+        <p>Timovi, smeh i “aha!” momenti. Idealno za 4–8 ljudi.</p>
+        <button class="fh-btn" type="button">Saznaj više</button>
+      </div>
+
+      <div class="featured-mini">
+        <div class="featured-card mini" data-game="Splendor">
+          <span>Splendor</span>
+          <span class="pill">Brzo</span>
+        </div>
+
+        <div class="featured-card mini" data-game="Ticket to Ride: Europe">
+          <span>Ticket to Ride</span>
+          <span class="pill">Klasik</span>
+        </div>
+
+        <div class="featured-card mini" data-game="Cascadia">
+          <span>Cascadia</span>
+          <span class="pill">Lagano</span>
+        </div>
+
+        <div class="featured-card mini" data-game="Catan">
+          <span>Catan</span>
+          <span class="pill">Klasik</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game categories -->
+  <section class="games-section">
+    <div class="container">
+      <h2 class="section-title">Kategorije igara</h2>
+
+      <div class="games-intro">
+        <p>
+          U Eliksiru možeš da biraš između više od <strong>120 društvenih igara</strong>
+          različitih žanrova. Na raspolaganju su ti lagane i porodične igre,
+          kooperativne avanture, party igre, teške strategije, euro naslovi,
+          dedukcija i TCG duel igre.
+        </p>
+      </div>
+
+      <div class="games-controls">
+        <div class="filter-bar">
+          <button class="filter-pill" data-filter="brza">Brzo (≤20 min)</button>
+          <button class="filter-pill" data-filter="lagana">Za početnike</button>
+          <button class="filter-pill" data-filter="2-igraca">2 igrača</button>
+          <button class="filter-pill" data-filter="6-plus">6+ igrača</button>
+          <button class="filter-pill" data-filter="party">Party</button>
+          <button class="filter-pill" data-filter="strategija">Strategija</button>
+          <button class="filter-pill" data-filter="kooperativna">Kooperativne</button>
+        </div>
+
+        <div class="games-toolbar">
+          <input id="gameSearch" class="search" type="text" placeholder="Pretraži igre (npr. Catan, 2–5 igrača)...">
+          <span id="resultCount" class="muted"></span>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- Porodične igre -->
+      <div class="category">
+        <h3 class="category-title">👨‍👩‍👧‍👦 Porodične igre</h3>
+
+        <div class="games-grid">
+
+          <div class="game-card" data-title="Ticket to Ride: Europe" data-meta="Porodična • 2–5 igrača • 30–60 min"
+            data-desc="Gradite železničke rute po Evropi kroz skupljanje setova karata i ispunjavanje destinacija. Klasičan, brz za učenje i odličan za miks društva."
+            data-tags="porodicna,vozovi,ruta,2-igraca,strategija">
+            <h4>Ticket to Ride: Europe</h4>
+            <p>2–5 igrača • 30–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Cascadia" data-meta="Porodična • 1–4 igrača • 30–45 min"
+            data-desc="Slaganje pločica i žetona životinja u pejzaže. Poeni se dobijaju kroz pattern-e i ciljeve životinja – mirna, pametna i veoma pristupačna."
+            data-tags="porodicna,plocice,puzzle,pattern-building,animals,lagana,2-igraca,strategija">
+            <h4>Cascadia</h4>
+            <p>1–4 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Azul Mini" data-meta="Porodična • 2–4 igrača • 30–45 min"
+            data-desc="Birate pločice i popunjavate mozaik uz pametno planiranje i blokiranje. Brza taktika u veoma čistim pravilima."
+            data-tags="porodicna,puzzle,pattern-building,lagana,2-igraca,strategija">
+            <h4>Azul Mini</h4>
+            <p>2–4 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Kingdomino" data-meta="Porodična • 2–4 igrača • 15–25 min"
+            data-desc="Draftujete domino pločice i gradite kraljevstvo povezivanjem istih terena. Brza i jako ‘još jedna partija’ igra."
+            data-tags="porodicna,plocice,puzzle,brza,lagana,2-igraca">
+            <h4>Kingdomino</h4>
+            <p>2–4 igrača • 15–25 min</p>
+          </div>
+
+          <div class="game-card" data-title="Patchwork" data-meta="Porodična • 2 igrača • 15–30 min"
+            data-desc="Duel slaganja ‘prekrivača’ kroz biranje delova i upravljanje vremenom/dugmićima. Kratko, taktično i baš zarazno."
+            data-tags="porodicna,puzzle,2-igraca,lagana">
+            <h4>Patchwork</h4>
+            <p>2 igrača • 15–30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Splendor" data-meta="Porodična • 2–4 igrača • 30 min"
+            data-desc="Skupljate žetone dragulja i kupujete karte kako biste gradili engine i privlačili plemiće. Jednostavno, elegantno, taktično."
+            data-tags="porodicna,karte,engine-building,ekonomija,lagana,2-igraca,strategija">
+            <h4>Splendor</h4>
+            <p>2–4 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Jaipur" data-meta="Porodična • 2 igrača • 30 min"
+            data-desc="Brz duel trgovaca: pametan tajming uzimanja/razmene karata i prodaje setova za najveći profit."
+            data-tags="porodicna,karte,ekonomija,2-igraca,lagana">
+            <h4>Jaipur</h4>
+            <p>2 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Trio" data-meta="Porodična • 3–6 igrača • 15 min"
+            data-desc="Igra memorije i pogađanja: otkrivate karte i pokušavate da skupite trio iste vrednosti uz pametna pitanja i procenu."
+            data-tags="porodicna,karte,memorija,brza,lagana,6-plus">
+            <h4>Trio</h4>
+            <p>3–6 igrača • 15 min</p>
+          </div>
+
+          <div class="game-card" data-title="Bärenpark" data-meta="Porodična • 2–4 igrača • 30–45 min"
+            data-desc="Gradite park medveda kroz polaganje pločica u svoj raspored i trku za najboljim delovima. Pristupačna i taktična."
+            data-tags="porodicna,plocice,puzzle,animals,lagana,2-igraca,strategija">
+            <h4>Bärenpark</h4>
+            <p>2–4 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Century: Spice Road" data-meta="Porodična • 2–5 igrača • 30–45 min"
+            data-desc="Kombinujete karte da unapređujete resurse i ispunjavate narudžbine. Čist engine i dobar osećaj planiranja."
+            data-tags="porodicna,karte,ekonomija,engine-building,lagana,2-igraca,strategija">
+            <h4>Century: Spice Road</h4>
+            <p>2–5 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Takenoko + Chibis" data-meta="Porodična • 2–4 igrača • 45 min"
+            data-desc="Negujte bambus baštu, postavljajte pločice i navodnjavanje, ispunjavajte ciljeve i pazite na pandu. Prelepa porodična strategija."
+            data-tags="porodicna,plocice,animals,lagana,2-igraca,strategija">
+            <h4>Takenoko + Chibis</h4>
+            <p>2–4 igrača • 45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Acropolis" data-meta="Porodična • 1–4 igrača • 20–30 min"
+            data-desc="Gradite grad slojevima pločica i pokušavate da optimizujete bodovanje kvartova. Kratko, jasno i taktično."
+            data-tags="porodicna,plocice,puzzle,strategija,lagana,2-igraca">
+            <h4>Acropolis</h4>
+            <p>1–4 igrača • 20–30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Project L" data-meta="Porodična • 1–4 igrača • 20–40 min"
+            data-desc="Tetris-like puzzle sa pločicama: uzimate akcije i popunjavate obrasce za poene, uz postepeno jačanje svojih mogućnosti."
+            data-tags="porodicna,puzzle,abstract,strategija,2-igraca">
+            <h4>Project L</h4>
+            <p>1–4 igrača • 20–40 min</p>
+          </div>
+
+          <div class="game-card" data-title="Forest Shuffle + Alps (Expansion)"
+            data-meta="Porodična / Strategija • 2–5 igrača • 40–60 min"
+            data-desc="Gradite šumski ekosistem kroz slaganje karata i bodovanje kombinacija. Lako za početak, sa lepom dubinom planiranja."
+            data-tags="porodicna,karte,strategija,2-igraca">
+            <h4>Forest Shuffle + Alps</h4>
+            <p>2–5 igrača • 40–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Meadow" data-meta="Porodična / Strategija • 1–4 igrača • 60–90 min"
+            data-desc="Skupljate karte prirode i stvarate kombinacije kroz set collection i pametno upravljanje rukom. Predivna atmosfera i ‘kolekcionarski’ osećaj."
+            data-tags="porodicna,strategija,animals,set-collection,karte,2-igraca">
+            <h4>Meadow</h4>
+            <p>1–4 igrača • 60–90 min</p>
+          </div>
+
+          <div class="game-card" data-title="Honey Buzz" data-meta="Porodična / Strategija • 1–4 igrača • 45–90 min"
+            data-desc="Upravljate košnicom kroz pametan izbor akcija i izgradnju mednog ‘engine-a’. Slatka tema, ozbiljno planiranje."
+            data-tags="porodicna,strategija,ekonomija,engine-building,2-igraca">
+            <h4>Honey Buzz</h4>
+            <p>1–4 igrača • 45–90 min</p>
+          </div>
+
+          <div class="game-card" data-title="Galaxy Trucker" data-meta="Porodična • 2–4 igrača • 20–30 min"
+            data-desc="U real-time fazi sklapate svemirski brod od delova, pa prolazite kroz avanturu punu nezgoda. Haotično zabavno."
+            data-tags="porodicna,avantura,plocice,brza,2-igraca">
+            <h4>Galaxy Trucker</h4>
+            <p>2–4 igrača • 20–30 min</p>
+          </div>
+
+          <div class="game-card" data-title="The Isle of Cats"
+            data-meta="Porodična / Strategija • 1–4 igrača • 60–90 min"
+            data-desc="Spašavate mačke i slažete ih kao polimine na brod, uz draft karata i planiranje bodovanja. Puzzle + strategija."
+            data-tags="porodicna,strategija,puzzle,animals,2-igraca">
+            <h4>The Isle of Cats</h4>
+            <p>1–4 igrača • 60–90 min</p>
+          </div>
+
+          <div class="game-card" data-title="Faraway (Daleke zemlje)" data-meta="Porodična • 2–6 igrača • 15–20 min"
+            data-desc="Kartaška igra draftovanja i set collection-a sa pametnim odlukama u kratkom vremenu. Lako se uči."
+            data-tags="porodicna,karte,set-collection,brza,2-igraca,6-plus">
+            <h4>Faraway</h4>
+            <p>2–6 igrača • 15–20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Castle Combo" data-meta="Porodična • 2–5 igrača • 10–25 min"
+            data-desc="Brz draft karata i slaganje setova kroz jednostavne izbore i kombinacije. Odlična za brze partije."
+            data-tags="porodicna,karte,set-collection,brza,lagana,2-igraca">
+            <h4>Castle Combo</h4>
+            <p>2–5 igrača • 10–25 min</p>
+          </div>
+
+          <div class="game-card" data-title="Nidavelir" data-meta="Porodična / Strategija • 2–5 igrača • 45 min"
+            data-desc="Aukcija novčićima i skupljanje patuljaka za najbolje vojske. Lep miks taktike i set collection-a."
+            data-tags="porodicna,strategija,karte,aukcija,2-igraca">
+            <h4>Nidavelir</h4>
+            <p>2–5 igrača • 45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Sea Salt & Paper" data-meta="Porodična • 2–4 igrača • 30–45 min"
+            data-desc="Skupljate setove origami karata i odlučujete kada je pravi trenutak da završite rundu. Kratko, elegantno, ‘push-your-luck’ osećaj."
+            data-tags="porodicna,karte,set-collection,lagana,2-igraca">
+            <h4>Sea Salt & Paper</h4>
+            <p>2–4 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Trekking Through History" data-meta="Porodična • 1–4 igrača • 30–60 min"
+            data-desc="Putujete kroz istorijske događaje, skupljate setove i učite usput. Prijateljski i edukativno-avanturistički vibe."
+            data-tags="porodicna,edukativna,avantura,set-collection,2-igraca">
+            <h4>Trekking Through History</h4>
+            <p>1–4 igrača • 30–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Kanagawa" data-meta="Porodična • 2–4 igrača • 45 min"
+            data-desc="Sakupljate elemente i gradite ‘sliku’ kroz set collection i pametan tajming. Lepo, mirno i taktično."
+            data-tags="porodicna,karte,set-collection,2-igraca">
+            <h4>Kanagawa</h4>
+            <p>2–4 igrača • 45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Dream Home" data-meta="Porodična • 2–4 igrača • 30 min"
+            data-desc="Birate sobe i dodatke i slažete svoju kuću za poene. Brzo draftovanje i lagana taktika."
+            data-tags="porodicna,karte,set-collection,lagana,2-igraca">
+            <h4>Dream Home</h4>
+            <p>2–4 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Get on Board: New York & London"
+            data-meta="Porodična • 2–5 igrača • 30 min"
+            data-desc="Planirate linije prevoza i popunjavate mrežu po mapi. Brzo i jasno, sa dosta optimizacije."
+            data-tags="porodicna,transport,network-building,lagana,2-igraca,strategija">
+            <h4>Get on Board: NY & London</h4>
+            <p>2–5 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Captain Flip" data-meta="Porodična • 2–5 igrača • 20 min"
+            data-desc="Brza porodična igra sa grid-om, memorijom i bodovanjem kroz jednostavne odluke. Kratka i vrlo pitka."
+            data-tags="porodicna,brza,lagana,2-igraca">
+            <h4>Captain Flip</h4>
+            <p>2–5 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Pixies" data-meta="Porodična • 2–5 igrača • 30 min"
+            data-desc="Kartaška igra set collection-a sa temom životinja i povezivanja karata. Pristupačna i brza za učenje."
+            data-tags="porodicna,animals,karte,set-collection,lagana,2-igraca">
+            <h4>Pixies</h4>
+            <p>2–5 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Dragonkeepers" data-meta="Porodična • 2–4 igrača • 20 min"
+            data-desc="Draftujete i skupljate setove kroz kartu-mehanike i upravljanje rukom. Kratka i pitka porodična igra."
+            data-tags="porodicna,karte,set-collection,brza,2-igraca">
+            <h4>Dragonkeepers</h4>
+            <p>2–4 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Animals on Board" data-meta="Porodična • 2–4 igrača • 15–30 min"
+            data-desc="I-cut-you-choose i set collection: pametno delite opcije i birate najbolje. Brzo i zanimljivo."
+            data-tags="porodicna,set-collection,lagana,2-igraca">
+            <h4>Animals on Board</h4>
+            <p>2–4 igrača • 15–30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Boreal" data-meta="Porodična • 2 igrača • 15–20 min"
+            data-desc="Duel sa kartama i polaganjem pločica: skupljate setove i gradite teritorije kroz kratke partije."
+            data-tags="porodicna,karte,plocice,brza,lagana,2-igraca">
+            <h4>Boreal</h4>
+            <p>2 igrača • 15–20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Prime Climb" data-meta="Porodična • 1–4 igrača • 20–45 min"
+            data-desc="Edukativna matematička igra sa bacanjem kockica i kretanjem po tabli, uz učenje brojeva i faktora."
+            data-tags="porodicna,edukativna,kockice,2-igraca">
+            <h4>Prime Climb</h4>
+            <p>1–4 igrača • 20–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Baobab" data-meta="Porodična • 2–4 igrača • 20 min"
+            data-desc="Dexterity igra sa životinjama: balansiranje i fizičke akcije uz brze runde."
+            data-tags="porodicna,dexterity,animals,brza,lagana,2-igraca">
+            <h4>Baobab</h4>
+            <p>2–4 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Carcassonne" data-meta="Porodična • 2–5 igrača • 35–45 min"
+            data-desc="Gradite srednjovekovni pejzaž postavljanjem pločica i osvajajte bodove kroz gradove, puteve i manastire. Jednostavna pravila, ali mnogo taktike."
+            data-tags="porodicna,plocice,strategija,lagana,2-igraca">
+            <h4>Carcassonne</h4>
+            <p>2–5 igrača • 35–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Ticket to Ride" data-meta="Porodična • 2–5 igrača • 30–60 min"
+            data-desc="Sakupljajte karte vozova i povezujte gradove širom mape. Lako se uči, ali zahteva planiranje i blokiranje protivnika."
+            data-tags="porodicna,vozovi,ruta,taktika,2-igraca">
+            <h4>Ticket to Ride</h4>
+            <p>2–5 igrača • 30–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Dixit" data-meta="Party / Porodična • 3–6 igrača • 30 min"
+            data-desc="Kreativna igra mašte i asocijacija. Jedan igrač daje opis ilustracije, a ostali pokušavaju da pogode koja karta je njegova."
+            data-tags="party,kreativna,asocijacije,lagana,6-plus">
+            <h4>Dixit</h4>
+            <p>3–6 igrača • 30 min</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Strateške igre -->
+      <div class="category">
+        <h3 class="category-title">🧠 Strateške igre</h3>
+
+        <div class="games-grid">
+          <div class="game-card" data-title="Gloomhaven" data-meta="Strategija • 1–4 igrača • 60–120 min"
+            data-desc="Kooperativna taktička kampanja sa istraživanjem i borbama. Igrači razvijaju likove kroz dugu narativnu avanturu."
+            data-tags="strategija,kooperativna,2-igraca">
+            <h4>Gloomhaven</h4>
+            <p>1–4 igrača • 60–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="Lost Ruins of Arnak" data-meta="Strategija • 1–4 igrača • 30–120 min"
+            data-desc="Istraživanje ostrva, deck building i radnici. Kombinuje avanturu i ekonomsku optimizaciju."
+            data-tags="strategija,2-igraca">
+            <h4>Lost Ruins of Arnak</h4>
+            <p>1–4 igrača • 30–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="White Castle" data-meta="Strategija • 1–4 igrača • 80 min"
+            data-desc="Akciono draftovanje i ekonomska optimizacija u feudalnom Japanu."
+            data-tags="strategija,2-igraca">
+            <h4>White Castle</h4>
+            <p>1–4 igrača • 80 min</p>
+          </div>
+
+          <div class="game-card" data-title="Kutná Hora: The City of Silver"
+            data-meta="Strategija • 2–4 igrača • 60–120 min"
+            data-desc="Srednjovekovna ekonomska simulacija sa dinamičnim tržištem i gradnjom grada."
+            data-tags="strategija,2-igraca">
+            <h4>Kutná Hora</h4>
+            <p>2–4 igrača • 60–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="Lords of Waterdeep" data-meta="Strategija • 2–5 igrača • 60–120 min"
+            data-desc="Radnici, skriveni ciljevi i fantasy tematika u klasičnoj worker-placement igri."
+            data-tags="strategija,2-igraca">
+            <h4>Lords of Waterdeep</h4>
+            <p>2–5 igrača • 60–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="Lords of Hellas" data-meta="Strategija • 1–4 igrača • 60–90 min"
+            data-desc="Teritorijalna borba i izgradnja mitoloških struktura u grčkom svetu."
+            data-tags="strategija,2-igraca">
+            <h4>Lords of Hellas</h4>
+            <p>1–4 igrača • 60–90 min</p>
+          </div>
+
+          <div class="game-card" data-title="Robinson Crusoe"
+            data-meta="Strategija / Kooperativna • 1–4 igrača • 60–120 min"
+            data-desc="Preživljavanje na pustom ostrvu kroz scenarije i upravljanje resursima."
+            data-tags="strategija,kooperativna,2-igraca">
+            <h4>Robinson Crusoe</h4>
+            <p>1–4 igrača • 60–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="Red Rising" data-meta="Strategija • 1–6 igrača • 45–60 min"
+            data-desc="Draftovanje i kombinovanje karata u univerzumu istoimenog romana."
+            data-tags="strategija,2-igraca,6-plus">
+            <h4>Red Rising</h4>
+            <p>1–6 igrača • 45–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Catan" data-meta="Strategija • 3–4 igrača • 60–90 min"
+            data-desc="Trgujte resursima, gradite naselja i puteve i taktički se pozicionirajte kako biste osvojili ostrvo Katan."
+            data-tags="strategija,trade,resursi,klasik">
+            <h4>Catan</h4>
+            <p>3–4 igrača • 60–90 min</p>
+          </div>
+
+          <div class="game-card" data-title="Everdell" data-meta="Strategija • 1–4 igrača • 40–80 min"
+            data-desc="Gradite šumski grad koristeći radnike i kombinacije karata. Prelepa ilustracija i duboka strategija."
+            data-tags="strategija,engine-building,fantasy,karte,2-igraca">
+            <h4>Everdell</h4>
+            <p>1–4 igrača • 40–80 min</p>
+          </div>
+
+          <div class="game-card" data-title="Terraforming Mars" data-meta="Strategija • 1–5 igrača • 90–120 min"
+            data-desc="Korporacije se takmiče u teraformiranju Marsa. Upravljajte resursima i razvijajte projekte kako biste učinili planetu nastanjivom."
+            data-tags="strategija,svemir,resursi,kompleksna,2-igraca">
+            <h4>Terraforming Mars</h4>
+            <p>1–5 igrača • 90–120 min</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Party igre -->
+      <div class="category">
+        <h3 class="category-title">🎉 Party igre</h3>
+
+        <div class="games-grid">
+
+          <div class="game-card" data-title="Avalon" data-meta="Party • 5–10 igrača • 30 min"
+            data-desc="Skrivene uloge, blef i timska dedukcija u svetu Artura. Igrači pokušavaju da otkriju ko je na čijoj strani."
+            data-tags="party,dedukcija,bluff,uloge,6-plus">
+            <h4>Avalon</h4>
+            <p>5–10 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="The Resistance: Avalon" data-meta="Party • 5–10 igrača • 30 min"
+            data-desc="Timska igra skrivenih uloga: misije, sumnja i blef. Idealna za veće društvo."
+            data-tags="party,dedukcija,bluff,uloge,6-plus">
+            <h4>The Resistance: Avalon</h4>
+            <p>5–10 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Deception: Murder in Hong Kong" data-meta="Party • 4–12 igrača • 20 min"
+            data-desc="Jedan igrač zna istinu o zločinu, ostali pokušavaju da otkriju ubicu kroz tragove, blef i dedukciju."
+            data-tags="party,dedukcija,mystery,6-plus">
+            <h4>Deception: Murder in Hong Kong</h4>
+            <p>4–12 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Coup" data-meta="Party • 2–6 igrača • 15 min"
+            data-desc="Brza igra blefa i skrivenih uloga: pretnje, izazovi i eliminacije u kratkim rundama."
+            data-tags="party,bluff,dedukcija,brza,lagana,2-igraca,6-plus">
+            <h4>Coup</h4>
+            <p>2–6 igrača • 15 min</p>
+          </div>
+
+          <div class="game-card" data-title="Spicy" data-meta="Party • 2–6 igrača • 15–20 min"
+            data-desc="Kartaški blef: prijavljuješ šta si odigrao, ali možda lažeš… a drugi proveravaju."
+            data-tags="party,bluff,karte,brza,lagana,2-igraca,6-plus">
+            <h4>Spicy</h4>
+            <p>2–6 igrača • 15–20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Exploding Kittens: Recipes for Disaster"
+            data-meta="Party • 2–5 igrača • 15 min"
+            data-desc="Brza ‘hot potato’ kartaška igra sa push-your-luck momentima i haotičnim preokretima."
+            data-tags="party,karte,brza,lagana,2-igraca">
+            <h4>Exploding Kittens: Recipes for Disaster</h4>
+            <p>2–5 igrača • 15 min</p>
+          </div>
+
+          <div class="game-card" data-title="Taco Cat Goat Cheese Pizza" data-meta="Party • 2–8 igrača • 10 min"
+            data-desc="Real-time kartaška igra refleksa i brzine. Kratko, glasno i zarazno."
+            data-tags="party,brza,lagana,2-igraca,6-plus">
+            <h4>Taco Cat Goat Cheese Pizza</h4>
+            <p>2–8 igrača • 10 min</p>
+          </div>
+
+          <div class="game-card" data-title="Trapwords" data-meta="Party • 4–8 igrača • 30–45 min"
+            data-desc="Timska igra reči sa ‘zabranjenim’ pojmovima: smišljate tragove, ali vas protivnici sapliću zamkama."
+            data-tags="party,reci,timska,6-plus">
+            <h4>Trapwords</h4>
+            <p>4–8 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Paranormal Detectives" data-meta="Party • 3–6 igrača • 30–50 min"
+            data-desc="Murder/mystery: postavljate pitanja (da/ne i slično) da biste rešili slučaj. Atmosferično i društveno."
+            data-tags="party,mystery,dedukcija,6-plus">
+            <h4>Paranormal Detectives</h4>
+            <p>3–6 igrača • 30–50 min</p>
+          </div>
+
+          <div class="game-card" data-title="Bang! The Dice Game" data-meta="Party • 3–8 igrača • 15 min"
+            data-desc="Kockice, uloge i pucnjava u vestern stilu. Brze runde i puno smeha."
+            data-tags="party,kockice,brza,lagana,6-plus">
+            <h4>Bang! The Dice Game</h4>
+            <p>3–8 igrača • 15 min</p>
+          </div>
+
+          <div class="game-card" data-title="Cabanga!" data-meta="Party • 3–6 igrača • 20 min"
+            data-desc="Brza kartaška igra za društvo. Lako se uči i brzo ide." data-tags="party,karte,lagana,6-plus">
+            <h4>Cabanga!</h4>
+            <p>3–6 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Coyote" data-meta="Party • 3–6 igrača • 15–25 min"
+            data-desc="Blef i procena: znaš tuđe brojeve, ali ne i svoj. Cilj je da pogodiš ukupno bez da preteraš."
+            data-tags="party,bluff,lagana,6-plus">
+            <h4>Coyote</h4>
+            <p>3–6 igrača • 15–25 min</p>
+          </div>
+
+          <div class="game-card" data-title="Kluster" data-meta="Party • 1–4 igrača • 10–20 min"
+            data-desc="Dexterity sa magnetima: postavljaš magnete, ali ako se spoje – uzimaš kaznu. Brzo i urnebesno."
+            data-tags="party,dexterity,brza,lagana,2-igraca">
+            <h4>Kluster</h4>
+            <p>1–4 igrača • 10–20 min</p>
+          </div>
+
+          <div class="game-card" data-title="So Clover!" data-meta="Party / Kooperativna • 3–6 igrača • 30 min"
+            data-desc="Kooperativna igra reči: povezujete pojmove i pokušavate da tim pogodi tačne veze."
+            data-tags="party,kooperativna,reci,6-plus">
+            <h4>So Clover!</h4>
+            <p>3–6 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="The Mind" data-meta="Party / Kooperativna • 2–4 igrača • 20 min"
+            data-desc="Kooperativno ‘čitanje tima’ bez komunikacije: odigravate brojeve u pravom redosledu."
+            data-tags="party,kooperativna,brza,lagana,2-igraca">
+            <h4>The Mind</h4>
+            <p>2–4 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Hues and Cues" data-meta="Party • 3–10 igrača • 30 min"
+            data-desc="Igra boja i asocijacija: daješ trag, a tim pogađa nijansu na paleti."
+            data-tags="party,asocijacije,6-plus">
+            <h4>Hues and Cues</h4>
+            <p>3–10 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Kontour" data-meta="Party • 3–7 igrača • 20 min"
+            data-desc="Brza igra crtanja linijom (bez podizanja olovke) – kratko, jasno i smešno."
+            data-tags="party,crtanje,brza,lagana,6-plus">
+            <h4>Kontour</h4>
+            <p>3–7 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Rory's Story Cubes" data-meta="Party / Kooperativna • 1–12 igrača • 20 min"
+            data-desc="Kockice sa simbolima za pričanje priča – improvizacija i kreativnost za sve uzraste."
+            data-tags="party,kooperativna,kockice,lagana,brza,6-plus">
+            <h4>Rory's Story Cubes</h4>
+            <p>1–12 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Unstable Unicorns" data-meta="Party • 2–8 igrača • 30–60 min"
+            data-desc="Kartaška igra humora i ‘take that’ poteza: skupljaš unicorns, a drugi ti smetaju."
+            data-tags="party,karte,2-igraca,6-plus">
+            <h4>Unstable Unicorns</h4>
+            <p>2–8 igrača • 30–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="JunKing" data-meta="Party • 2–6 igrača • 30–60 min"
+            data-desc="Kartaška igra humora i ‘take that’ stila, sa upravljanjem rukom i set collection-om."
+            data-tags="party,karte,2-igraca,6-plus">
+            <h4>JunKing</h4>
+            <p>2–6 igrača • 30–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Munchkin Deluxe" data-meta="Party • 3–6 igrača • 60–120 min"
+            data-desc="Humor + kartaška borba: skupljaš opremu, izdaješ, pomažeš i pokušavaš da ‘ukradeš’ pobedu."
+            data-tags="party,karte,humo,rpg,6-plus">
+            <h4>Munchkin Deluxe</h4>
+            <p>3–6 igrača • 60–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="Illegal" data-meta="Party • 5–9 igrača • 30 min"
+            data-desc="Društvena igra pregovaranja/glasanja sa ulogama i interakcijom – odlična za veće društvo."
+            data-tags="party,uloge,timska,6-plus">
+            <h4>Illegal</h4>
+            <p>5–9 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Jenga" data-meta="Party • 1–8 igrača • 20 min"
+            data-desc="Klasična dexterity igra: izvlačiš blokove i pokušavaš da ne srušiš kulu."
+            data-tags="party,dexterity,lagana,2-igraca,6-plus">
+            <h4>Jenga</h4>
+            <p>1–8 igrača • 20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Uno" data-meta="Party • 2–10 igrača • 30 min"
+            data-desc="Klasik ‘take that’ kartaška igra za svaku ekipu – brzo se uči i uvek radi."
+            data-tags="party,karte,lagana,2-igraca,6-plus">
+            <h4>Uno</h4>
+            <p>2–10 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="King Size" data-meta="Party • 2–69 igrača • 10 min"
+            data-desc="Ekstremno brza party igra sa kockicama i humorom – idealna za opuštene večeri."
+            data-tags="party,kockice,brza,lagana,2-igraca,6-plus">
+            <h4>King Size</h4>
+            <p>2–69 igrača • 10 min</p>
+          </div>
+
+          <div class="game-card" data-title="Codenames" data-meta="Party • 2–8 igrača • 15–20 min"
+            data-desc="Dve ekipe pokušavaju da pogode svoje reči na osnovu jedne asocijacije. Brza, zabavna i taktička."
+            data-tags="party,reci,timska,brza,2-igraca,6-plus">
+            <h4>Codenames</h4>
+            <p>2–8 igrača • 15–20 min</p>
+          </div>
+
+          <div class="game-card" data-title="Dobble" data-meta="Party • 2–8 igrača • 10–15 min"
+            data-desc="Brza igra refleksa – pronađi zajednički simbol pre ostalih! Idealna za sve uzraste."
+            data-tags="party,brza,refleksi,lagana,2-igraca,6-plus">
+            <h4>Dobble</h4>
+            <p>2–8 igrača • 10–15 min</p>
+          </div>
+
+          <div class="game-card" data-title="Just One" data-meta="Party • 3–7 igrača • 20 min"
+            data-desc="Kooperativna igra pogađanja reči gde tim daje jedinstvene tragove – ali isti tragovi se brišu!"
+            data-tags="party,kooperativna,reci,timska,6-plus">
+            <h4>Just One</h4>
+            <p>3–7 igrača • 20 min</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dedukcija -->
+      <div class="category">
+        <h3 class="category-title">🕵️ Dedukcija</h3>
+
+        <div class="games-grid">
+          <div class="game-card" data-title="Whitehall Mystery" data-meta="Dedukcija • 2–4 igrača • 45–60 min"
+            data-desc="Jedan igrač beži kao Jack the Ripper, ostali ga love kroz skriveno kretanje i timsku analizu tragova."
+            data-tags="dedukcija,strategija,2-igraca,timska">
+            <h4>Whitehall Mystery</h4>
+            <p>2–4 igrača • 45–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Mysterium Park"
+            data-meta="Dedukcija / Kooperativna • 2–6 igrača • 30–45 min"
+            data-desc="Jedan igrač daje vizuelne tragove, ostali pokušavaju da reše misteriju kroz asocijacije i logiku."
+            data-tags="dedukcija,kooperativna,mystery,2-igraca,6-plus">
+            <h4>Mysterium Park</h4>
+            <p>2–6 igrača • 30–45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Temple Code" data-meta="Dedukcija • 1–4 igrača • 30 min"
+            data-desc="Kombinovanje karata i logičko zaključivanje kako biste rešili tajni kod pre ostalih."
+            data-tags="dedukcija,logika,2-igraca">
+            <h4>Temple Code</h4>
+            <p>1–4 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Cold War: CIA vs KGB"
+            data-meta="Dedukcija / Strategija • 2 igrača • 30–60 min"
+            data-desc="Duel blefa i političkog nadmudrivanja između dve suprotstavljene sile."
+            data-tags="dedukcija,strategija,2-igraca,bluff">
+            <h4>Cold War: CIA vs KGB</h4>
+            <p>2 igrača • 30–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Blood Bound" data-meta="Dedukcija • 6–12 igrača • 30 min"
+            data-desc="Igra skrivenih uloga gde pokušavate da otkrijete protivnički tim kroz napade i interakciju."
+            data-tags="dedukcija,uloge,6-plus">
+            <h4>Blood Bound</h4>
+            <p>6–12 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Captain Sonar" data-meta="Dedukcija / Real-time • 2–8 igrača • 45–60 min"
+            data-desc="Dve podmornice u real-time nadmudrivanju. Timska koordinacija i analiza protivničkog kretanja su ključ."
+            data-tags="dedukcija,real-time,timska,6-plus">
+            <h4>Captain Sonar</h4>
+            <p>2–8 igrača • 45–60 min</p>
+          </div>
+
+          <div class="game-card" data-title="Cluedo" data-meta="Dedukcija • 2–6 igrača • 45 min"
+            data-desc="Klasična misterija ubistva: ko, gde i čime? Logika i eliminacija opcija."
+            data-tags="dedukcija,lagana,2-igraca,6-plus">
+            <h4>Cluedo</h4>
+            <p>2–6 igrača • 45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Stratego" data-meta="Dedukcija / Strategija • 2 igrača • 45 min"
+            data-desc="Skrivene vrednosti figura i taktičko planiranje kroz ratnu tematiku."
+            data-tags="dedukcija,strategija,2-igraca">
+            <h4>Stratego</h4>
+            <p>2 igrača • 45 min</p>
+          </div>
+
+          <div class="game-card" data-title="Saboteur" data-meta="Dedukcija / Party • 3–10 igrača • 30 min"
+            data-desc="Jedan ili više sabotera pokušavaju da poremete tim rudara – ali niko ne zna ko je ko."
+            data-tags="dedukcija,bluff,party,6-plus">
+            <h4>Saboteur</h4>
+            <p>3–10 igrača • 30 min</p>
+          </div>
+
+          <div class="game-card" data-title="Blood on the Clocktower" data-meta="Dedukcija • 6–15 igrača • 60–120 min"
+            data-desc="Intenzivna igra društvene dedukcije gde igrači pokušavaju da otkriju ko je demon među njima."
+            data-tags="dedukcija,bluff,uloge,6-plus">
+            <h4>Blood on the Clocktower</h4>
+            <p>6–15 igrača • 60–120 min</p>
+          </div>
+
+          <div class="game-card" data-title="Secret Hitler" data-meta="Dedukcija • 5–10 igrača • 45 min"
+            data-desc="Politička igra skrivenih uloga." data-tags="dedukcija,uloge,bluff,timska,6-plus">
+            <h4>Secret Hitler</h4>
+            <p>5–10 igrača • 45 min</p>
+          </div>
+
+          <div class="game-card" data-title="The Resistance" data-meta="Dedukcija • 5–10 igrača • 30 min"
+            data-desc="Otpor pokušava da sabotira misije dok lojalni članovi pokušavaju da otkriju špijune."
+            data-tags="dedukcija,timska,bluff,6-plus">
+            <h4>The Resistance</h4>
+            <p>5–10 igrača • 30 min</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TCG -->
+      <div class="category">
+        <h3 class="category-title">🃏 TCG</h3>
+
+        <div class="games-grid">
+
+          <div class="game-card" data-title="Magic: The Gathering" data-meta="TCG • 2+ igrača • Turniri i casual"
+            data-desc="Jedna od najaktivnijih zajednica u Eliksiru. Magic: The Gathering se igra kroz casual partije, organizovana okupljanja i turnire."
+            data-tags="tcg,karte,turniri,strategija,2-igraca">
+            <h4>Magic: The Gathering</h4>
+            <p>2+ igrača • turniri i casual</p>
+          </div>
+
+          <div class="game-card" data-title="Yu-Gi-Oh!" data-meta="TCG • 2 igrača • Turniri i druženja"
+            data-desc="Brza i taktička kartaška igra sa raznim stilovima igre. Redovan deo TCG zajednice u klubu."
+            data-tags="tcg,karte,turniri,duel,2-igraca">
+            <h4>Yu-Gi-Oh!</h4>
+            <p>2 igrača • turniri i druženja</p>
+          </div>
+
+          <div class="game-card" data-title="One Piece Card Game" data-meta="TCG • 2 igrača • Događaji i casual"
+            data-desc="Popularan TCG naslov koji okuplja zajednicu igrača kroz druženja, učenje i takmičarske partije."
+            data-tags="tcg,karte,duel,2-igraca">
+            <h4>One Piece Card Game</h4>
+            <p>2 igrača • događaji i casual</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="gameModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+      <button class="modal-close" data-close="true" aria-label="Zatvori">✕</button>
+
+      <h3 id="modalTitle">Naziv igre</h3>
+      <p id="modalMeta" class="muted">Meta info</p>
+      <p id="modalDesc">Opis igre...</p>
+
+      <div class="modal-tags" id="modalTags"></div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <button id="scrollToTopBtn" class="scroll-to-top" aria-label="Vrati na vrh">
+    ↑
+  </button>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
