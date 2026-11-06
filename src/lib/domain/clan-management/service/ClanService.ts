@@ -1,4 +1,5 @@
 import { ClanRepository } from "@/lib/domain/clan-management/repository/ClanRepository";
+import NotFoundError from "@/lib/exception/NotFoundError";
 import { Clan, ClanForCreation } from "@/types";
 
 export class ClanService {
@@ -19,7 +20,7 @@ export class ClanService {
 
   async updateClan(id: string, request: Partial<Clan>): Promise<Clan | null> {
     const entity = await this.clanRepository.find(id);
-    if (entity === null) throw new Error("Clan not found");
+    if (entity === null) throw new NotFoundError("Clan not found");
     const updatedEntity = { ...entity, ...request } as Clan;
     return this.clanRepository.save(updatedEntity);
   }

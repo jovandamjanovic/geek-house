@@ -4,6 +4,7 @@ import { ApiResponse, Clan, ClanStatus } from "@/types";
 import { sanitizeString, validateEmail, validatePhone } from "@/lib/validation";
 import { ClanRequest } from "@/types/request/api_request";
 import InvalidArgumentError from "@/lib/exception/InvalidArgumentError";
+import CustomError from "@/lib/exception/CustomError";
 
 function validateAndNormalizeStatus(status: unknown): ClanStatus | undefined {
   if (!status) return undefined;
@@ -84,7 +85,13 @@ export async function PUT(
     }
 
     return NextResponse.json({ success: true, data: updatedClan });
-  } catch (error) {
+  } catch (error: unknown) {
+    if (error instanceof CustomError) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: error.status },
+      );
+    }
     console.error(`Error in PUT /api/clanovi/${id}:`, error);
     return NextResponse.json(
       { success: false, error: "Failed to update clan" },

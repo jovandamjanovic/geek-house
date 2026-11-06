@@ -13,36 +13,41 @@ const FILTERS = [
   { id: "kooperativna", label: "Kooperativne" },
 ];
 
-const FEATURED = [
+// Featured recommendations reference games by their `title` column in the
+// "Igre" sheet. Entries whose title is not in the sheet are skipped, so
+// renaming/removing a game never breaks the page.
+const FEATURED_HERO = {
+  title: "Codenames",
+  kicker: "Najbolje za ekipu",
+  chip: "Party",
+  description: "Timovi, smeh i “aha!” momenti. Idealno za 4–8 ljudi.",
+};
+
+const FEATURED_MINI: { title: string; pill: string; displayName?: string }[] = [
+  { title: "Splendor", pill: "Brzo" },
   {
-    game: "Codenames",
-    type: "hero" as const,
-    kicker: "Najbolje za ekipu",
-    chip: "Party",
-    description: "Timovi, smeh i “aha!” momenti. Idealno za 4–8 ljudi.",
-  },
-  {
-    game: "Splendor",
-    type: "mini" as const,
-    pill: "Brzo",
-  },
-  {
-    game: "Ticket to Ride: Europe",
-    type: "mini" as const,
+    title: "Ticket to Ride: Europe",
     pill: "Klasik",
     displayName: "Ticket to Ride",
   },
-  {
-    game: "Cascadia",
-    type: "mini" as const,
-    pill: "Lagano",
-  },
-  {
-    game: "Catan + Expansion for 5-6 players",
-    type: "mini" as const,
-    pill: "Klasik",
-  },
+  { title: "Cascadia", pill: "Lagano" },
+  { title: "Catan + Expansion for 5-6 players", pill: "Klasik" },
 ];
+
+function matchesGame(
+  game: Game,
+  query: string,
+  activeFilters: Set<string>,
+): boolean {
+  const text =
+    `${game.displayTitle} ${game.meta} ${game.description}`.toLowerCase();
+  const matchesSearch = !query || text.includes(query);
+  const tags = game.tags.map((t) => t.toLowerCase());
+  const matchesFilters = Array.from(activeFilters).every((filter) =>
+    tags.includes(filter),
+  );
+  return matchesSearch && matchesFilters;
+}
 
 function toYoutubeEmbedUrl(url: string): string {
   try {
@@ -68,9 +73,21 @@ export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
   const [search, setSearch] = useState("");
   const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
   const [shake, setShake] = useState(false);
-  const [pulseTitle, setPulseTitle] = useState<string | null>(null);
+  const [pulseId, setPulseId] = useState<string | null>(null);
   const [modalGame, setModalGame] = useState<Game | null>(null);
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const { featuredHero, featuredMini } = useMemo(() => {
+    const byTitle = new Map(GAMES.map((game) => [game.title, game]));
+    const heroGame = byTitle.get(FEATURED_HERO.title);
+    return {
+      featuredHero: heroGame ? { ...FEATURED_HERO, game: heroGame } : null,
+      featuredMini: FEATURED_MINI.flatMap((item) => {
+        const game = byTitle.get(item.title);
+        return game ? [{ ...item, game }] : [];
+      }),
+    };
+  }, [GAMES]);
 
   const categories = useMemo(() => {
     const map = new Map<string, Game[]>();
@@ -84,21 +101,11 @@ export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
 
   const visibleGames = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return GAMES.filter((game) => {
-      const text =
-        `${game.displayTitle} ${game.meta} ${game.description}`.toLowerCase();
-      const matchesSearch = !query || text.includes(query);
-      const matchesFilters =
-        activeFilters.size === 0 ||
-        Array.from(activeFilters).every((filter) =>
-          game.tags.map((t) => t.toLowerCase()).includes(filter),
-        );
-      return matchesSearch && matchesFilters;
-    });
+    return GAMES.filter((game) => matchesGame(game, query, activeFilters));
   }, [search, activeFilters, GAMES]);
 
-  const visibleTitles = useMemo(
-    () => new Set(visibleGames.map((g) => g.title)),
+  const visibleIds = useMemo(
+    () => new Set(visibleGames.map((g) => g.id)),
     [visibleGames],
   );
 
@@ -129,30 +136,22 @@ export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const scrollToGame = useCallback((name: string) => {
-    const card = cardRefs.current[name];
+  const scrollToGame = useCallback((id: string) => {
+    const card = cardRefs.current[id];
     if (!card) return;
     card.scrollIntoView({ behavior: "smooth", block: "center" });
-    setPulseTitle(name);
-    setTimeout(() => setPulseTitle(null), 1100);
+    setPulseId(id);
+    setTimeout(() => setPulseId(null), 1100);
   }, []);
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
-    if (value.trim() || activeFilters.size > 0) {
-      const query = value.trim().toLowerCase();
-      const visible = GAMES.filter((game) => {
-        const text =
-          `${game.displayTitle} ${game.meta} ${game.description}`.toLowerCase();
-        const matchesSearch = !query || text.includes(query);
-        const matchesFilters =
-          activeFilters.size === 0 ||
-          Array.from(activeFilters).every((filter) =>
-            game.tags.map((t) => t.toLowerCase()).includes(filter),
-          );
-        return matchesSearch && matchesFilters;
-      });
-      if (visible.length === 0) {
+    const query = value.trim().toLowerCase();
+    if (query || activeFilters.size > 0) {
+      const anyVisible = GAMES.some((game) =>
+        matchesGame(game, query, activeFilters),
+      );
+      if (!anyVisible) {
         setShake(true);
         setTimeout(() => setShake(false), 500);
       }
@@ -170,59 +169,64 @@ export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
             i TCG duela.
           </p>
           <div className="page-hero-meta">
-            <span id="gamesCount">120+ igara</span>
+            <span id="gamesCount">{GAMES.length} igara</span>
             <span className="dot">•</span>
             <span>Klikni karticu za detalje</span>
           </div>
         </div>
       </section>
 
-      <section className="featured-section">
-        <div className="featured-head">
-          <h2 className="section-title fancy-title">✨ Tople preporuke</h2>
-        </div>
-        <div className="featured-layout">
-          <div
-            className="featured-hero featured-card"
-            role="button"
-            tabIndex={0}
-            onClick={() => scrollToGame("Codenames")}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") scrollToGame("Codenames");
-            }}
-          >
-            <div className="fh-top">
-              <span className="fh-kicker">Najbolje za ekipu</span>
-              <span className="fh-chip">Party</span>
-            </div>
-            <h3>Codenames</h3>
-            <p>Timovi, smeh i “aha!” momenti. Idealno za 4–8 ljudi.</p>
-            <button className="fh-btn" type="button">
-              Saznaj više
-            </button>
+      {featuredHero || featuredMini.length > 0 ? (
+        <section className="featured-section">
+          <div className="featured-head">
+            <h2 className="section-title fancy-title">✨ Tople preporuke</h2>
           </div>
-          <div className="featured-mini">
-            {FEATURED.filter((f) => f.type === "mini").map((item) => (
+          <div className="featured-layout">
+            {featuredHero ? (
               <div
-                key={item.game}
-                className="featured-card mini"
+                className="featured-hero featured-card"
                 role="button"
                 tabIndex={0}
-                onClick={() => scrollToGame(item.game)}
+                onClick={() => scrollToGame(featuredHero.game.id)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ")
-                    scrollToGame(item.game);
+                    scrollToGame(featuredHero.game.id);
                 }}
               >
-                <span>
-                  {"displayName" in item ? item.displayName : item.game}
-                </span>
-                <span className="pill">{item.pill}</span>
+                <div className="fh-top">
+                  <span className="fh-kicker">{featuredHero.kicker}</span>
+                  <span className="fh-chip">{featuredHero.chip}</span>
+                </div>
+                <h3>{featuredHero.game.displayTitle}</h3>
+                <p>{featuredHero.description}</p>
+                <button className="fh-btn" type="button">
+                  Saznaj više
+                </button>
               </div>
-            ))}
+            ) : null}
+            {featuredMini.length > 0 ? (
+              <div className="featured-mini">
+                {featuredMini.map((item) => (
+                  <div
+                    key={item.game.id}
+                    className="featured-card mini"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => scrollToGame(item.game.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ")
+                        scrollToGame(item.game.id);
+                    }}
+                  >
+                    <span>{item.displayName ?? item.game.displayTitle}</span>
+                    <span className="pill">{item.pill}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <section className="games-section">
         <div className="container">
@@ -270,27 +274,21 @@ export default function GamesPage({ initialGames }: { initialGames: Game[] }) {
           <div className="section-divider" />
 
           {categories.map(([category, games]) => {
-            const categoryVisible = games.some((g) =>
-              visibleTitles.has(g.title),
-            );
-            if (!categoryVisible) return null;
+            if (!games.some((g) => visibleIds.has(g.id))) return null;
 
             return (
-              <div
-                key={category}
-                className={`category${categoryVisible ? "" : " is-hidden"}`}
-              >
+              <div key={category} className="category">
                 <h3 className="category-title">{category}</h3>
                 <div className="games-grid">
                   {games.map((game) => {
-                    if (!visibleTitles.has(game.title)) return null;
+                    if (!visibleIds.has(game.id)) return null;
                     return (
                       <div
-                        key={game.title}
+                        key={game.id}
                         ref={(el) => {
-                          cardRefs.current[game.title] = el;
+                          cardRefs.current[game.id] = el;
                         }}
-                        className={`game-card${pulseTitle === game.title ? " pulse" : ""}`}
+                        className={`game-card${pulseId === game.id ? " pulse" : ""}`}
                         role="button"
                         tabIndex={0}
                         onClick={() => setModalGame(game)}

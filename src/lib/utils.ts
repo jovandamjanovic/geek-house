@@ -12,8 +12,16 @@ const DateUtils = {
     return new Date(dateStr); // Fallback to default parsing
   },
 
+  // For optional date cells: an empty or unparseable cell means "no date"
+  // (unlike `parse`, which falls back to the current date).
+  parseOptional: (dateStr: string | undefined): Date | undefined => {
+    if (!dateStr?.trim()) return undefined;
+    const date = DateUtils.parse(dateStr.trim());
+    return isNaN(date.getTime()) ? undefined : date;
+  },
+
   format: (date: Date | undefined): string => {
-    if (!date) return "";
+    if (!date || isNaN(date.getTime())) return "";
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear();
@@ -23,10 +31,16 @@ const DateUtils = {
 
 // Pure utility functions for formatting
 const FormatUtils = {
+  // Restores the leading 0 of local numbers (e.g. "641234567" -> "0641234567").
+  // International numbers ("+381...", "00381...") are left as they are.
   phone: (phone: string): string => {
     if (!phone) return "";
     const cleanPhone = phone.trim();
-    if (cleanPhone && !cleanPhone.startsWith("0")) {
+    if (
+      cleanPhone &&
+      !cleanPhone.startsWith("0") &&
+      !cleanPhone.startsWith("+")
+    ) {
       return "0" + cleanPhone;
     }
     return cleanPhone;

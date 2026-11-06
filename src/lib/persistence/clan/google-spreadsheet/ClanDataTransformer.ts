@@ -22,7 +22,7 @@ export class ClanDataTransformer implements DataTransformer<Clan> {
       email: row[2] || undefined,
       telefon: row[3] || undefined,
       status: (row[4] as ClanStatus) || ClanStatus.PROBNI,
-      "Datum Rodjenja": DateUtils.parse(row[5] || ""),
+      "Datum Rodjenja": DateUtils.parseOptional(row[5]),
       Napomene: row[6] || undefined,
     };
   }
