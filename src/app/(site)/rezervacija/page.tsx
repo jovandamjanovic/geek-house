@@ -123,7 +123,7 @@ export default async function RezervacijaPage() {
                         ))}
                       </div>
                       <Link
-                        href={`/irena/kontakt?topic=rezervacija&room=${encodeURIComponent(room.name)}`}
+                        href={`/kontakt?topic=rezervacija&room=${encodeURIComponent(room.name)}`}
                         className="btn room-btn"
                       >
                         Rezerviši

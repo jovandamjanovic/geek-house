@@ -34,7 +34,7 @@ export const FEATURED_EVENT: FeaturedEvent = {
   players: "👥 6–15 igrača",
   location: "📍 Oblačića Rada 11, Niš",
   signupHref:
-    "/irena/kontakt?topic=dogadjaji&action=prijava&event=Dedukcija%20night%3A%20Blood%20on%20the%20Clocktower",
+    "/kontakt?topic=dogadjaji&action=prijava&event=Dedukcija%20night%3A%20Blood%20on%20the%20Clocktower",
 };
 
 export const EVENTS: EventCard[] = [
@@ -52,7 +52,7 @@ export const EVENTS: EventCard[] = [
     meta: "📍 Oblačića Rada 11, Niš",
     actionLabel: "Prijavi ekipu",
     actionHref:
-      "/irena/kontakt?topic=dogadjaji&action=prijava&event=Kviz%20ve%C4%8De%3A%20Geek%20%26%20pop%20kultura",
+      "/kontakt?topic=dogadjaji&action=prijava&event=Kviz%20ve%C4%8De%3A%20Geek%20%26%20pop%20kultura",
   },
   {
     day: "SUB",
@@ -68,7 +68,7 @@ export const EVENTS: EventCard[] = [
     meta: "👥 Duel format",
     actionLabel: "Prijavi se",
     actionHref:
-      "/irena/kontakt?topic=dogadjaji&action=prijava&event=Yu-Gi-Oh!%20turnir",
+      "/kontakt?topic=dogadjaji&action=prijava&event=Yu-Gi-Oh!%20turnir",
   },
   {
     day: "NED",
@@ -83,6 +83,6 @@ export const EVENTS: EventCard[] = [
       "Opušteno druženje uz preporuke igara na licu mesta, objašnjenje pravila i naslove za početnike i iskusne igrače.",
     meta: "🎲 Demo večeri i učenje novih igara",
     actionLabel: "Rezerviši mesto",
-    actionHref: "/irena/rezervacija",
+    actionHref: "/rezervacija",
   },
 ];

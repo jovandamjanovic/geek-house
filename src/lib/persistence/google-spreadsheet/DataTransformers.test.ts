@@ -109,8 +109,8 @@ describe("DogadjajDataTransformer", () => {
     location: "📍 Niš",
     meta: "meta",
     actionLabel: "Prijavi ekipu",
-    actionHref: "/irena/kontakt",
-    signupHref: "/irena/kontakt",
+    actionHref: "/kontakt",
+    signupHref: "/kontakt",
   };
 
   it("round-trips entity -> row -> entity", () => {

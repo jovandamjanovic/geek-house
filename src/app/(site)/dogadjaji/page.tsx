@@ -54,7 +54,7 @@ export default async function DogadjajiPage() {
                 <Link className="btn" href={featuredEvent.signupHref}>
                   Prijavi se
                 </Link>
-                <Link className="btn btn-ghost" href="/irena/igre">
+                <Link className="btn btn-ghost" href="/igre">
                   Vidi igre
                 </Link>
               </div>

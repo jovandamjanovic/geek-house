@@ -1,32 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
+// Pages that are live. Matched as whole path segments, so "/blog" allows
+// "/blog" and "/blog/..." but not "/blogfoo". "/" is matched exactly.
+const ALLOWED_PAGES = [
+  "/blog",
+  "/dogadjaji",
+  "/igre",
+  "/kontakt",
+  "/o-klubu",
+  "/rezervacija",
+  "/shop",
+  "/clanarine",
+  "/impressum",
+  "/under-construction",
+];
+
+// Non-page prefixes that are always allowed: API routes, Next internals and
+// the site's static assets from /public.
+const ALLOWED_PREFIXES = ["/api/", "/_next/", "/favicon.ico", "/irena/"];
+
+function matchesSegment(pathname: string, path: string): boolean {
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
     !FEATURE_FLAGS.shop &&
-    (pathname.startsWith("/irena/shop") || pathname.startsWith("/api/shop"))
+    (matchesSegment(pathname, "/shop") || matchesSegment(pathname, "/api/shop"))
   ) {
-    return NextResponse.redirect(new URL("/irena", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Define paths that are allowed (not redirected to under construction)
-  const allowedPaths = [
-    "/irena",
-    "/clanarine",
-    "/impressum",
-    "/under-construction",
-    "/api/",
-    "/_next/",
-    "/favicon.ico",
-  ];
+  const isAllowedPath =
+    pathname === "/" ||
+    ALLOWED_PAGES.some((path) => matchesSegment(pathname, path)) ||
+    ALLOWED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
-  // Check if the current path is allowed
-  const isAllowedPath = allowedPaths.some((path) => pathname.startsWith(path));
-
-  // Redirect to under construction if not an allowed path
-  if (!isAllowedPath && pathname !== "/") {
+  // Everything else (e.g. /about, /contact, /test) is not live
+  if (!isAllowedPath) {
     return NextResponse.redirect(new URL("/under-construction", request.url));
   }
 

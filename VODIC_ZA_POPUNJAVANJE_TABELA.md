@@ -64,7 +64,7 @@ Opseg kolona: **A do R**
 | N      | location    | Ne        | Lokacija (samo za istaknuti događaj), npr. `📍 Oblačića Rada 11, Niš`                                            |
 | O      | meta        | Da        | Kratak dodatni tekst ispod kartice događaja, npr. `📍 Oblačića Rada 11, Niš`                                     |
 | P      | actionLabel | Da        | Tekst na dugmetu, npr. `Prijavi ekipu`, `Rezerviši mesto`                                                        |
-| Q      | actionHref  | Da        | Link na koji dugme vodi, npr. `/irena/rezervacija`                                                               |
+| Q      | actionHref  | Da        | Link na koji dugme vodi, npr. `/rezervacija`                                                                     |
 | R      | signupHref  | Da        | Link za dugme "Prijavi se" (koristi se samo kod istaknutog događaja)                                             |
 
 ### Napomena za kolonu B — "featured" (istaknut događaj)

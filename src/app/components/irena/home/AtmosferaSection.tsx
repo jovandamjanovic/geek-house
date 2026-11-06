@@ -48,7 +48,7 @@ export default function AtmosferaSection() {
           • demo večeri i učenje novih igara
           <br />• tematska okupljanja i mini-turnire
         </p>
-        <Link href="/irena/dogadjaji" className="btn">
+        <Link href="/dogadjaji" className="btn">
           Pogledaj događaje
         </Link>
       </div>

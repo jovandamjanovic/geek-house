@@ -125,10 +125,10 @@ export default function OKlubuPage() {
             susret novo prijateljstvo, a svaka poseta mali beg od svakodnevice.
           </p>
           <div className="hero-actions">
-            <Link href="/irena/dogadjaji" className="btn">
+            <Link href="/dogadjaji" className="btn">
               Događaji
             </Link>
-            <Link href="/irena/kontakt" className="btn btn-ghost">
+            <Link href="/kontakt" className="btn btn-ghost">
               Kontakt
             </Link>
           </div>

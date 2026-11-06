@@ -6,7 +6,7 @@ import {
   MEMBER_DISCOUNT,
   SHOP_PRODUCTS,
   type ShopProduct,
-} from "@/app/irena/data/shop-products";
+} from "@/app/(site)/data/shop-products";
 
 type SortValue =
   | "relevance"
@@ -257,7 +257,7 @@ export default function ShopPage() {
               <div className="modal-actions">
                 <Link
                   className="btn-gold"
-                  href={`/irena/kontakt?topic=shop&product=${encodeURIComponent(modalProduct.name)}&publisher=${encodeURIComponent(modalProduct.publisher)}&price=${modalProduct.price}&memberPrice=${getMemberPrice(modalProduct.price)}`}
+                  href={`/kontakt?topic=shop&product=${encodeURIComponent(modalProduct.name)}&publisher=${encodeURIComponent(modalProduct.publisher)}&price=${modalProduct.price}&memberPrice=${getMemberPrice(modalProduct.price)}`}
                 >
                   Kontaktiraj
                 </Link>

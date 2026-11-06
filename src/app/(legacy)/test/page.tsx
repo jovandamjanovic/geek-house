@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "../../hooks/useTranslations";
+import { useTranslations } from "@/hooks/useTranslations";
 import styles from "./page.module.css";
 
 /**

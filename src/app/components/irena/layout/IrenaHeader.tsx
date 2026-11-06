@@ -8,45 +8,45 @@ import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 const NAV_LINKS = [
   {
-    href: "/irena",
+    href: "/",
     label: "Početna",
-    match: (path: string) => path === "/irena",
+    match: (path: string) => path === "/",
   },
   {
-    href: "/irena/o-klubu",
+    href: "/o-klubu",
     label: "O klubu",
-    match: (path: string) => path.startsWith("/irena/o-klubu"),
+    match: (path: string) => path.startsWith("/o-klubu"),
   },
   {
-    href: "/irena/rezervacija",
+    href: "/rezervacija",
     label: "Rezervacije",
-    match: (path: string) => path.startsWith("/irena/rezervacija"),
+    match: (path: string) => path.startsWith("/rezervacija"),
   },
   {
-    href: "/irena/dogadjaji",
+    href: "/dogadjaji",
     label: "Događaji",
-    match: (path: string) => path.startsWith("/irena/dogadjaji"),
+    match: (path: string) => path.startsWith("/dogadjaji"),
   },
   {
-    href: "/irena/igre",
+    href: "/igre",
     label: "Igre",
-    match: (path: string) => path.startsWith("/irena/igre"),
+    match: (path: string) => path.startsWith("/igre"),
   },
   {
-    href: "/irena/shop",
+    href: "/shop",
     label: "Prodavnica",
-    match: (path: string) => path.startsWith("/irena/shop"),
+    match: (path: string) => path.startsWith("/shop"),
     feature: "shop" as const,
   },
   {
-    href: "/irena/blog",
+    href: "/blog",
     label: "Blog",
-    match: (path: string) => path.startsWith("/irena/blog"),
+    match: (path: string) => path.startsWith("/blog"),
   },
   {
-    href: "/irena/kontakt",
+    href: "/kontakt",
     label: "Kontakt",
-    match: (path: string) => path.startsWith("/irena/kontakt"),
+    match: (path: string) => path.startsWith("/kontakt"),
     isCta: true,
   },
 ];
@@ -84,7 +84,7 @@ export default function IrenaHeader() {
     <header className={`header${scrolled ? " scrolled" : ""}`}>
       <div className="nav">
         <div className="brand">
-          <Link href="/irena" className="brand-link" onClick={closeNav}>
+          <Link href="/" className="brand-link" onClick={closeNav}>
             <Image
               src="/irena/images/logo.png"
               alt="Eliksir logo"

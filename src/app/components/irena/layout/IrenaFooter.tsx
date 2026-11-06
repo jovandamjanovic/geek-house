@@ -2,14 +2,14 @@ import Link from "next/link";
 import { FEATURE_FLAGS } from "@/lib/featureFlags";
 
 const FOOTER_LINKS = [
-  { href: "/irena", label: "Početna" },
-  { href: "/irena/o-klubu", label: "O klubu" },
-  { href: "/irena/rezervacija", label: "Rezervacije" },
-  { href: "/irena/dogadjaji", label: "Događaji" },
-  { href: "/irena/igre", label: "Igre" },
-  { href: "/irena/shop", label: "Prodavnica", feature: "shop" as const },
-  { href: "/irena/blog", label: "Blog" },
-  { href: "/irena/kontakt", label: "Kontakt" },
+  { href: "/", label: "Početna" },
+  { href: "/o-klubu", label: "O klubu" },
+  { href: "/rezervacija", label: "Rezervacije" },
+  { href: "/dogadjaji", label: "Događaji" },
+  { href: "/igre", label: "Igre" },
+  { href: "/shop", label: "Prodavnica", feature: "shop" as const },
+  { href: "/blog", label: "Blog" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export default function IrenaFooter() {

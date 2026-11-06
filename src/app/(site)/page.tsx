@@ -17,7 +17,7 @@ export default function IrenaHomePage() {
         <div className="container hero-content">
           <h1>Eliksir</h1>
           <p>Igra. Društvo. Smeh.</p>
-          <Link href="/irena/igre" className="btn">
+          <Link href="/igre" className="btn">
             Pogledaj igre
           </Link>
         </div>
@@ -62,7 +62,7 @@ export default function IrenaHomePage() {
             </div>
           </div>
 
-          <Link href="/irena/o-klubu" className="btn">
+          <Link href="/o-klubu" className="btn">
             Saznaj više o klubu
           </Link>
         </div>
@@ -101,7 +101,7 @@ export default function IrenaHomePage() {
           <p className="pricing-note">
             Sve igre iz naše biblioteke uključene su u cenu ulaza.
           </p>
-          <Link href="/irena/rezervacija" className="pricing-link">
+          <Link href="/rezervacija" className="pricing-link">
             Detalji o članstvu →
           </Link>
         </div>
